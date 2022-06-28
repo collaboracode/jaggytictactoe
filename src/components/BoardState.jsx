@@ -1,6 +1,11 @@
 import React, { useState } from "react"
 import Gameboard from "./BoardDisplay"
 import getLongestLine from "../functions/longest_line"
+import WinningLength from "./winLineLength"
+import ResetButtons from "./BoardAndOffsetReset"
+import CurrentPlayerDisplay from "./CurrentPlayerDisplay"
+import BoardAdjustmentTool from "./BoardAdjustmentTool"
+import GameOverModal from "./GameOverModal"
 // import Gameboard from "./board"
 export default function GameState() {
   // setup
@@ -66,8 +71,7 @@ export default function GameState() {
           switch (e.target.value) {
             case "1":
               if (boardMutatorVariable.length < 15) {
-                let arr1 = [" "]
-                boardMutatorVariable.push([...arr1])
+                boardMutatorVariable.push([" "])
                 offsetMutatorVariable.push(Number(0))
                 setBoard([...boardMutatorVariable])
                 setOffset([...offsetMutatorVariable])
@@ -75,7 +79,7 @@ export default function GameState() {
               break
             case "-1":
               boardMutatorVariable = boardMutatorVariable.slice(0, -1)
-              offsetMutatorVariable = offsetMutatorVariable.slice(0, -1)
+              offsetMutatorVariable = offsetMutatorVariable.slice(0, boardMutatorVariable.length)
               setBoard(boardMutatorVariable)
               setOffset(offsetMutatorVariable)
               break
@@ -83,6 +87,7 @@ export default function GameState() {
               setBoard(startingBoard)
               offsetMutatorVariable = offsetMutatorVariable.slice(0, startingBoard.length)
               setOffset(offsetMutatorVariable)
+              setCurPlayerX(true)
               break
             default:
               break
@@ -105,6 +110,7 @@ export default function GameState() {
               break
             case "reset":
               setBoard(startingBoard)
+              setCurPlayerX(true)
               break
             default:
               break
@@ -152,22 +158,15 @@ export default function GameState() {
           break
       }
     }
-
-
   }
   return (
-    <Gameboard
-      handleClick={handleClick}
-      handleOffset={handleOffset}
-      handleRows={handleRows}
-      resetGame={resetGame}
-      board={board}
-      offset={offset}
-      message={message}
-      curPlayerX={curPlayerX}
-      gameover={gameover}
-      handleWinLength={handleWinLength}
-      winLength={winLength}
-    ></Gameboard>
+    <>
+      <WinningLength winLength={winLength} handleWinLength={handleWinLength} />
+      <ResetButtons handleOffset={handleOffset} handleRows={handleRows} />
+      <BoardAdjustmentTool offset={offset} handleOffset={handleOffset} handleRows={handleRows} board={board} />
+      <CurrentPlayerDisplay curPlayerX={curPlayerX} />
+      <GameOverModal message={message} gameover={gameover} resetGame={resetGame}/>
+      <Gameboard handleClick={handleClick} board={board} offset={offset} />
+    </>
   )
 }

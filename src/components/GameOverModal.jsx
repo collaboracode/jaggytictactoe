@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 export default function GameOverModal(props) {
-  const [resetButtonColor, setResetButtonColor] = useState("white")
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("#b00")
   const handleMouseEnterStyle = (e) => {
     switch (e.target.dataset.element_type) {
@@ -9,6 +8,8 @@ export default function GameOverModal(props) {
         setResetButtonBackgroundColor("darkRed")
 
         break
+      default:
+        break
     }
   }
   const handleMouseLeaveStyle = (e) => {
@@ -16,7 +17,16 @@ export default function GameOverModal(props) {
       case "resetButton":
         setResetButtonBackgroundColor("#b00")
         break
+      default:
+        break
     }
+  }
+  let styleP = {
+    width: "100%",
+    textAlign: "center",
+    fontSize: "3rem",
+    marginBottom: "1rem",
+    lineHeight: "0px",
   }
   let styleModal = {
     position: "fixed",
@@ -38,7 +48,7 @@ export default function GameOverModal(props) {
     position: "fixed",
     width: "100vw",
     height: "100vh",
-    top:"0",
+    top: "0",
     background: "grey",
     color: "white",
     zIndex: "8",
@@ -50,17 +60,17 @@ export default function GameOverModal(props) {
     margin: "0",
     padding: "0",
     backgroundColor: `${resetButtonBackgroundColor}`,
-    color: `${resetButtonColor}`,
+    color: "white",
     fontSize: "1rem",
   }
   return (
     props.gameover === true &&
     <>
-    <div style={styleModalBackground}>
-    </div>
+      <div style={styleModalBackground}>
+      </div>
 
       <div style={styleModal}>
-        <p style={{width: "100%", textAlign: "center"}}>{props.message}</p>
+        <p style={styleP}>{props.message}</p>
         <button
           onClick={props.resetGame}
           style={styleResetButton}
