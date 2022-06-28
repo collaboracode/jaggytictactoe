@@ -81,6 +81,8 @@ export default function GameState() {
               break
             case "reset":
               setBoard(startingBoard)
+              offsetMutatorVariable = offsetMutatorVariable.slice(0, startingBoard.length)
+              setOffset(offsetMutatorVariable)
               break
             default:
               break
