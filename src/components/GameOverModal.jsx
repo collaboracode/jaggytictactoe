@@ -4,9 +4,7 @@ export default function GameOverModal(props) {
   const handleMouseEnterStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
-        // setResetButtonBackgroundColor("#e00")
         setResetButtonBackgroundColor("darkRed")
-
         break
       default:
         break
@@ -29,11 +27,9 @@ export default function GameOverModal(props) {
     lineHeight: "0px",
   }
   let styleModal = {
-    position: "fixed",
     display: "flex",
-    flexWrap: "wrap",
     justifyContent: "center",
-    top: "45%",
+    flexWrap: "wrap",
     width: "250px",
     height: "170px",
     background: "dimgrey",
@@ -44,14 +40,25 @@ export default function GameOverModal(props) {
     opacity: "1",
 
   }
+  let styleModalContainer = {
+    position: "fixed",
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    top: "0",
+    width: "100vw",
+    height: "100vh",
+    zIndex: "10",
+  }
   let styleModalBackground = {
     position: "fixed",
+    display: "flex",
     width: "100vw",
     height: "100vh",
     top: "0",
     background: "grey",
     color: "white",
-    zIndex: "8",
+    zIndex: "10",
     opacity: ".6",
   }
   let styleResetButton = {
@@ -68,17 +75,19 @@ export default function GameOverModal(props) {
     <>
       <div style={styleModalBackground}>
       </div>
-
-      <div style={styleModal}>
-        <p style={styleP}>{props.message}</p>
-        <button
-          onClick={props.resetGame}
-          style={styleResetButton}
-          data-element_type={"resetButton"}
-          onMouseEnter={handleMouseEnterStyle}
-          onMouseLeave={handleMouseLeaveStyle}
-        >reset game</button>
+      <div style={styleModalContainer}>
+        <div style={styleModal}>
+          <p style={styleP}>{props.message}</p>
+          <button
+            onClick={props.resetGame}
+            style={styleResetButton}
+            data-element_type={"resetButton"}
+            onMouseEnter={handleMouseEnterStyle}
+            onMouseLeave={handleMouseLeaveStyle}
+          >reset game</button>
+        </div>
       </div>
+
     </>
   )
 }
