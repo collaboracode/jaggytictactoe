@@ -2,23 +2,25 @@ import React, { useState } from "react"
 export default function OffsetTool(props) {
   const [resetButtonColor, setResetButtonColor] = useState("white")
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("red")
+  const [resetButtonColorTwo, setResetButtonColorTwo] = useState("white")
+  const [resetButtonBackgroundColorTwo, setResetButtonBackgroundColorTwo] = useState("red")
   let styleUl = {
     listStyle: "none",
     display: "flex",
     flexWrap: "wrap",
-    justifyContent:"center",
+    justifyContent: "center",
     margin: "0",
     padding: "0",
-    
+
   }
   let styleLi = {
-    
+
     maxWidth: "200px",
     margin: "1rem",
     display: "flex",
     flexWrap: "wrap",
     gap: "10px",
-    justifyContent:'center'
+    justifyContent: 'center'
   }
   let styleButtonTwo = {
     height: "40px",
@@ -46,6 +48,14 @@ export default function OffsetTool(props) {
     backgroundColor: `${resetButtonBackgroundColor}`,
     color: `${resetButtonColor}`,
   }
+  let styleResetButtonTwo = {
+    height: "40px",
+    width: "50px",
+    margin: "0",
+    padding: "0",
+    backgroundColor: `${resetButtonBackgroundColorTwo}`,
+    color: `${resetButtonColorTwo}`,
+  }
   let styleOffsetValue = {
     marginTop: "0",
     marginBottom: "0",
@@ -57,6 +67,9 @@ export default function OffsetTool(props) {
       case "resetButton":
         setResetButtonBackgroundColor("darkRed")
         break
+        case "resetButtonTwo":
+        setResetButtonBackgroundColorTwo("darkRed")
+        break
     }
   }
   const handleMouseLeaveStyle = (e) => {
@@ -64,14 +77,23 @@ export default function OffsetTool(props) {
       case "resetButton":
         setResetButtonBackgroundColor("red")
         break
+        case "resetButtonTwo":
+        setResetButtonBackgroundColorTwo("red")
+        break
     }
   }
   const handleMouseClickStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
         setResetButtonBackgroundColor("red")
-        const timer = setTimeout(() => {
+        let timer = setTimeout(() => {
           setResetButtonBackgroundColor("darkRed")
+        }, 50);
+        break
+        case "resetButtonTwo":
+        setResetButtonBackgroundColorTwo("red")
+        let timer2 = setTimeout(() => {
+          setResetButtonBackgroundColorTwo("darkRed")
         }, 50);
         break
     }
@@ -87,7 +109,7 @@ export default function OffsetTool(props) {
                 <li
                   key={`second${i}`}
                   style={styleLi}>
-                  <h2 style={styleOffsetValue} key={`${i}`}>row{i + 1}: length { props?.board?.[i]?.length}</h2>
+                  <h2 style={styleOffsetValue} key={`${i}`}>row{i + 1}: length {props?.board?.[i]?.length}</h2>
                   <h3 style={styleOffsetValue}>offset value {props.offset[i]}</h3>
                   <button
                     style={styleButtonTwo}
@@ -152,19 +174,18 @@ export default function OffsetTool(props) {
         >reset offset</button>
       </div>
       <div style={styleButtonContainer}>
-        <button style={styleButton} onClick={props.handleRows} data-function={"row"} value={"1"}>add row</button>
+        <button style={styleButton} onClick={props.handleRows} data-function={"row"} value={"-1"}>remove row</button>
         <button
           onClick={props.handleRows}
           data-function={"row"}
           value={"reset"}
-          style={styleResetButton}
-          data-element_type={"resetButton"}
+          style={styleResetButtonTwo}
+          data-element_type={"resetButtonTwo"}
           onMouseEnter={handleMouseEnterStyle}
           onMouseLeave={handleMouseLeaveStyle}
         >reset board</button>
-        <button style={styleButton} onClick={props.handleRows} data-function={"row"} value={"-1"}>remove row</button>
+        <button style={styleButton} onClick={props.handleRows} data-function={"row"} value={"1"}>add row</button>
       </div>
-
     </>
   )
 }
