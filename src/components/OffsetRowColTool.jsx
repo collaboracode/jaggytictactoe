@@ -88,7 +88,7 @@ export default function OffsetTool(props) {
                   key={`second${i}`}
                   style={styleLi}>
                   <h2 style={styleOffsetValue} key={`${i}`}>row{i + 1}: length { props?.board?.[i]?.length}</h2>
-                  <h3 style={styleOffsetValue}>offset value {row}</h3>
+                  <h3 style={styleOffsetValue}>offset value {props.offset[i]}</h3>
                   <button
                     style={styleButtonTwo}
                     key={`fifth${i}`}
