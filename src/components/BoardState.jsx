@@ -6,7 +6,6 @@ import ResetButtons from "./BoardAndOffsetReset"
 import CurrentPlayerDisplay from "./CurrentPlayerDisplay"
 import BoardAdjustmentTool from "./BoardAdjustmentTool"
 import GameOverModal from "./GameOverModal"
-// import Gameboard from "./board"
 export default function GameState() {
   // setup
   const startingWinLength = 3

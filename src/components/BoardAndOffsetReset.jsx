@@ -17,16 +17,12 @@ export default function ResetButtons(props) {
     width: "50px",
     margin: "0",
     padding: "0",
-    backgroundColor: `${resetButtonBackgroundColor}`,
     color: "white",
+    backgroundColor: `${resetButtonBackgroundColor}`,
   }
   let styleResetButtonTwo = {
-    height: "40px",
-    width: "50px",
-    margin: "0",
-    padding: "0",
+    ...styleResetButton,
     backgroundColor: `${resetButtonBackgroundColorTwo}`,
-    color: "white",
   }
 
   const handleMouseEnterStyle = (e) => {

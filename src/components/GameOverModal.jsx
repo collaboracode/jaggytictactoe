@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 export default function GameOverModal(props) {
+
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("#b00")
+
   const handleMouseEnterStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
@@ -10,6 +12,7 @@ export default function GameOverModal(props) {
         break
     }
   }
+
   const handleMouseLeaveStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
@@ -19,6 +22,7 @@ export default function GameOverModal(props) {
         break
     }
   }
+
   let styleP = {
     width: "100%",
     textAlign: "center",
@@ -70,6 +74,7 @@ export default function GameOverModal(props) {
     color: "white",
     fontSize: "1rem",
   }
+  
   return (
     props.gameover === true &&
     <>

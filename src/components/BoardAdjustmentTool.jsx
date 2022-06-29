@@ -22,17 +22,8 @@ export default function BoardAdjustmentTool(props) {
     gap: "10px",
     justifyContent: 'center'
   }
-  let styleButtonTwo = {
-    height: "30px",
-    width: "50px",
-    fontSize: "1.5rem",
-    textAlign: "center",
-    verticalAlign: "bottom"
-  }
-
 
   let styleRowVals = {
-
     textAlign: "center",
     lineHeight: ".5rem",
   }
@@ -44,11 +35,19 @@ export default function BoardAdjustmentTool(props) {
     backgroundColor: "#ddd",
 
   }
-  let styleButton = {
+  let styleRowAddRmoveButtons = {
     height: "40px",
     width: "75px",
     fontSize: "1rem",
   }
+  let styleButtonTwo = {
+    height: "30px",
+    width: "50px",
+    fontSize: "1.5rem",
+    textAlign: "center",
+    verticalAlign: "bottom"
+  }
+
   let styleButtonContainer = {
     display: "flex",
     justifyContent: "center",
@@ -66,8 +65,18 @@ export default function BoardAdjustmentTool(props) {
     <>
       <div>
         <div style={styleButtonContainer}>
-          <button style={styleButton} onClick={props.handleRows} data-function={"row"} value={"-1"}>remove row</button>
-          <button style={styleButton} onClick={props.handleRows} data-function={"row"} value={"1"}>add row</button>
+          <button
+            style={styleRowAddRmoveButtons}
+            onClick={props.handleRows}
+            data-function={"row"}
+            value={"-1"}>remove row
+          </button>
+          <button
+            style={styleRowAddRmoveButtons}
+            onClick={props.handleRows}
+            data-function={"row"}
+            value={"1"}>add row
+          </button>
         </div>
         <ul style={styleUl}>
           {props.board && props.board.map((row, i) => {
@@ -76,12 +85,12 @@ export default function BoardAdjustmentTool(props) {
                 <li
                   key={`second${i}`}
                   style={styleLi}>
-                    <div style={styleRowValsContainer}>
+                  <div style={styleRowValsContainer}>
 
-                  <h3 key={`meh${i}`}style={styleRowVals}>row: {i + 1}</h3>
-                  <p style={styleRowVals} key={`${i}`}>length: {props?.board?.[i]?.length}</p>
-                  <p style={styleRowVals}>offset: {props.offset[i]}</p>
-                    </div>
+                    <h3 key={`meh${i}`} style={styleRowVals}>row: {i + 1}</h3>
+                    <p style={styleRowVals} key={`${i}`}>length: {props?.board?.[i]?.length}</p>
+                    <p style={styleRowVals}>offset: {props.offset[i]}</p>
+                  </div>
                   <div style={styleButtonDiv}>
                     <button
                       style={styleButtonTwo}
@@ -90,7 +99,8 @@ export default function BoardAdjustmentTool(props) {
                       data-function={"offset"}
                       value={-1}
                       onClick={props.handleOffset}
-                    >{"<"}</button>
+                    >{"<"}
+                    </button>
 
                     <button
                       style={styleButtonTwo}
@@ -99,7 +109,8 @@ export default function BoardAdjustmentTool(props) {
                       data-function={"offset"}
                       value={1}
                       onClick={props.handleOffset}
-                    >{">"}</button>
+                    >{">"}
+                    </button>
                   </div>
                   <div style={styleButtonDiv}>
                     <button
@@ -109,7 +120,8 @@ export default function BoardAdjustmentTool(props) {
                       data-function={"col"}
                       value={-1}
                       onClick={props.handleRows}
-                    >-</button>
+                    >-
+                    </button>
 
                     <button
                       style={styleButtonTwo}
