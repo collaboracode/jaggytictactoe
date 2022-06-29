@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import Gameboard from "./BoardDisplay"
-import CheckForWin from "../functions/checkForWin"
+import CheckForWinOrDraw from "../functions/checkForWinOrDraw"
 import WinningLength from "./winLineLength"
 import ResetButtons from "./BoardAndOffsetReset"
 import CurrentPlayerDisplay from "./CurrentPlayerDisplay"
@@ -34,7 +34,7 @@ export default function GameState() {
   const [winLength, setWinLength] = useState(startingWinLength)
   
   useEffect(() => {
-    let checkForWin = CheckForWin(board, playerOne, playerTwo, winLength, offset)
+    let checkForWin = CheckForWinOrDraw(board, playerOne, playerTwo, winLength, offset)
     switch (checkForWin) {
       case "draw":
         setMessage(`Draw`)

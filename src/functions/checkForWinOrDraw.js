@@ -1,4 +1,4 @@
-import getLongestLine from "../functions/longest_line"
+import getLongestLine from "./longest_line"
   /**
    * returns string (draw | player1 | player2)
    * @param { number[][] | string[][] } board - the game board
@@ -7,11 +7,15 @@ import getLongestLine from "../functions/longest_line"
    * @param { number } goalLength - the line length required to win
    * @param { integer[] } offset **optional** offset array
    */
-export default function CheckForWin(board, player1, player2, goalLength, offset = null) {
+export default function CheckForWinOrDraw(board, player1, player2, goalLength, offset = null) {
   let playerOneRecord = 0
   let playerTwoRecord = 0
+  let isFull = true
   board.forEach((row, i) => {
     row.forEach((col, j) => {
+      if (col === " ") {
+        isFull = false
+      }
       playerOneRecord = Math.max(getLongestLine(board, player1, Number(i), Number(j), offset), playerOneRecord)
       playerTwoRecord = Math.max(getLongestLine(board, player2, Number(i), Number(j), offset), playerTwoRecord)
     })
@@ -22,5 +26,7 @@ export default function CheckForWin(board, player1, player2, goalLength, offset 
     return "player1"
   } else if (playerTwoRecord >= goalLength) {
     return "player2"
-  } else return
+  } else if (isFull) {
+    return "draw"
+  }else return
 }
