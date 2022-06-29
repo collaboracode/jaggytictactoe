@@ -22,17 +22,16 @@ export default function GameState() {
     [" ", " ", " "],
     [" ", " ", " "]
   ]
-  
+
   // state
   const [board, setBoard] = useState(startingBoard)
   const [message, setMessage] = useState(``)
   const [offset, setOffset] = useState(startingOffset)
   const [gameover, setGameover] = useState(false)
   const [curPlayerX, setCurPlayerX] = useState(true)
-  // todo add conditional styling for buttons disabled from gameInProgress
   const [gameInProgress, setGameInProgress] = useState(false)
   const [winLength, setWinLength] = useState(startingWinLength)
-  
+
   useEffect(() => {
     let checkForWin = CheckForWinOrDraw(board, playerOne, playerTwo, winLength, offset)
     switch (checkForWin) {
@@ -51,7 +50,7 @@ export default function GameState() {
       default:
         break
     }
-  }, [board, offset])
+  }, [board, offset, winLength])
 
   function resetGame() {
     setMessage(``)
@@ -87,12 +86,16 @@ export default function GameState() {
       setOffset(offsetArr)
     }
   }
+
+
+
   let handleOffset = (event) => {
     if (gameover === false) {
       switch (event.target.value) {
         case "1":
-        case "-1":
-          setOffset([...ChangeOffset(event, offset, offsetRange)])
+          case "-1":
+          let setter = ChangeOffset(event, offset, offsetRange)
+          setter && setOffset(setter)
           gameInProgress && setCurPlayerX(!curPlayerX)
           break
         case "reset":
@@ -103,6 +106,49 @@ export default function GameState() {
       }
     }
   }
+
+
+
+  let handleOffsets = (e) => {
+    if (gameover === false) {
+      let offsetMutatorVariable = offset
+
+      switch (e.target.value) {
+        case "1":
+          offsetMutatorVariable[Number(e.target.dataset.offsetindex)] += Number(e.target.value)
+          if (offsetMutatorVariable[Number(e.target.dataset.offsetindex)] > Number(offsetRange)) {
+            offsetMutatorVariable[Number(e.target.dataset.offsetindex)] = Number(offsetRange)
+          }
+          setOffset([...offsetMutatorVariable])
+          if (gameInProgress) {
+            setCurPlayerX(!curPlayerX)
+          }
+          break
+        case "-1":
+          offsetMutatorVariable[Number(e.target.dataset.offsetindex)] += Number(e.target.value)
+          if (offsetMutatorVariable[Number(e.target.dataset.offsetindex)] < 0 - Number(offsetRange)) {
+            offsetMutatorVariable[Number(e.target.dataset.offsetindex)] = 0 - Number(offsetRange)
+          }
+          setOffset([...offsetMutatorVariable])
+          if (gameInProgress) {
+            setCurPlayerX(!curPlayerX)
+          }
+          break
+        case "reset":
+          if (!gameInProgress) {
+            let offsetArr = []
+            board.forEach(arr => offsetArr.push(Number(0)))
+            setOffset(offsetArr)
+          }
+          break
+        default:
+          break
+      }
+    }
+  }
+
+
+
   let handleRows = (e) => {
     if (gameover === false) {
       switch (e.target.dataset.function) {
@@ -129,7 +175,7 @@ export default function GameState() {
         case "col":
           switch (e.target.value) {
             case "1":
-                gameInProgress && setCurPlayerX(!curPlayerX)
+              gameInProgress && setCurPlayerX(!curPlayerX)
             case "-1":
               let returnedVal = ChangeRowColLength(e, board, gameInProgress)
               returnedVal && setBoard(returnedVal)
@@ -169,9 +215,11 @@ export default function GameState() {
   }
   let handleClick = (e) => {
     let stateMutatorVariable = board
+    let row = e.target.dataset.row
+    let col = e.target.dataset.col
     if (gameover === false
-      && board[e.target.dataset.row][e.target.dataset.col] === " ") {
-      stateMutatorVariable[e.target.dataset.row][e.target.dataset.col] = curPlayerX ? playerOne : playerTwo
+      && board[row][col] === " ") {
+      stateMutatorVariable[row][col] = curPlayerX ? playerOne : playerTwo
       setBoard([
         ...stateMutatorVariable
       ])
@@ -181,12 +229,38 @@ export default function GameState() {
   }
   return (
     <>
-      <WinningLength winLength={winLength} handleWinLength={handleWinLength} />
-      <ResetButtons handleOffset={handleOffset} handleRows={handleRows} />
-      <BoardAdjustmentTool offset={offset} handleOffset={handleOffset} handleRows={handleRows} board={board} />
-      <CurrentPlayerDisplay curPlayerX={curPlayerX} playerOne={playerOne} playerTwo={playerTwo} />
-      <GameOverModal message={message} gameover={gameover} resetGame={resetGame} clearBoard={clearBoard} />
-      <Gameboard handleClick={handleClick} board={board} offset={offset} />
+      <WinningLength
+        winLength={winLength}
+        handleWinLength={handleWinLength}
+        gameInProgress={gameInProgress}
+      />
+      <ResetButtons
+        handleOffset={handleOffset}
+        handleRows={handleRows}
+        gameInProgress={gameInProgress}
+      />
+      <BoardAdjustmentTool
+        offset={offset} handleOffset={handleOffset}
+        handleRows={handleRows}
+        board={board}
+        gameInProgress={gameInProgress}
+      />
+      <CurrentPlayerDisplay
+        curPlayerX={curPlayerX}
+        playerOne={playerOne}
+        playerTwo={playerTwo}
+      />
+      <GameOverModal
+        message={message}
+        gameover={gameover}
+        resetGame={resetGame}
+        clearBoard={clearBoard}
+      />
+      <Gameboard
+        handleClick={handleClick}
+        board={board}
+        offset={offset}
+      />
     </>
   )
 }

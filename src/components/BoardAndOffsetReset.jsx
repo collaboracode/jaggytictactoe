@@ -1,10 +1,18 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
 export default function ResetButtons(props) {
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("red")
   const [resetButtonBackgroundColorTwo, setResetButtonBackgroundColorTwo] = useState("red")
   const [resetButtonBackgroundColorThree, setResetButtonBackgroundColorThree] = useState("red")
+  const [gameInProgressStyle, setGameInProgressStyle] = useState ("1")
+  useEffect(() => {
+    let setter = props.gameInProgress ? "0.5" : "1"
+    setter && setGameInProgressStyle(setter)
+  }, [props.gameInProgress])
 
+  let styleGameInProgress = {
+    opacity: gameInProgressStyle
+  }
   let styleButtonContainer = {
     display: "flex",
     justifyContent: "center",
@@ -85,7 +93,7 @@ export default function ResetButtons(props) {
     <>
       <div style={styleButtonContainer}>
         <button
-          style={styleResetButton}
+          style={{...styleResetButton, ...styleGameInProgress}}
           onClick={(e) => {
             props.handleOffset(e)
             handleMouseClickStyle(e)
@@ -99,7 +107,7 @@ export default function ResetButtons(props) {
           onClick={props.handleRows}
           data-function={"row"}
           value={"reset"}
-          style={styleResetButtonTwo}
+          style={{...styleResetButtonTwo, ...styleGameInProgress}}
           data-element_type={"resetButtonTwo"}
           onMouseEnter={handleMouseEnterStyle}
           onMouseLeave={handleMouseLeaveStyle}

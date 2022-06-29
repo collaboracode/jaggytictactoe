@@ -7,12 +7,12 @@
 export default function ChangeOffset(event, offset, offsetRange) {
   let offsetMutatorVariable = offset
   let index = Number(event.target.dataset.offsetindex)
-  offsetMutatorVariable[index] += Number(event.target.value)
-  if (offsetMutatorVariable[index] > Number(offsetRange)) {
-    offsetMutatorVariable[index] = Number(offsetRange)
+  offsetMutatorVariable[Number(index)] += Number(event.target.value)
+  if (offsetMutatorVariable[Number(index)] > Number(offsetRange)) {
+    offsetMutatorVariable[Number(index)] = Number(offsetRange)
   }
-  else if (offsetMutatorVariable[index] < 0 - Number(offsetRange)) {
-    offsetMutatorVariable[index] = 0 - Number(offsetRange)
+  else if (offsetMutatorVariable[Number(index)] < 0 - Number(offsetRange)) {
+    offsetMutatorVariable[Number(index)] = 0 - Number(offsetRange)
   }
-  return offsetMutatorVariable
+  return [...offsetMutatorVariable]
 }

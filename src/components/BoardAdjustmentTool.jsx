@@ -1,6 +1,14 @@
-
+import React, { useState, useEffect } from "react"
 export default function BoardAdjustmentTool(props) {
+  const [gameInProgressStyle, setGameInProgressStyle] = useState ("1")
+  useEffect(() => {
+    let setter = props.gameInProgress ? "0.5" : "1"
+    setter && setGameInProgressStyle(setter)
+  }, [props.gameInProgress])
 
+  let styleGameInProgress = {
+    opacity: gameInProgressStyle,
+  }
   let styleUl = {
     listStyle: "none",
     display: "flex",
@@ -60,13 +68,13 @@ export default function BoardAdjustmentTool(props) {
     display: "flex",
     gap: ".5rem"
   }
-
+  
   return (
     <>
       <div>
         <div style={styleButtonContainer}>
           <button
-            style={styleRowAddRmoveButtons}
+            style={{...styleRowAddRmoveButtons, ...styleGameInProgress}}
             onClick={props.handleRows}
             data-function={"row"}
             value={"-1"}>remove row
@@ -81,58 +89,58 @@ export default function BoardAdjustmentTool(props) {
         <ul style={styleUl}>
           {props.board && props.board.map((row, i) => {
             return (
-                <li
-                  key={`second${i}`}
-                  style={styleLi}>
-                  <div key={`div1${i}`} style={styleRowValsContainer}>
+              <li
+                key={`second${i}`}
+                style={styleLi}>
+                <div key={`div1${i}`} style={styleRowValsContainer}>
 
-                    <h3 key={`meh${i}`} style={styleRowVals}>row: {i + 1}</h3>
-                    <p style={styleRowVals} key={`${i}`}>length: {props?.board?.[i]?.length}</p>
-                    <p style={styleRowVals}>offset: {props.offset[i]}</p>
-                  </div>
-                  <div key={`div2${i}`} style={styleButtonDiv}>
-                    <button
-                      style={styleButtonTwo}
-                      key={`fifth${i}`}
-                      data-offsetindex={i}
-                      data-function={"offset"}
-                      value={-1}
-                      onClick={props.handleOffset}
-                    >{"<"}
-                    </button>
+                  <h3 key={`meh${i}`} style={styleRowVals}>row: {i + 1}</h3>
+                  <p style={styleRowVals} key={`${i}`}>length: {props?.board?.[i]?.length}</p>
+                  <p style={styleRowVals}>offset: {props.offset[i]}</p>
+                </div>
+                <div key={`div2${i}`} style={styleButtonDiv}>
+                  <button
+                    style={styleButtonTwo}
+                    key={`fifth${i}`}
+                    data-offsetindex={i}
+                    data-function={"offset"}
+                    value={-1}
+                    onClick={props.handleOffset}
+                  >{"<"}
+                  </button>
 
-                    <button
-                      style={styleButtonTwo}
-                      key={`third${i}`}
-                      data-offsetindex={i}
-                      data-function={"offset"}
-                      value={1}
-                      onClick={props.handleOffset}
-                    >{">"}
-                    </button>
-                  </div>
-                  <div key={`div3${i}`} style={styleButtonDiv}>
-                    <button
-                      style={styleButtonTwo}
-                      key={`sixth${i}`}
-                      data-row={i}
-                      data-function={"col"}
-                      value={-1}
-                      onClick={props.handleRows}
-                    >-
-                    </button>
+                  <button
+                    style={styleButtonTwo}
+                    key={`third${i}`}
+                    data-offsetindex={i}
+                    data-function={"offset"}
+                    value={1}
+                    onClick={props.handleOffset}
+                  >{">"}
+                  </button>
+                </div>
+                <div key={`div3${i}`} style={styleButtonDiv}>
+                  <button
+                    style={{...styleButtonTwo, ...styleGameInProgress}}
+                    key={`sixth${i}`}
+                    data-row={i}
+                    data-function={"col"}
+                    value={-1}
+                    onClick={props.handleRows}
+                  >-
+                  </button>
 
-                    <button
-                      style={styleButtonTwo}
-                      key={`fourth ${i}`}
-                      data-row={i}
-                      data-function={"col"}
-                      value={1}
-                      onClick={props.handleRows}
-                    >+
-                    </button>
-                  </div>
-                </li>
+                  <button
+                    style={styleButtonTwo}
+                    key={`fourth ${i}`}
+                    data-row={i}
+                    data-function={"col"}
+                    value={1}
+                    onClick={props.handleRows}
+                  >+
+                  </button>
+                </div>
+              </li>
             )
           })}
         </ul>
