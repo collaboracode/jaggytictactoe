@@ -3,6 +3,7 @@ import React, { useState } from "react"
 export default function ResetButtons(props) {
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("red")
   const [resetButtonBackgroundColorTwo, setResetButtonBackgroundColorTwo] = useState("red")
+  const [resetButtonBackgroundColorThree, setResetButtonBackgroundColorThree] = useState("red")
 
   let styleButtonContainer = {
     display: "flex",
@@ -24,6 +25,10 @@ export default function ResetButtons(props) {
     ...styleResetButton,
     backgroundColor: `${resetButtonBackgroundColorTwo}`,
   }
+  let styleResetButtonThree = {
+    ...styleResetButton,
+    backgroundColor: `${resetButtonBackgroundColorThree}`,
+  }
 
   const handleMouseEnterStyle = (e) => {
     switch (e.target.dataset.element_type) {
@@ -32,6 +37,9 @@ export default function ResetButtons(props) {
         break
       case "resetButtonTwo":
         setResetButtonBackgroundColorTwo("darkRed")
+        break
+      case "resetButtonThree":
+        setResetButtonBackgroundColorThree("darkRed")
         break
       default:
         break
@@ -44,6 +52,9 @@ export default function ResetButtons(props) {
         break
       case "resetButtonTwo":
         setResetButtonBackgroundColorTwo("red")
+        break
+      case "resetButtonThree":
+        setResetButtonBackgroundColorThree("red")
         break
       default:
         break
@@ -93,6 +104,15 @@ export default function ResetButtons(props) {
           onMouseEnter={handleMouseEnterStyle}
           onMouseLeave={handleMouseLeaveStyle}
         >reset board</button>
+        <button
+          onClick={props.handleRows}
+          data-function={"col"}
+          value={"clear"}
+          style={styleResetButtonThree}
+          data-element_type={"resetButtonThree"}
+          onMouseEnter={handleMouseEnterStyle}
+          onMouseLeave={handleMouseLeaveStyle}
+        >clear board</button>
       </div>
     </>
   )

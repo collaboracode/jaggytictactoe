@@ -6,7 +6,7 @@ export default function CurrentPlayerDisplay(props) {
   }
   return (
     <h2
-        style={styleDisplay}>currently {props.curPlayerX ? "X" : "O"}'s turn
+        style={styleDisplay}>currently {props.curPlayerX ? props.playerOne : props.playerTwo}'s turn
       </h2>
   )
 }

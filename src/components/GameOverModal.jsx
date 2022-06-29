@@ -2,11 +2,15 @@ import React, { useState } from "react"
 export default function GameOverModal(props) {
 
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("#b00")
+  const [clearButtonBackgroundColor, setclearButtonBackgroundColor] = useState("#b00")
 
   const handleMouseEnterStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
         setResetButtonBackgroundColor("darkRed")
+        break
+      case "clearButton":
+        setclearButtonBackgroundColor("darkRed")
         break
       default:
         break
@@ -17,6 +21,9 @@ export default function GameOverModal(props) {
     switch (e.target.dataset.element_type) {
       case "resetButton":
         setResetButtonBackgroundColor("#b00")
+        break
+      case "clearButton":
+        setclearButtonBackgroundColor("#b00")
         break
       default:
         break
@@ -74,7 +81,16 @@ export default function GameOverModal(props) {
     color: "white",
     fontSize: "1rem",
   }
-  
+  let styleClearButton = {
+    height: "60px",
+    width: "100px",
+    margin: "0",
+    padding: "0",
+    color: "white",
+    fontSize: "1rem",
+    backgroundColor: `${clearButtonBackgroundColor}`,
+  }
+
   return (
     props.gameover === true &&
     <>
@@ -90,6 +106,13 @@ export default function GameOverModal(props) {
             onMouseEnter={handleMouseEnterStyle}
             onMouseLeave={handleMouseLeaveStyle}
           >reset game</button>
+          <button
+            onClick={props.clearBoard}
+            style={styleClearButton}
+            data-element_type={"clearButton"}
+            onMouseEnter={handleMouseEnterStyle}
+            onMouseLeave={handleMouseLeaveStyle}
+          >clear board</button>
         </div>
       </div>
 

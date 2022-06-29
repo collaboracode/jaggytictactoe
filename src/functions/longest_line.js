@@ -1,11 +1,11 @@
 /**
  * this returns the length of the longest line, which could be from 0 to the max
  * of the height or the width of the arrray
- * @param {number[] | string[]} twoDimensionalArray - 2d array of game "board"
+ * @param {number[][] | string[][]} twoDimensionalArray - 2d array of game "board"
  * @param {number | string} player - the target element to find like elements in the arrays
- * @param {number} row - index of a sub array of twoDimensionalArray
- * @param {number} col - the element of the row array
- * @param {number[]} offset - **optional** an integer array where each number offsets
+ * @param {number} inputRow - index of a sub array of twoDimensionalArray
+ * @param {number} inputCol - the element of the row array
+ * @param {integer[]} offset - **optional** an integer array where each number offsets
  *  the corresponding row,
  *  and the numbers can be negative, and can completely separate them
  * 
@@ -35,7 +35,7 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
   /**
    * This gets the length of the verticle line
    * - this gets the player parameter player from the parent function
-   * @param {number[] | string[]} twoDimensionalArray - 2d array of game "board"
+   * @param {number[][] | string[][]} twoDimensionalArray - 2d array of game "board"
    * @param {number} row - index of a sub array of twoDimensionalArray
    * @param {number} col - the element of the row array
    * @param {number[]} offset - **optional** an integer array where each number offsets
@@ -93,7 +93,7 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
    * and is not affected by an offset,
    * so it does not take one as a parameter
    * - this gets the player parameter player from the parent function
-   * @param {number[] | string[]} twoDimensionalArray - 2d array of game "board"
+   * @param {number[][] | string[][]} twoDimensionalArray - 2d array of game "board"
    * @param {number} row - index of a sub array of twoDimensionalArray
    * @param {number} col - the element of the corresponding row
    */
@@ -127,7 +127,7 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
    * This gets the length of the diagonal line, up to the left,
    * and down to the right
    * - this gets the player parameter player from the parent function
-   * @param {number[] | string[]} twoDimensionalArray - 2d array of game "board"
+   * @param {number[][] | string[][]} twoDimensionalArray - 2d array of game "board"
    * @param {number} row - index of a sub array of twoDimensionalArray
    * @param {number} col - the element of the row array
    * @param {number[]} offset - **optional** an integer array where each number offsets
@@ -186,7 +186,7 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
    * This gets the length of the diagonal line, up to the right,
    * and down to the left
    * - this gets the player parameter player from the parent function
-   * @param {number[] | string[]} twoDimensionalArray - 2d array of game "board"
+   * @param {number[][] | string[][]} twoDimensionalArray - 2d array of game "board"
    * @param {number} row - index of a sub array of twoDimensionalArray
    * @param {number} col - the element of the row array
    * @param {number[]} offset - **optional** an integer array where each number offsets

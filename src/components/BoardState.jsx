@@ -1,30 +1,58 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Gameboard from "./BoardDisplay"
-import getLongestLine from "../functions/longest_line"
+import CheckForWin from "../functions/checkForWin"
 import WinningLength from "./winLineLength"
 import ResetButtons from "./BoardAndOffsetReset"
 import CurrentPlayerDisplay from "./CurrentPlayerDisplay"
 import BoardAdjustmentTool from "./BoardAdjustmentTool"
 import GameOverModal from "./GameOverModal"
+import ChangeOffset from "../functions/changeOffset"
+import ChangeNumberOfRows from "../functions/changeNumberOfRows"
+import ChangeRowColLength from "../functions/changeRowColLength"
 export default function GameState() {
   // setup
   const startingWinLength = 3
   const startingOffset = [0, 0, 0]
   const offsetRange = 6
+  const playerOne = "X"
+  const playerTwo = "O"
   // board can be changed, and getLongestLine will adapt
   const startingBoard = [
     [" ", " ", " "],
     [" ", " ", " "],
     [" ", " ", " "]
   ]
-
+  
   // state
-  let [board, setBoard] = useState(startingBoard)
+  const [board, setBoard] = useState(startingBoard)
   const [message, setMessage] = useState(``)
   const [offset, setOffset] = useState(startingOffset)
   const [gameover, setGameover] = useState(false)
   const [curPlayerX, setCurPlayerX] = useState(true)
+  // todo add conditional styling for buttons disabled from gameInProgress
+  const [gameInProgress, setGameInProgress] = useState(false)
   const [winLength, setWinLength] = useState(startingWinLength)
+  
+  useEffect(() => {
+    let checkForWin = CheckForWin(board, playerOne, playerTwo, winLength, offset)
+    switch (checkForWin) {
+      case "draw":
+        setMessage(`Draw`)
+        setGameover(true)
+        break
+      case "player1":
+        setMessage(`${playerOne} wins`)
+        setGameover(true)
+        break
+      case "player2":
+        setMessage(`${playerTwo} wins`)
+        setGameover(true)
+        break
+      default:
+        break
+    }
+  }, [board, offset])
+
   function resetGame() {
     setMessage(``)
     setCurPlayerX(true)
@@ -32,29 +60,43 @@ export default function GameState() {
     setOffset(startingOffset)
     setGameover(false)
     setWinLength(startingWinLength)
+    setGameInProgress(false)
   }
-  let handleOffset = (e) => {
+  function resetBoard() {
+    setBoard(startingBoard)
+    setOffset(startingOffset)
+    setCurPlayerX(true)
+    setGameInProgress(false)
+  }
+  function clearBoard() {
+    let boardMutalator = board
+    boardMutalator.forEach((row, i) => {
+      row.forEach((col, j) => {
+        boardMutalator[i][j] = " "
+      })
+    })
+    setBoard(boardMutalator)
+    setCurPlayerX(true)
+    setGameInProgress(false)
+    setGameover(false)
+  }
+  function resetOffset() {
+    if (!gameInProgress) {
+      let offsetArr = []
+      board.forEach(arr => offsetArr.push(Number(0)))
+      setOffset(offsetArr)
+    }
+  }
+  let handleOffset = (event) => {
     if (gameover === false) {
-      let offsetMutatorVariable = offset
-      switch (e.target.value) {
+      switch (event.target.value) {
         case "1":
-          offsetMutatorVariable[Number(e.target.dataset.offsetindex)] += Number(e.target.value)
-          if (offsetMutatorVariable[Number(e.target.dataset.offsetindex)] > Number(offsetRange)) {
-            offsetMutatorVariable[Number(e.target.dataset.offsetindex)] = Number(offsetRange)
-          }
-          setOffset([...offsetMutatorVariable])
-          break
         case "-1":
-          offsetMutatorVariable[Number(e.target.dataset.offsetindex)] += Number(e.target.value)
-          if (offsetMutatorVariable[Number(e.target.dataset.offsetindex)] < 0 - Number(offsetRange)) {
-            offsetMutatorVariable[Number(e.target.dataset.offsetindex)] = 0 - Number(offsetRange)
-          }
-          setOffset([...offsetMutatorVariable])
+          setOffset([...ChangeOffset(event, offset, offsetRange)])
+          gameInProgress && setCurPlayerX(!curPlayerX)
           break
         case "reset":
-          let offsetArr = []
-          board.forEach(arr => offsetArr.push(Number(0)))
-          setOffset(offsetArr)
+          resetOffset()
           break
         default:
           break
@@ -63,30 +105,22 @@ export default function GameState() {
   }
   let handleRows = (e) => {
     if (gameover === false) {
-      let boardMutatorVariable = board
-      let offsetMutatorVariable = offset
       switch (e.target.dataset.function) {
         case "row":
           switch (e.target.value) {
             case "1":
-              if (boardMutatorVariable.length < 15) {
-                boardMutatorVariable.push([" "])
-                offsetMutatorVariable.push(Number(0))
-                setBoard([...boardMutatorVariable])
-                setOffset([...offsetMutatorVariable])
+              gameInProgress && setCurPlayerX(!curPlayerX)
+            case "-1":
+              let returnedObj = ChangeNumberOfRows(e, board, offset, gameInProgress)
+              if (returnedObj) {
+                setBoard(returnedObj.board)
+                setOffset(returnedObj.offset)
               }
               break
-            case "-1":
-              boardMutatorVariable = boardMutatorVariable.slice(0, -1)
-              offsetMutatorVariable = offsetMutatorVariable.slice(0, boardMutatorVariable.length)
-              setBoard(boardMutatorVariable)
-              setOffset(offsetMutatorVariable)
-              break
             case "reset":
-              setBoard(startingBoard)
-              offsetMutatorVariable = offsetMutatorVariable.slice(0, startingBoard.length)
-              setOffset(offsetMutatorVariable)
-              setCurPlayerX(true)
+              if (!gameInProgress) {
+                resetBoard()
+              }
               break
             default:
               break
@@ -95,21 +129,16 @@ export default function GameState() {
         case "col":
           switch (e.target.value) {
             case "1":
-              if (boardMutatorVariable[Number(e.target.dataset.row)].length < 15) {
-                boardMutatorVariable[Number(e.target.dataset.row)].push(" ")
-                setBoard([...boardMutatorVariable])
-              }
-              break
+                gameInProgress && setCurPlayerX(!curPlayerX)
             case "-1":
-              let row = boardMutatorVariable[Number(e.target.dataset.row)]
-              if (row.slice(0, -1).length > 0) {
-                boardMutatorVariable[Number(e.target.dataset.row)].pop()
-              }
-              setBoard([...boardMutatorVariable])
+              let returnedVal = ChangeRowColLength(e, board, gameInProgress)
+              returnedVal && setBoard(returnedVal)
               break
             case "reset":
-              setBoard(startingBoard)
-              setCurPlayerX(true)
+              resetBoard()
+              break
+            case "clear":
+              clearBoard()
               break
             default:
               break
@@ -121,41 +150,33 @@ export default function GameState() {
     }
   }
   let handleWinLength = (e) => {
-    switch (e.target.value) {
-      case "1":
-        if (winLength + 1 <= 15) {
-          setWinLength(winLength + 1)
-        }
-        break
-      case "-1":
-        if (winLength - 1 > 1) {
-          setWinLength(winLength - 1)
-        }
-        break
-      default:
-        break
-    }
-  }
-  let handleClick = (e) => {
-    let player = curPlayerX ? "x" : "o"
-    let stateMutatorVariable = board
-    if (gameover === false) {
-      switch (board[e.target.dataset.row][e.target.dataset.col]) {
-        case " ":
-          stateMutatorVariable[e.target.dataset.row][e.target.dataset.col] = curPlayerX ? "x" : "o"
-          setBoard([
-            ...stateMutatorVariable
-          ])
-          if (getLongestLine(board, player, e.target.dataset.row, e.target.dataset.col, offset) >= winLength) {
-            setMessage(`${player} wins`)
-            setGameover(true)
-            break
+    if (!gameInProgress) {
+      switch (e.target.value) {
+        case "1":
+          if (winLength + 1 <= 15) {
+            setWinLength(winLength + 1)
           }
-          setCurPlayerX(!curPlayerX)
+          break
+        case "-1":
+          if (winLength - 1 > 1) {
+            setWinLength(winLength - 1)
+          }
           break
         default:
           break
       }
+    }
+  }
+  let handleClick = (e) => {
+    let stateMutatorVariable = board
+    if (gameover === false
+      && board[e.target.dataset.row][e.target.dataset.col] === " ") {
+      stateMutatorVariable[e.target.dataset.row][e.target.dataset.col] = curPlayerX ? playerOne : playerTwo
+      setBoard([
+        ...stateMutatorVariable
+      ])
+      setCurPlayerX(!curPlayerX)
+      setGameInProgress(true)
     }
   }
   return (
@@ -163,8 +184,8 @@ export default function GameState() {
       <WinningLength winLength={winLength} handleWinLength={handleWinLength} />
       <ResetButtons handleOffset={handleOffset} handleRows={handleRows} />
       <BoardAdjustmentTool offset={offset} handleOffset={handleOffset} handleRows={handleRows} board={board} />
-      <CurrentPlayerDisplay curPlayerX={curPlayerX} />
-      <GameOverModal message={message} gameover={gameover} resetGame={resetGame}/>
+      <CurrentPlayerDisplay curPlayerX={curPlayerX} playerOne={playerOne} playerTwo={playerTwo} />
+      <GameOverModal message={message} gameover={gameover} resetGame={resetGame} clearBoard={clearBoard} />
       <Gameboard handleClick={handleClick} board={board} offset={offset} />
     </>
   )

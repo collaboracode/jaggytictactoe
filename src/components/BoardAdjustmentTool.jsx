@@ -81,17 +81,16 @@ export default function BoardAdjustmentTool(props) {
         <ul style={styleUl}>
           {props.board && props.board.map((row, i) => {
             return (
-              <>
                 <li
                   key={`second${i}`}
                   style={styleLi}>
-                  <div style={styleRowValsContainer}>
+                  <div key={`div1${i}`} style={styleRowValsContainer}>
 
                     <h3 key={`meh${i}`} style={styleRowVals}>row: {i + 1}</h3>
                     <p style={styleRowVals} key={`${i}`}>length: {props?.board?.[i]?.length}</p>
                     <p style={styleRowVals}>offset: {props.offset[i]}</p>
                   </div>
-                  <div style={styleButtonDiv}>
+                  <div key={`div2${i}`} style={styleButtonDiv}>
                     <button
                       style={styleButtonTwo}
                       key={`fifth${i}`}
@@ -112,7 +111,7 @@ export default function BoardAdjustmentTool(props) {
                     >{">"}
                     </button>
                   </div>
-                  <div style={styleButtonDiv}>
+                  <div key={`div3${i}`} style={styleButtonDiv}>
                     <button
                       style={styleButtonTwo}
                       key={`sixth${i}`}
@@ -134,7 +133,6 @@ export default function BoardAdjustmentTool(props) {
                     </button>
                   </div>
                 </li>
-              </>
             )
           })}
         </ul>
