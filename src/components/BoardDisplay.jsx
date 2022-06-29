@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react"
-
+/**
+ * todo make mobile friendly
+ * todo make tile sizes relative to screen size using variables insted of being hard coded,
+ * todo also mmake the offset shift dynamic using the variables 
+*/
 export default function Gameboard(props) {
   const [boardShift, setBoardShift] = useState(0)
 

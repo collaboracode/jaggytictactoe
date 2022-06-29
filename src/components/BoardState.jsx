@@ -87,8 +87,6 @@ export default function GameState() {
     }
   }
 
-
-
   let handleOffset = (event) => {
     if (gameover === false) {
       switch (event.target.value) {
@@ -106,48 +104,6 @@ export default function GameState() {
       }
     }
   }
-
-
-
-  let handleOffsets = (e) => {
-    if (gameover === false) {
-      let offsetMutatorVariable = offset
-
-      switch (e.target.value) {
-        case "1":
-          offsetMutatorVariable[Number(e.target.dataset.offsetindex)] += Number(e.target.value)
-          if (offsetMutatorVariable[Number(e.target.dataset.offsetindex)] > Number(offsetRange)) {
-            offsetMutatorVariable[Number(e.target.dataset.offsetindex)] = Number(offsetRange)
-          }
-          setOffset([...offsetMutatorVariable])
-          if (gameInProgress) {
-            setCurPlayerX(!curPlayerX)
-          }
-          break
-        case "-1":
-          offsetMutatorVariable[Number(e.target.dataset.offsetindex)] += Number(e.target.value)
-          if (offsetMutatorVariable[Number(e.target.dataset.offsetindex)] < 0 - Number(offsetRange)) {
-            offsetMutatorVariable[Number(e.target.dataset.offsetindex)] = 0 - Number(offsetRange)
-          }
-          setOffset([...offsetMutatorVariable])
-          if (gameInProgress) {
-            setCurPlayerX(!curPlayerX)
-          }
-          break
-        case "reset":
-          if (!gameInProgress) {
-            let offsetArr = []
-            board.forEach(arr => offsetArr.push(Number(0)))
-            setOffset(offsetArr)
-          }
-          break
-        default:
-          break
-      }
-    }
-  }
-
-
 
   let handleRows = (e) => {
     if (gameover === false) {
@@ -195,6 +151,7 @@ export default function GameState() {
       }
     }
   }
+  
   let handleWinLength = (e) => {
     if (!gameInProgress) {
       switch (e.target.value) {
