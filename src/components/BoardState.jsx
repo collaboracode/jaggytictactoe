@@ -12,9 +12,9 @@ import ChangeRowColLength from "../functions/changeRowColLength"
 // ? but I prefer the look with AddRemoveRowButtons,
 // ? and TestButtons instead of BoardAdjustmentTool,
 // ? though I would have to rename TestButtons
-import BoardAdjustmentTool from "./BoardAdjustmentTool"
-// import AddRemoveRowButtons from "./AddRemoveRowButtons"
-// import TestButtons from "./TestButtons"
+// import BoardAdjustmentTool from "./BoardAdjustmentTool"
+import AddRemoveRowButtons from "./AddRemoveRowButtons"
+import TestButtons from "./TestButtons"
 export default function GameState() {
   // setup
   const startingWinLength = 3
@@ -202,17 +202,17 @@ export default function GameState() {
         handleRows={handleRows}
         gameInProgress={gameInProgress}
       />
-        {/* <AddRemoveRowButtons
+        <AddRemoveRowButtons
           handleRows={handleRows}
           gameInProgress={gameInProgress}
-        /> */}
-      <BoardAdjustmentTool
+        />
+      {/* <BoardAdjustmentTool
         offset={offset}
         handleOffset={handleOffset}
         handleRows={handleRows}
         board={board}
         gameInProgress={gameInProgress}
-      />
+      /> */}
       <CurrentPlayerDisplay
         curPlayerX={curPlayerX}
         playerOne={playerOne}
@@ -224,12 +224,12 @@ export default function GameState() {
         resetGame={resetGame}
         clearBoard={clearBoard}
       />
-      {/* <TestButtons
+      <TestButtons
         board={board}
         offset={offset} handleOffset={handleOffset}
         handleRows={handleRows}
         gameInProgress={gameInProgress}
-      /> */}
+      />
       <Gameboard
         handleClick={handleClick}
         board={board}
