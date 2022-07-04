@@ -4,11 +4,17 @@ import CheckForWinOrDraw from "../functions/checkForWinOrDraw"
 import WinningLength from "./winLineLength"
 import ResetButtons from "./BoardAndOffsetReset"
 import CurrentPlayerDisplay from "./CurrentPlayerDisplay"
-import BoardAdjustmentTool from "./BoardAdjustmentTool"
 import GameOverModal from "./GameOverModal"
 import ChangeOffset from "../functions/changeOffset"
 import ChangeNumberOfRows from "../functions/changeNumberOfRows"
 import ChangeRowColLength from "../functions/changeRowColLength"
+// ? have not implemented it just yet,
+// ? but I prefer the look with AddRemoveRowButtons,
+// ? and TestButtons instead of BoardAdjustmentTool,
+// ? though I would have to rename TestButtons
+import BoardAdjustmentTool from "./BoardAdjustmentTool"
+// import AddRemoveRowButtons from "./AddRemoveRowButtons"
+// import TestButtons from "./TestButtons"
 export default function GameState() {
   // setup
   const startingWinLength = 3
@@ -91,7 +97,7 @@ export default function GameState() {
     if (gameover === false) {
       switch (event.target.value) {
         case "1":
-          case "-1":
+        case "-1":
           let setter = ChangeOffset(event, offset, offsetRange)
           setter && setOffset(setter)
           gameInProgress && setCurPlayerX(!curPlayerX)
@@ -151,7 +157,7 @@ export default function GameState() {
       }
     }
   }
-  
+
   let handleWinLength = (e) => {
     if (!gameInProgress) {
       switch (e.target.value) {
@@ -196,8 +202,13 @@ export default function GameState() {
         handleRows={handleRows}
         gameInProgress={gameInProgress}
       />
+        {/* <AddRemoveRowButtons
+          handleRows={handleRows}
+          gameInProgress={gameInProgress}
+        /> */}
       <BoardAdjustmentTool
-        offset={offset} handleOffset={handleOffset}
+        offset={offset}
+        handleOffset={handleOffset}
         handleRows={handleRows}
         board={board}
         gameInProgress={gameInProgress}
@@ -213,10 +224,18 @@ export default function GameState() {
         resetGame={resetGame}
         clearBoard={clearBoard}
       />
+      {/* <TestButtons
+        board={board}
+        offset={offset} handleOffset={handleOffset}
+        handleRows={handleRows}
+        gameInProgress={gameInProgress}
+      /> */}
       <Gameboard
         handleClick={handleClick}
         board={board}
         offset={offset}
+        handleOffset={handleOffset}
+        handleRows={handleRows}
       />
     </>
   )

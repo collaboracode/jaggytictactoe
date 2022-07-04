@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react"
+import TestButtons from "./TestButtons"
 /**
  * todo make mobile friendly
  * todo make tile sizes relative to screen size using variables insted of being hard coded,
- * todo also mmake the offset shift dynamic using the variables 
+ * todo also make the offset shift dynamic using the variables 
+ * todo fix rows leaving bounds on left side
 */
 export default function Gameboard(props) {
   const [boardShift, setBoardShift] = useState(0)
@@ -22,7 +24,6 @@ export default function Gameboard(props) {
     width: "100px",
     backgroundColor: "lightGrey",
     textAlign: "center",
-
   }
   let styleP = {
     pointerEvents: "none",
@@ -41,6 +42,7 @@ export default function Gameboard(props) {
   }
   let styleBoard = {
     position: "absolute",
+    marginLeft: "200"
 
   }
   let styleUl = {
@@ -51,34 +53,53 @@ export default function Gameboard(props) {
     position: "relative",
     left: `${110 * (boardShift / 2)}px`,
   }
+  let styleButtonUl = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+    listStyle: "none",
+    padding: "0px 25px",
+    position: "absolute",
+    zIndex: "6"
+  }
   return (
     <>
+    {/* <ul style={styleButtonUl}> */}
+      {/* <TestButtons
+        board={props.board}
+        offset={props.offset} handleOffset={props.handleOffset}
+        handleRows={props.handleRows}
+        gameInProgress={props.gameInProgress}
+      /> */}
+    {/* </ul> */}
 
       <div style={styleBoardContainer} id="gameboard">
         <div style={styleBoard}>
           {props.board.map((row, i) => {
             return (
-              <ul
-                id={`row${i}`}
-                className="row"
-                key={i}
-                style={{ ...styleUl, marginLeft: `${110 * props.offset[i]}px`, }}>
-                {row && row.map((col, j) => {
-                  return (
-                    col && <li
-                      style={styleCol}
-                      onClick={props.handleClick}
-                      className="col" key={`second${j}`}
-                      data-row={i}
-                      data-col={j}>
-                      <p key={`second${j}`}
-                        style={styleP}
+              <>
+                <ul
+                  id={`row${i}`}
+                  className="row"
+                  key={i}
+                  style={{ ...styleUl, marginLeft: `${110 * props.offset[i]}px`, }}>
+                  {row && row.map((col, j) => {
+                    return (
+                      col && <li
+                        style={styleCol}
+                        onClick={props.handleClick}
+                        className="col" key={`second${j}`}
+                        data-row={i}
+                        data-col={j}>
+                        <p key={`second${j}`}
+                          style={styleP}
 
-                      >{`${props.board[i][j]}`}</p>
-                    </li>
-                  )
-                })}
-              </ul>
+                        >{`${props.board[i][j]}`}</p>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </>
             )
           })}
         </div>

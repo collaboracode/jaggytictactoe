@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react"
 export default function WinningLength(props) {
-  const [gameInProgressStyle, setGameInProgressStyle] = useState ("1")
+  const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
   useEffect(() => {
     let setter = props.gameInProgress ? "0.5" : "1"
     setter && setGameInProgressStyle(setter)
   }, [props.gameInProgress])
-  
+
   let styleGameInProgress = {
     opacity: gameInProgressStyle
   }
   let styleDiv = {
-    display:"flex",
+    display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
   }
@@ -31,8 +31,16 @@ export default function WinningLength(props) {
   return (
     <div style={styleDiv}>
       <p style={styleP}>winning length: {props.winLength}</p>
-      <button style={{...styleButton, ...styleGameInProgress}} onClick={props.handleWinLength} value={-1}>-</button>
-      <button style={{...styleButton, ...styleGameInProgress}} onClick={props.handleWinLength} value={1}>+</button>
+      <button
+        style={{ ...styleButton, ...styleGameInProgress }}
+        onClick={props.handleWinLength}
+        value={-1}
+      >-</button>
+      <button
+        style={{ ...styleButton, ...styleGameInProgress }}
+        onClick={props.handleWinLength}
+        value={1}
+      >+</button>
 
     </div>
   )
