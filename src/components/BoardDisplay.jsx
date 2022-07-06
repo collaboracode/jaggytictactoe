@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import TestButtons from "./TestButtons"
+import React, { useState } from "react"
+import ShiftButtons from "./BoardShiftButtons"
 /**
  * todo make mobile friendly
  * todo make tile sizes relative to screen size using variables insted of being hard coded,
@@ -7,8 +7,8 @@ import TestButtons from "./TestButtons"
  * todo fix rows leaving bounds on left side
 */
 export default function Gameboard(props) {
-  const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("red")
   const [boardShift, setBoardShift] = useState(0)
+
   const styleCol = {
     height: "100px",
     width: "100px",
@@ -44,84 +44,21 @@ export default function Gameboard(props) {
     left: `${110 * (boardShift)}px`,
   }
 
-
-
-
-
-
-  const styleShiftDiv = {
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    position: "fixed",
-    top: "90%",
-  }
-  const styleShiftButton = {
-    padding: "1rem"
-  }
-  const styleShiftReset = {
-    ...styleShiftButton,
-    color: "white",
-    backgroundColor: resetButtonBackgroundColor
-  }
-
-  const handleMouseEnterStyle = (e) => {
-    switch (e.target.dataset.element_type) {
-      case "resetButton":
-        setResetButtonBackgroundColor("darkRed")
-        break
-      default:
-        break
-    }
-  }
-  const handleMouseLeaveStyle = (e) => {
-    switch (e.target.dataset.element_type) {
-      case "resetButton":
-        setResetButtonBackgroundColor("red")
-        break
-      default:
-        break
-    }
-  }
-  const handleMouseClickStyle = (e) => {
-    switch (e.target.dataset.element_type) {
-      case "resetButton":
-        setResetButtonBackgroundColor("red")
-        let timer = setTimeout(() => {
-          setResetButtonBackgroundColor("darkRed")
-        }, 50)
-        clearTimeout(timer)
-        break
-      default:
-        break
-    }
-  }
-
-  const handleKeys = (e) => {
-    switch (e.key) {
-      case "ArrowLeft":
+  const handleShift = (input) => {
+    switch (input) {
+      case "-1":
         setBoardShift(boardShift - 1)
         break
-      case "ArrowRight":
+      case "1":
         setBoardShift(boardShift + 1)
+        break
+        case "reset":
+        setBoardShift(0)
         break
       default:
         break
     }
-
   }
-
-
-
-
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeys);
-    return () => {
-      window.removeEventListener("keydown", handleKeys);
-    }
-  })
-
 
   return (
     <>
@@ -154,38 +91,9 @@ export default function Gameboard(props) {
             )
           })}
         </div>
-        <div style={styleShiftDiv}>
-          <button
-            style={styleShiftButton}
-            onClick={
-              () => {
-                setBoardShift(boardShift - 1)
-              }
-            }>shift left
-          </button>
-          <button
-            style={styleShiftReset}
-            data-element_type={"resetButton"}
-            onMouseEnter={handleMouseEnterStyle}
-            onMouseLeave={handleMouseLeaveStyle}
-            onClick={
-              () => {
-                setBoardShift(0)
-                handleMouseClickStyle()
-              }
-            }>reset
-        </button>
-        <button
-          style={styleShiftButton}
-          onClick={
-            () => {
-              setBoardShift(boardShift + 1)
-            }
-          }>shift right
-        </button>
       </div>
-    </div>
 
+        <ShiftButtons handleShift={handleShift}/>
     </>
   )
 }

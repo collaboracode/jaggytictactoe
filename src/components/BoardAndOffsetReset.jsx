@@ -74,15 +74,22 @@ export default function ResetButtons(props) {
         setResetButtonBackgroundColor("red")
         let timer = setTimeout(() => {
           setResetButtonBackgroundColor("darkRed")
-        }, 50)
-        clearTimeout(timer)
+          clearTimeout(timer)
+        }, 100)
         break
       case "resetButtonTwo":
         setResetButtonBackgroundColorTwo("red")
         let timer2 = setTimeout(() => {
           setResetButtonBackgroundColorTwo("darkRed")
-        }, 50)
-        clearTimeout(timer2)
+          clearTimeout(timer2)
+        }, 100)
+        break
+        case "resetButtonThree":
+        setResetButtonBackgroundColorThree("red")
+        let timer3 = setTimeout(() => {
+          setResetButtonBackgroundColorThree("darkRed")
+          clearTimeout(timer2)
+        }, 100)
         break
       default:
         break
@@ -104,7 +111,10 @@ export default function ResetButtons(props) {
           value={"reset"}
         >reset offset</button>
         <button
-          onClick={props.handleRows}
+          onClick={(e) => {
+            props.handleRows(e)
+            handleMouseClickStyle(e)
+          }}
           data-function={"row"}
           value={"reset"}
           style={{...styleResetButtonTwo, ...styleGameInProgress}}
@@ -113,7 +123,10 @@ export default function ResetButtons(props) {
           onMouseLeave={handleMouseLeaveStyle}
         >reset board</button>
         <button
-          onClick={props.handleRows}
+          onClick={(e) => {
+            props.handleRows(e)
+            handleMouseClickStyle(e)
+          }}
           data-function={"col"}
           value={"clear"}
           style={styleResetButtonThree}
