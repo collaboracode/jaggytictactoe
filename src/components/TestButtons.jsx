@@ -10,9 +10,13 @@ export default function TestButtons(props) {
     opacity: gameInProgressStyle,
   }
 
-  let styleButtonTwo = {
-    height: "20px",
-    width: "30px",
+  let styleP = {
+    margin:".2rem"
+  }
+
+  let styleButton = {
+    height: "30px",
+    width: "40px",
     fontSize: "1.2rem",
     lineHeight: "5px",
     textAlign: "center",    
@@ -51,11 +55,11 @@ export default function TestButtons(props) {
     <ul style={styleButtonUl}>
         {props.board.map((row, i) => {
           return (
-            <li style={{ ...styleLi, top: `${110 * i}` }}>
-              <p>row {i + 1}</p>
+            <li key={`li${i}`} style={{ ...styleLi, top: `${110 * i}` }}>
+              <p style={styleP}>row {i + 1}</p>
               <div key={`div2${i}`} style={styleButtonDiv}>
                 <button
-                  style={styleButtonTwo}
+                  style={styleButton}
                   key={`fifth${i}`}
                   data-offsetindex={i}
                   data-function={"offset"}
@@ -65,7 +69,7 @@ export default function TestButtons(props) {
                 </button>
 
                 <button
-                  style={styleButtonTwo}
+                  style={styleButton}
                   key={`third${i}`}
                   data-offsetindex={i}
                   data-function={"offset"}
@@ -76,7 +80,7 @@ export default function TestButtons(props) {
               </div>
               <div key={`div3${i}`} style={styleButtonDiv}>
                 <button
-                  style={{ ...styleButtonTwo, ...styleGameInProgress }}
+                  style={{ ...styleButton, ...styleGameInProgress }}
                   key={`sixth${i}`}
                   data-row={i}
                   data-function={"col"}
@@ -86,7 +90,7 @@ export default function TestButtons(props) {
                 </button>
 
                 <button
-                  style={styleButtonTwo}
+                  style={styleButton}
                   key={`fourth ${i}`}
                   data-row={i}
                   data-function={"col"}

@@ -7,103 +7,185 @@ import TestButtons from "./TestButtons"
  * todo fix rows leaving bounds on left side
 */
 export default function Gameboard(props) {
+  const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("red")
   const [boardShift, setBoardShift] = useState(0)
-
-  useEffect(() => {
-    let maxValue = 0
-    for (let i = 0; i < props.board.length; i++) {
-      if (props.board[i].length > 9) {
-
-        maxValue = Math.max(maxValue, props.board[i].length - 9)
-      }
-    }
-    setBoardShift(maxValue)
-  }, [props.board])
-  let styleCol = {
+  const styleCol = {
     height: "100px",
     width: "100px",
     backgroundColor: "lightGrey",
     textAlign: "center",
+    boxShadow: "5px 5px 5px grey",
+
   }
-  let styleP = {
+  const styleP = {
     pointerEvents: "none",
     position: "relative",
     top: "20%",
     fontSize: "5rem",
     margin: "0",
-    lineHeight: ".5"
+    lineHeight: ".5",
   }
-  let styleBoardContainer = {
+  const styleBoardContainer = {
     display: "flex",
     justifyContent: "center",
     marginLeft: "auto",
     marginRight: "auto",
-    overflow: "auto",
   }
-  let styleBoard = {
+  const styleBoard = {
     position: "absolute",
-    marginLeft: "200"
-
+    marginLeft: "200",
   }
-  let styleUl = {
+  const styleUl = {
     display: "flex",
     gap: "10px",
     listStyle: "none",
     padding: "0px 100px",
     position: "relative",
-    left: `${110 * (boardShift / 2)}px`,
+    left: `${110 * (boardShift)}px`,
   }
-  let styleButtonUl = {
+
+
+
+
+
+
+  const styleShiftDiv = {
+    width: "100%",
     display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-    listStyle: "none",
-    padding: "0px 25px",
-    position: "absolute",
-    zIndex: "6"
+    justifyContent: "center",
+    position: "fixed",
+    top: "90%",
   }
+  const styleShiftButton = {
+    padding: "1rem"
+  }
+  const styleShiftReset = {
+    ...styleShiftButton,
+    color: "white",
+    backgroundColor: resetButtonBackgroundColor
+  }
+
+  const handleMouseEnterStyle = (e) => {
+    switch (e.target.dataset.element_type) {
+      case "resetButton":
+        setResetButtonBackgroundColor("darkRed")
+        break
+      default:
+        break
+    }
+  }
+  const handleMouseLeaveStyle = (e) => {
+    switch (e.target.dataset.element_type) {
+      case "resetButton":
+        setResetButtonBackgroundColor("red")
+        break
+      default:
+        break
+    }
+  }
+  const handleMouseClickStyle = (e) => {
+    switch (e.target.dataset.element_type) {
+      case "resetButton":
+        setResetButtonBackgroundColor("red")
+        let timer = setTimeout(() => {
+          setResetButtonBackgroundColor("darkRed")
+        }, 50)
+        clearTimeout(timer)
+        break
+      default:
+        break
+    }
+  }
+
+  const handleKeys = (e) => {
+    switch (e.key) {
+      case "ArrowLeft":
+        setBoardShift(boardShift - 1)
+        break
+      case "ArrowRight":
+        setBoardShift(boardShift + 1)
+        break
+      default:
+        break
+    }
+
+  }
+
+
+
+
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeys);
+    return () => {
+      window.removeEventListener("keydown", handleKeys);
+    }
+  })
+
+
   return (
     <>
-    {/* <ul style={styleButtonUl}> */}
-      {/* <TestButtons
-        board={props.board}
-        offset={props.offset} handleOffset={props.handleOffset}
-        handleRows={props.handleRows}
-        gameInProgress={props.gameInProgress}
-      /> */}
-    {/* </ul> */}
-
       <div style={styleBoardContainer} id="gameboard">
         <div style={styleBoard}>
           {props.board.map((row, i) => {
             return (
-              <>
-                <ul
-                  id={`row${i}`}
-                  className="row"
-                  key={i}
-                  style={{ ...styleUl, marginLeft: `${110 * props.offset[i]}px`, }}>
-                  {row && row.map((col, j) => {
-                    return (
-                      col && <li
-                        style={styleCol}
-                        onClick={props.handleClick}
-                        className="col" key={`second${j}`}
-                        data-row={i}
-                        data-col={j}>
-                        <p key={`second${j}`}
-                          style={styleP}
+              <ul
+                id={`row${i}`}
+                className="row"
+                key={`row${i}`}
+                style={{ ...styleUl, marginLeft: `${110 * props.offset[i]}px`, }}>
+                {row && row.map((col, j) => {
+                  return (
+                    col && <li
+                      style={styleCol}
+                      onClick={props.handleClick}
+                      className="col"
+                      key={`second${j}`}
+                      data-row={i}
+                      data-col={j}>
+                      <p key={`third${j}`}
+                        style={styleP}
 
-                        >{`${props.board[i][j]}`}</p>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </>
+                      >{`${props.board[i][j]}`}</p>
+                    </li>
+                  )
+                })}
+              </ul>
             )
           })}
         </div>
+        <div style={styleShiftDiv}>
+          <button
+            style={styleShiftButton}
+            onClick={
+              () => {
+                setBoardShift(boardShift - 1)
+              }
+            }>shift left
+          </button>
+          <button
+            style={styleShiftReset}
+            data-element_type={"resetButton"}
+            onMouseEnter={handleMouseEnterStyle}
+            onMouseLeave={handleMouseLeaveStyle}
+            onClick={
+              () => {
+                setBoardShift(0)
+                handleMouseClickStyle()
+              }
+            }>reset
+        </button>
+        <button
+          style={styleShiftButton}
+          onClick={
+            () => {
+              setBoardShift(boardShift + 1)
+            }
+          }>shift right
+        </button>
       </div>
+    </div>
+
     </>
   )
 }
