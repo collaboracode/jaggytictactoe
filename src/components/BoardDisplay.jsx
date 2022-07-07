@@ -12,7 +12,7 @@ export default function Gameboard(props) {
     width: `${props.tileSize}px`,
     backgroundColor: "lightGrey",
     textAlign: "center",
-    boxShadow: "5px 5px 5px grey",
+    boxShadow: `${props.tileSize * 0.02}px ${props.tileSize * 0.02}px ${props.tileSize * 0.04}px grey`,
 
   }
   const styleP = {

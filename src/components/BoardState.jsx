@@ -10,7 +10,7 @@ import ChangeNumberOfRows from "../functions/changeNumberOfRows"
 import ChangeRowColLength from "../functions/changeRowColLength"
 import ShiftButtons from "./BoardShiftButtons"
 import AddRemoveRowButtons from "./AddRemoveRowButtons"
-import AdjusterBottons from "./AdjusterButtons"
+import AdjusterBottons from "./RowAdjusterButtons"
 export default function GameState() {
   // setup
   const startingWinLength = 3
@@ -35,6 +35,8 @@ export default function GameState() {
   const [winLength, setWinLength] = useState(startingWinLength)
   const [boardShift, setBoardShift] = useState(0)
   const [tileSize, setTileSize] = useState(100)
+  const [rightHanded, setRightHanded] = useState(false)
+
 
   useEffect(() => {
     let checkForWin = CheckForWinOrDraw(board, playerOne, playerTwo, winLength, offset)
@@ -91,7 +93,7 @@ export default function GameState() {
     }
   }
 
-  
+
   const resize = () => {
     if (window.innerWidth > 800) {
       setTileSize(100)
@@ -172,25 +174,28 @@ export default function GameState() {
       }
     }
   }
+  const handleHanded = () => {
+    setRightHanded(!rightHanded)
+  }
 
-  let handleWinLength = (e) => {
-    if (!gameInProgress) {
-      switch (e.target.value) {
-        case "1":
-          if (winLength + 1 <= 15) {
-            setWinLength(winLength + 1)
-          }
-          break
-        case "-1":
-          if (winLength - 1 > 1) {
-            setWinLength(winLength - 1)
-          }
-          break
-        default:
-          break
+    let handleWinLength = (e) => {
+      if (!gameInProgress) {
+        switch (e.target.value) {
+          case "1":
+            if (winLength + 1 <= 15) {
+              setWinLength(winLength + 1)
+            }
+            break
+          case "-1":
+            if (winLength - 1 > 1) {
+              setWinLength(winLength - 1)
+            }
+            break
+          default:
+            break
+        }
       }
     }
-  }
 
 
 
@@ -226,6 +231,7 @@ export default function GameState() {
   }
   return (
     <>
+      <button style={{padding: ".5rem", marginLeft: "1rem"}} onClick={handleHanded}>swap hands</button>
       <WinningLength
         winLength={winLength}
         handleWinLength={handleWinLength}
@@ -262,6 +268,7 @@ export default function GameState() {
         board={board}
         offset={offset}
         tileSize={tileSize}
+        rightHanded={rightHanded}
         gameInProgress={gameInProgress}
         handleOffset={handleOffset}
         handleRows={handleRows}

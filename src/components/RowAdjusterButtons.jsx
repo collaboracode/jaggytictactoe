@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-export default function TestButtons(props) {
+export default function RowAdjusterButtons(props) {
   const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
   const [hidden, setHidden] = useState(false)
 
@@ -27,11 +27,20 @@ export default function TestButtons(props) {
     margin: `${props.tileSize * .05}px ${props.tileSize * .03}px`
   }
   let collapseButton = {
+    position: "-webkit-sticky",
+    position: "sticky",
+    float: `${props.rightHanded ? "right" : "left"}`,
+    marginTop: `${- props.tileSize * .6}px`,
+    left: `${props.rightHanded ? "auto" : "1rem"}`,
+    right: `${props.rightHanded ?  "1rem": "auto"}`,
     padding: "0",
     height: `${props.tileSize * .6}px`,
-    width: `${props.tileSize * .8}px`,
+    width: `${props.tileSize}px`,
     textAlign: "center",
     fontSize: `${props.tileSize * .5}px`,
+    zIndex: "8",
+    border: "none",
+    boxShadow: "1px 2px 3px grey",
   }
   let styleButtonDiv = {
     display: "flex",
@@ -57,9 +66,12 @@ export default function TestButtons(props) {
     flexDirection: "column",
     gap: "1rem",
     listStyle: "none",
-    padding: "0px 25px",
+    padding: "0",
     position: "absolute",
-    zIndex: "6"
+    // add button to swap sides using left 0, and right 0
+    zIndex: "6",
+    right: `${props.rightHanded ? "1rem" : "auto"}`,
+    left: `${props.rightHanded ?  "auto": "1rem"}`,
   }
   const handleHidden = (e) => {
     setHidden(!hidden)
@@ -67,7 +79,9 @@ export default function TestButtons(props) {
 
   return (
     <>
-      <button style={collapseButton} onClick={handleHidden}>{hidden ? ">" : "<"}</button>
+      <button style={collapseButton} onClick={handleHidden}>{
+      props.rightHanded ? hidden ? "<" : ">" : hidden ? ">" : "<"
+      }</button>
       <ul style={styleButtonUl}>
         {props.board.map((row, i) => {
           return (
