@@ -2,6 +2,22 @@ import React, { useState, useEffect } from "react"
 export default function TestButtons(props) {
   const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
   const [hidden, setHidden] = useState(false)
+  const [tileSize, setTileSize] = useState(50)
+  
+  const resize = () => {
+    if (window.innerWidth > 800) {
+      setTileSize(100)
+    } else {
+      setTileSize(50)
+    }
+  }
+  useEffect(() => {
+    window.addEventListener("resize", resize);
+    return () => {
+      window.removeEventListener("resize", resize);
+    }
+  })
+
   useEffect(() => {
     let setter = props.gameInProgress ? "0.5" : "1"
     setter && setGameInProgressStyle(setter)
@@ -11,17 +27,26 @@ export default function TestButtons(props) {
     opacity: gameInProgressStyle,
   }
 
-  let styleP = {
-    margin: ".2rem"
-  }
+  // let styleP = {
+  //   margin: "0"
+  // }
 
   let styleButton = {
-    height: "30px",
-    width: "40px",
-    fontSize: "1.2rem",
+    padding: "0",
+    height: `${tileSize * .4}px`,
+    width: `${tileSize * .4}px`,
+    fontSize: `${tileSize * .3}px`,
     lineHeight: "5px",
     textAlign: "center",
-    margin: "3px 1px"
+    alignText: "center",
+    margin: `${tileSize * .05}px ${tileSize * .03}px`
+  }
+  let collapseButton = {
+    padding: "0",
+    height: `${tileSize * .6}px`,
+    width: `${tileSize * .8}px`,
+    textAlign: "center",
+    fontSize: `${tileSize * .5}px`,
   }
   let styleButtonDiv = {
     display: "flex",
@@ -30,8 +55,8 @@ export default function TestButtons(props) {
 
   let styleLi = {
     padding: "0 0 0 0",
-    width: "100px",
-    height: "100px",
+    width: `${tileSize}px`,
+    height: `${tileSize}px`,
     display: "flex",
     flexWrap: "wrap",
     alignContent: "end",
@@ -57,12 +82,12 @@ export default function TestButtons(props) {
 
   return (
     <>
-      <button style={styleButton} onClick={handleHidden}>{hidden ? ">" : "<"}</button>
+      <button style={collapseButton} onClick={handleHidden}>{hidden ? ">" : "<"}</button>
       <ul style={styleButtonUl}>
         {props.board.map((row, i) => {
           return (
             <li key={`li${i}`} style={{ ...styleLi, top: `${110 * i}` }}>
-              <p style={styleP}>row {i + 1}</p>
+              {/* <p style={styleP}>row {i + 1}</p> */}
               <div key={`div2${i}`} style={styleButtonDiv}>
                 <button
                   style={styleButton}

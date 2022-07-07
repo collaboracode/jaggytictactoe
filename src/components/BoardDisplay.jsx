@@ -1,5 +1,4 @@
-import React, { useState } from "react"
-// import ShiftButtons from "./BoardShiftButtons"
+import React, { useState, useEffect } from "react"
 /**
  * todo make mobile friendly
  * todo make tile sizes relative to screen size using variables insted of being hard coded,
@@ -7,11 +6,24 @@ import React, { useState } from "react"
  * todo fix rows leaving bounds on left side
 */
 export default function Gameboard(props) {
-  // const [boardShift, setBoardShift] = useState(0)
-
+  const [tileSize, setTileSize] = useState(50)
+  
+  const resize = () => {
+    if (window.innerWidth > 800) {
+      setTileSize(100)
+    } else {
+      setTileSize(50)
+    }
+  }
+  useEffect(() => {
+    window.addEventListener("resize", resize);
+    return () => {
+      window.removeEventListener("resize", resize);
+    }
+  })
   const styleCol = {
-    height: "100px",
-    width: "100px",
+    height: `${tileSize}px`,
+    width: `${tileSize}px`,
     backgroundColor: "lightGrey",
     textAlign: "center",
     boxShadow: "5px 5px 5px grey",
@@ -21,7 +33,7 @@ export default function Gameboard(props) {
     pointerEvents: "none",
     position: "relative",
     top: "20%",
-    fontSize: "5rem",
+    fontSize: `${tileSize}px`,
     margin: "0",
     lineHeight: ".5",
   }
@@ -43,7 +55,7 @@ export default function Gameboard(props) {
     listStyle: "none",
     padding: "0px 100px",
     position: "relative",
-    left: `${110 * (props.boardShift)}px`,
+    left: `${(tileSize + 10) * props.boardShift}px`,
   }
 
   // const handleShift = (input) => {
@@ -74,7 +86,7 @@ export default function Gameboard(props) {
                 key={`row${i}`}
                 style={{
                   ...styleUl,
-                  marginLeft: `${110 * props.offset[i]}px`,
+                  marginLeft: `${(tileSize + 10) * props.offset[i]}px`,
                   // applies margin to the last row of the board
                   marginBottom: `${i + 1 == props.board.length ? "8rem" : "0"}`
                 }}>
