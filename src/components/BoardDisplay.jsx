@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import ShiftButtons from "./BoardShiftButtons"
+// import ShiftButtons from "./BoardShiftButtons"
 /**
  * todo make mobile friendly
  * todo make tile sizes relative to screen size using variables insted of being hard coded,
@@ -7,7 +7,7 @@ import ShiftButtons from "./BoardShiftButtons"
  * todo fix rows leaving bounds on left side
 */
 export default function Gameboard(props) {
-  const [boardShift, setBoardShift] = useState(0)
+  // const [boardShift, setBoardShift] = useState(0)
 
   const styleCol = {
     height: "100px",
@@ -27,13 +27,15 @@ export default function Gameboard(props) {
   }
   const styleBoardContainer = {
     display: "flex",
-    justifyContent: "center",
     marginLeft: "auto",
     marginRight: "auto",
+    width: "100%",    
+    overflow: "hidden"
+   
   }
   const styleBoard = {
-    position: "absolute",
-    marginLeft: "200",
+    marginLeft: "auto",
+    marginRight: "auto",
   }
   const styleUl = {
     display: "flex",
@@ -41,24 +43,24 @@ export default function Gameboard(props) {
     listStyle: "none",
     padding: "0px 100px",
     position: "relative",
-    left: `${110 * (boardShift)}px`,
+    left: `${110 * (props.boardShift)}px`,
   }
 
-  const handleShift = (input) => {
-    switch (input) {
-      case "-1":
-        setBoardShift(boardShift - 1)
-        break
-      case "1":
-        setBoardShift(boardShift + 1)
-        break
-        case "reset":
-        setBoardShift(0)
-        break
-      default:
-        break
-    }
-  }
+  // const handleShift = (input) => {
+  //   switch (input) {
+  //     case "-1":
+  //       setBoardShift(boardShift - 1)
+  //       break
+  //     case "1":
+  //       setBoardShift(boardShift + 1)
+  //       break
+  //     case "reset":
+  //       setBoardShift(0)
+  //       break
+  //     default:
+  //       break
+  //   }
+  // }
 
   return (
     <>
@@ -70,7 +72,12 @@ export default function Gameboard(props) {
                 id={`row${i}`}
                 className="row"
                 key={`row${i}`}
-                style={{ ...styleUl, marginLeft: `${110 * props.offset[i]}px`, }}>
+                style={{
+                  ...styleUl,
+                  marginLeft: `${110 * props.offset[i]}px`,
+                  // applies margin to the last row of the board
+                  marginBottom: `${i + 1 == props.board.length ? "8rem" : "0"}`
+                }}>
                 {row && row.map((col, j) => {
                   return (
                     col && <li
@@ -92,8 +99,7 @@ export default function Gameboard(props) {
           })}
         </div>
       </div>
-
-        <ShiftButtons handleShift={handleShift}/>
+      {/* <ShiftButtons handleShift={handleShift} />*/}
     </>
   )
 }

@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react"
 export default function ShiftButtons(props) {
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("red")
   const styleShiftDiv = {
-    width: "100%",
+    width: "100vw",
     display: "flex",
     justifyContent: "center",
     position: "fixed",
-    top: "90%",
+    bottom: "10px"
   }
   const styleShiftButton = {
-    padding: "1rem"
+    padding: "1rem",
+    
   }
   const styleShiftReset = {
     ...styleShiftButton,

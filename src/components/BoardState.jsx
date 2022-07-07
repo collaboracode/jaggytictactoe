@@ -8,13 +8,9 @@ import GameOverModal from "./GameOverModal"
 import ChangeOffset from "../functions/changeOffset"
 import ChangeNumberOfRows from "../functions/changeNumberOfRows"
 import ChangeRowColLength from "../functions/changeRowColLength"
-// ? have not implemented it just yet,
-// ? but I prefer the look with AddRemoveRowButtons,
-// ? and TestButtons instead of BoardAdjustmentTool,
-// ? though I would have to rename TestButtons
-// import BoardAdjustmentTool from "./BoardAdjustmentTool"
+import ShiftButtons from "./BoardShiftButtons"
 import AddRemoveRowButtons from "./AddRemoveRowButtons"
-import TestButtons from "./TestButtons"
+import AdjusterBottons from "./AdjusterButtons"
 export default function GameState() {
   // setup
   const startingWinLength = 3
@@ -37,6 +33,7 @@ export default function GameState() {
   const [curPlayerX, setCurPlayerX] = useState(true)
   const [gameInProgress, setGameInProgress] = useState(false)
   const [winLength, setWinLength] = useState(startingWinLength)
+  const [boardShift, setBoardShift] = useState(0)
 
   useEffect(() => {
     let checkForWin = CheckForWinOrDraw(board, playerOne, playerTwo, winLength, offset)
@@ -176,6 +173,25 @@ export default function GameState() {
       }
     }
   }
+
+
+
+  const handleShift = (input) => {
+    switch (input) {
+      case "-1":
+        setBoardShift(boardShift - 1)
+        break
+      case "1":
+        setBoardShift(boardShift + 1)
+        break
+      case "reset":
+        setBoardShift(0)
+        break
+      default:
+        break
+    }
+  }
+
   let handleClick = (e) => {
     let stateMutatorVariable = board
     let row = e.target.dataset.row
@@ -202,10 +218,10 @@ export default function GameState() {
         handleRows={handleRows}
         gameInProgress={gameInProgress}
       />
-        <AddRemoveRowButtons
-          handleRows={handleRows}
-          gameInProgress={gameInProgress}
-        />
+      <AddRemoveRowButtons
+        handleRows={handleRows}
+        gameInProgress={gameInProgress}
+      />
       {/* <BoardAdjustmentTool
         offset={offset}
         handleOffset={handleOffset}
@@ -224,18 +240,23 @@ export default function GameState() {
         resetGame={resetGame}
         clearBoard={clearBoard}
       />
-      <TestButtons
-        board={board}
-        offset={offset} handleOffset={handleOffset}
-        handleRows={handleRows}
-        gameInProgress={gameInProgress}
-      />
-      <Gameboard
-        handleClick={handleClick}
+      <AdjusterBottons
         board={board}
         offset={offset}
+        gameInProgress={gameInProgress}
         handleOffset={handleOffset}
         handleRows={handleRows}
+      />
+      <Gameboard
+        board={board}
+        offset={offset}
+        boardShift={boardShift}
+        handleRows={handleRows}
+        handleClick={handleClick}
+        handleOffset={handleOffset}
+      />
+      <ShiftButtons
+        handleShift={handleShift}
       />
     </>
   )

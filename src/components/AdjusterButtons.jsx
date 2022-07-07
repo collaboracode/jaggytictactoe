@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 export default function TestButtons(props) {
   const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
+  const [hidden, setHidden] = useState(false)
   useEffect(() => {
     let setter = props.gameInProgress ? "0.5" : "1"
     setter && setGameInProgressStyle(setter)
@@ -11,7 +12,7 @@ export default function TestButtons(props) {
   }
 
   let styleP = {
-    margin:".2rem"
+    margin: ".2rem"
   }
 
   let styleButton = {
@@ -19,7 +20,7 @@ export default function TestButtons(props) {
     width: "40px",
     fontSize: "1.2rem",
     lineHeight: "5px",
-    textAlign: "center",    
+    textAlign: "center",
     margin: "3px 1px"
   }
   let styleButtonDiv = {
@@ -42,7 +43,7 @@ export default function TestButtons(props) {
     boxShadow: "0 0 0 2px #000",
   }
   let styleButtonUl = {
-    display: "flex",
+    display: `${hidden ? "none" : "flex"}`,
     flexDirection: "column",
     gap: "1rem",
     listStyle: "none",
@@ -50,9 +51,14 @@ export default function TestButtons(props) {
     position: "absolute",
     zIndex: "6"
   }
+  const handleHidden = (e) => {
+    setHidden(!hidden)
+  }
 
   return (
-    <ul style={styleButtonUl}>
+    <>
+      <button style={styleButton} onClick={handleHidden}>{hidden ? ">" : "<"}</button>
+      <ul style={styleButtonUl}>
         {props.board.map((row, i) => {
           return (
             <li key={`li${i}`} style={{ ...styleLi, top: `${110 * i}` }}>
@@ -102,6 +108,7 @@ export default function TestButtons(props) {
             </li>
           )
         })}
-    </ul>
+      </ul>
+    </>
   )
 }
