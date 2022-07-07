@@ -11,8 +11,8 @@ export default function WinningLength(props) {
   }
   let styleDiv = {
     display: "flex",
-    flexWrap: "wrap",
     justifyContent: "center",
+    flexDirection: `${props.tileSize > 50 ? "row" : "column"}`,
   }
   let styleButton = {
     margin: ".5rem",
@@ -20,6 +20,7 @@ export default function WinningLength(props) {
     height: "40px",
     width: "40px",
     fontSize: "2rem",
+    marginTop: "0",
   }
   let styleP = {
     textAlign: "center",
@@ -27,10 +28,12 @@ export default function WinningLength(props) {
     margin: ".5rem",
     padding: "0",
     fontSize: "2rem",
+    marginTop: "0",
+    marginBottom: `${props.tileSize > 50 ? "0" : "1rem"}`
   }
   return (
     <div style={styleDiv}>
-      <p style={styleP}>winning length: {props.winLength}</p>
+      <div style={{display: "flex", justifyContent: "center"}}>
       <button
         style={{ ...styleButton, ...styleGameInProgress }}
         onClick={props.handleWinLength}
@@ -41,6 +44,8 @@ export default function WinningLength(props) {
         onClick={props.handleWinLength}
         value={1}
       >+</button>
+      </div>
+      <p style={styleP}>{props.winLength} to win</p>
 
     </div>
   )

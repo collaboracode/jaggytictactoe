@@ -11,6 +11,8 @@ import ChangeRowColLength from "../functions/changeRowColLength"
 import ShiftButtons from "./BoardShiftButtons"
 import AddRemoveRowButtons from "./AddRemoveRowButtons"
 import AdjusterBottons from "./RowAdjusterButtons"
+import ControlBar from "./ContolBar"
+
 export default function GameState() {
   // setup
   const startingWinLength = 3
@@ -96,9 +98,14 @@ export default function GameState() {
 
   const resize = () => {
     if (window.innerWidth > 800) {
-      setTileSize(100)
+      if (tileSize === 50) {
+        setTileSize(100)
+      }
+
     } else {
-      setTileSize(50)
+      if (tileSize === 100) {
+        setTileSize(50)
+      }
     }
     return
   }
@@ -174,28 +181,28 @@ export default function GameState() {
       }
     }
   }
-  const handleHanded = () => {
+  const handleHanded = (e) => {
     setRightHanded(!rightHanded)
   }
 
-    let handleWinLength = (e) => {
-      if (!gameInProgress) {
-        switch (e.target.value) {
-          case "1":
-            if (winLength + 1 <= 15) {
-              setWinLength(winLength + 1)
-            }
-            break
-          case "-1":
-            if (winLength - 1 > 1) {
-              setWinLength(winLength - 1)
-            }
-            break
-          default:
-            break
-        }
+  let handleWinLength = (e) => {
+    if (!gameInProgress) {
+      switch (e.target.value) {
+        case "1":
+          if (winLength + 1 <= 15) {
+            setWinLength(winLength + 1)
+          }
+          break
+        case "-1":
+          if (winLength - 1 > 1) {
+            setWinLength(winLength - 1)
+          }
+          break
+        default:
+          break
       }
     }
+  }
 
 
 
@@ -229,30 +236,23 @@ export default function GameState() {
       setGameInProgress(true)
     }
   }
+
   return (
     <>
-      <button style={{padding: ".5rem", marginLeft: "1rem"}} onClick={handleHanded}>swap hands</button>
-      <WinningLength
+      <ControlBar
+        tileSize={tileSize}
+        rightHanded={rightHanded}
         winLength={winLength}
-        handleWinLength={handleWinLength}
         gameInProgress={gameInProgress}
-      />
-      <ResetButtons
+        handleWinLength={handleWinLength}
+        handleHanded={handleHanded}
         handleOffset={handleOffset}
         handleRows={handleRows}
-        gameInProgress={gameInProgress}
       />
       <AddRemoveRowButtons
         handleRows={handleRows}
         gameInProgress={gameInProgress}
       />
-      {/* <BoardAdjustmentTool
-        offset={offset}
-        handleOffset={handleOffset}
-        handleRows={handleRows}
-        board={board}
-        gameInProgress={gameInProgress}
-      /> */}
       <CurrentPlayerDisplay
         curPlayerX={curPlayerX}
         playerOne={playerOne}

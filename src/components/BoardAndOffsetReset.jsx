@@ -17,9 +17,9 @@ export default function ResetButtons(props) {
     display: "flex",
     justifyContent: "center",
     gap: "10px",
-    marginTop: "1rem",
+    marginTop: "0",
     padding: "0",
-    height: "100px",
+    height: "40px",
   }
   let styleResetButton = {
     height: "40px",

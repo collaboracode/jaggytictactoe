@@ -18,7 +18,7 @@ export default function AddRemoveRowButtons(props) {
     display: "flex",
     justifyContent: "center",
     gap: "10px",
-    margin: "-3rem 0",
+    margin: "0",
     padding: "0",
     height: "100px",
   }

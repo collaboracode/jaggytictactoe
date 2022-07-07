@@ -12,10 +12,6 @@ export default function RowAdjusterButtons(props) {
     opacity: gameInProgressStyle,
   }
 
-  // let styleP = {
-  //   margin: "0"
-  // }
-
   let styleButton = {
     padding: "0",
     height: `${props.tileSize * .4}px`,
@@ -86,7 +82,6 @@ export default function RowAdjusterButtons(props) {
         {props.board.map((row, i) => {
           return (
             <li key={`li${i}`} style={{ ...styleLi, top: `${110 * i}` }}>
-              {/* <p style={styleP}>row {i + 1}</p> */}
               <div key={`div2${i}`} style={styleButtonDiv}>
                 <button
                   style={styleButton}
