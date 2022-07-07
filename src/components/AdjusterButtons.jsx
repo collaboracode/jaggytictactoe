@@ -2,21 +2,6 @@ import React, { useState, useEffect } from "react"
 export default function TestButtons(props) {
   const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
   const [hidden, setHidden] = useState(false)
-  const [tileSize, setTileSize] = useState(50)
-  
-  const resize = () => {
-    if (window.innerWidth > 800) {
-      setTileSize(100)
-    } else {
-      setTileSize(50)
-    }
-  }
-  useEffect(() => {
-    window.addEventListener("resize", resize);
-    return () => {
-      window.removeEventListener("resize", resize);
-    }
-  })
 
   useEffect(() => {
     let setter = props.gameInProgress ? "0.5" : "1"
@@ -33,20 +18,20 @@ export default function TestButtons(props) {
 
   let styleButton = {
     padding: "0",
-    height: `${tileSize * .4}px`,
-    width: `${tileSize * .4}px`,
-    fontSize: `${tileSize * .3}px`,
+    height: `${props.tileSize * .4}px`,
+    width: `${props.tileSize * .4}px`,
+    fontSize: `${props.tileSize * .3}px`,
     lineHeight: "5px",
     textAlign: "center",
     alignText: "center",
-    margin: `${tileSize * .05}px ${tileSize * .03}px`
+    margin: `${props.tileSize * .05}px ${props.tileSize * .03}px`
   }
   let collapseButton = {
     padding: "0",
-    height: `${tileSize * .6}px`,
-    width: `${tileSize * .8}px`,
+    height: `${props.tileSize * .6}px`,
+    width: `${props.tileSize * .8}px`,
     textAlign: "center",
-    fontSize: `${tileSize * .5}px`,
+    fontSize: `${props.tileSize * .5}px`,
   }
   let styleButtonDiv = {
     display: "flex",
@@ -55,8 +40,8 @@ export default function TestButtons(props) {
 
   let styleLi = {
     padding: "0 0 0 0",
-    width: `${tileSize}px`,
-    height: `${tileSize}px`,
+    width: `${props.tileSize}px`,
+    height: `${props.tileSize}px`,
     display: "flex",
     flexWrap: "wrap",
     alignContent: "end",

@@ -34,6 +34,7 @@ export default function GameState() {
   const [gameInProgress, setGameInProgress] = useState(false)
   const [winLength, setWinLength] = useState(startingWinLength)
   const [boardShift, setBoardShift] = useState(0)
+  const [tileSize, setTileSize] = useState(100)
 
   useEffect(() => {
     let checkForWin = CheckForWinOrDraw(board, playerOne, playerTwo, winLength, offset)
@@ -89,6 +90,23 @@ export default function GameState() {
       setOffset(offsetArr)
     }
   }
+
+  
+  const resize = () => {
+    if (window.innerWidth > 800) {
+      setTileSize(100)
+    } else {
+      setTileSize(50)
+    }
+    return
+  }
+  !tileSize && resize()
+  useEffect(() => {
+    window.addEventListener("resize", resize);
+    return () => {
+      window.removeEventListener("resize", resize);
+    }
+  })
 
   let handleOffset = (event) => {
     if (gameover === false) {
@@ -243,6 +261,7 @@ export default function GameState() {
       <AdjusterBottons
         board={board}
         offset={offset}
+        tileSize={tileSize}
         gameInProgress={gameInProgress}
         handleOffset={handleOffset}
         handleRows={handleRows}
@@ -250,6 +269,7 @@ export default function GameState() {
       <Gameboard
         board={board}
         offset={offset}
+        tileSize={tileSize}
         boardShift={boardShift}
         handleRows={handleRows}
         handleClick={handleClick}

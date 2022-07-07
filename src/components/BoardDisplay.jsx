@@ -6,24 +6,10 @@ import React, { useState, useEffect } from "react"
  * todo fix rows leaving bounds on left side
 */
 export default function Gameboard(props) {
-  const [tileSize, setTileSize] = useState(50)
   
-  const resize = () => {
-    if (window.innerWidth > 800) {
-      setTileSize(100)
-    } else {
-      setTileSize(50)
-    }
-  }
-  useEffect(() => {
-    window.addEventListener("resize", resize);
-    return () => {
-      window.removeEventListener("resize", resize);
-    }
-  })
   const styleCol = {
-    height: `${tileSize}px`,
-    width: `${tileSize}px`,
+    height: `${props.tileSize}px`,
+    width: `${props.tileSize}px`,
     backgroundColor: "lightGrey",
     textAlign: "center",
     boxShadow: "5px 5px 5px grey",
@@ -33,7 +19,7 @@ export default function Gameboard(props) {
     pointerEvents: "none",
     position: "relative",
     top: "20%",
-    fontSize: `${tileSize}px`,
+    fontSize: `${props.tileSize}px`,
     margin: "0",
     lineHeight: ".5",
   }
@@ -55,7 +41,7 @@ export default function Gameboard(props) {
     listStyle: "none",
     padding: "0px 100px",
     position: "relative",
-    left: `${(tileSize + 10) * props.boardShift}px`,
+    left: `${(props.tileSize + 10) * props.boardShift}px`,
   }
 
   // const handleShift = (input) => {
@@ -86,9 +72,9 @@ export default function Gameboard(props) {
                 key={`row${i}`}
                 style={{
                   ...styleUl,
-                  marginLeft: `${(tileSize + 10) * props.offset[i]}px`,
+                  marginLeft: `${(props.tileSize + 10) * props.offset[i]}px`,
                   // applies margin to the last row of the board
-                  marginBottom: `${i + 1 == props.board.length ? "8rem" : "0"}`
+                  marginBottom: `${i + 1 === props.board.length ? "8rem" : "0"}`
                 }}>
                 {row && row.map((col, j) => {
                   return (
