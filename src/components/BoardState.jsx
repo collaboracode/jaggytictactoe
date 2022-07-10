@@ -97,15 +97,15 @@ export default function GameState() {
 
 
   const resize = () => {
+    const sizeOne = 100
+    const sizeTwo = 75
+    const sizeThree = 60
     if (window.innerWidth > 800) {
-      if (tileSize === 50) {
-        setTileSize(100)
-      }
-
-    } else {
-      if (tileSize === 100) {
-        setTileSize(50)
-      }
+      setTileSize(sizeOne)
+    } else if (window.innerWidth > 600) {
+      setTileSize(sizeTwo)
+    } else if (window.innerWidth > 400) {
+      setTileSize(sizeThree)
     }
     return
   }
