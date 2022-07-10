@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+// import AdjusterButton from "./adjusterButton"
 export default function RowAdjusterButtons(props) {
   const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
   const [hidden, setHidden] = useState(false)
@@ -13,14 +14,13 @@ export default function RowAdjusterButtons(props) {
   }
 
   let styleButton = {
-    padding: "0",
-    height: `${props.tileSize * .4}px`,
-    width: `${props.tileSize * .4}px`,
+    padding: "0px",
+    height: `${props.tileSize * .5}px`,
+    width: `${props.tileSize * .5}px`,
     fontSize: `${props.tileSize * .3}px`,
-    lineHeight: "5px",
     textAlign: "center",
     alignText: "center",
-    margin: `${props.tileSize * .05}px ${props.tileSize * .03}px`
+    margin: "0",
   }
   let collapseButton = {
     position: "-webkit-sticky",
@@ -37,10 +37,6 @@ export default function RowAdjusterButtons(props) {
     zIndex: "8",
     border: "none",
     boxShadow: "1px 2px 3px grey",
-  }
-  let styleButtonDiv = {
-    display: "flex",
-    gap: ".2rem",
   }
 
   let styleLi = {
@@ -82,7 +78,7 @@ export default function RowAdjusterButtons(props) {
         {props.board.map((row, i) => {
           return (
             <li key={`li${i}`} style={{ ...styleLi, top: `${110 * i}` }}>
-              <div key={`div2${i}`} style={styleButtonDiv}>
+              <div key={`div2${i}`}>
                 <button
                   style={styleButton}
                   key={`fifth${i}`}
@@ -103,7 +99,7 @@ export default function RowAdjusterButtons(props) {
                 >{">"}
                 </button>
               </div>
-              <div key={`div3${i}`} style={styleButtonDiv}>
+              <div key={`div3${i}`}>
                 <button
                   style={{ ...styleButton, ...styleGameInProgress }}
                   key={`sixth${i}`}
