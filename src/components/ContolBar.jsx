@@ -8,7 +8,7 @@ export default function ControlBar(props) {
 const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
-    props.tileSize > 50 ? setHidden(false) : setHidden(true)
+    props.tileSize < 100 ? setHidden(true) : setHidden(false)
   }, [props.tileSize])
   
   const styleDiv = {
@@ -19,14 +19,14 @@ const [hidden, setHidden] = useState(false)
     marginTop: "0",
     marginBottom: "0",
     justifyContent: "center",
-    flexDirection: `${props.tileSize > 50 ? "row" : "column"}`,
+    flexDirection: `${props.tileSize < 100 ? "column" : "row"}`,
     display: `${hidden ? "none" : "flex"}`,
     marginBottom: "1rem"
   }
   let collapseButton = {
     position: "-webkit-sticky",
     position: "sticky",
-    display: `${props.tileSize > 50 ? "none" : "inline-block"}`,
+    display: `${props.tileSize < 100 ? "inline-block" : "none"}`,
     float: `${props.rightHanded ? "right" : "left"}`,
     marginTop: `${- props.tileSize * .6}px`,
     left: `${props.rightHanded ? "auto" : "1rem"}`,

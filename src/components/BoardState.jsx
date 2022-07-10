@@ -36,8 +36,8 @@ export default function GameState() {
   const [gameInProgress, setGameInProgress] = useState(false)
   const [winLength, setWinLength] = useState(startingWinLength)
   const [boardShift, setBoardShift] = useState(0)
-  const [tileSize, setTileSize] = useState(100)
   const [rightHanded, setRightHanded] = useState(false)
+  const [tileSize, setTileSize] = useState(100)
 
 
   useEffect(() => {
@@ -59,6 +59,28 @@ export default function GameState() {
         break
     }
   }, [board, offset, winLength])
+
+  const resize = () => {
+    const sizeOne = 100
+    const sizeTwo = 75
+    const sizeThree = 60
+    if (window.innerWidth > 800) {
+      setTileSize(sizeOne)
+    } else if (window.innerWidth > 600) {
+      setTileSize(sizeTwo)
+    } else {
+      setTileSize(sizeThree)
+    }
+  }
+  useEffect(() => {
+    resize()
+  })
+  useEffect(() => {
+    window.addEventListener("resize", resize);
+    return () => {
+      window.removeEventListener("resize", resize);
+    }
+  })
 
   function resetGame() {
     setMessage(``)
@@ -96,26 +118,7 @@ export default function GameState() {
   }
 
 
-  const resize = () => {
-    const sizeOne = 100
-    const sizeTwo = 75
-    const sizeThree = 60
-    if (window.innerWidth > 800) {
-      setTileSize(sizeOne)
-    } else if (window.innerWidth > 600) {
-      setTileSize(sizeTwo)
-    } else if (window.innerWidth > 400) {
-      setTileSize(sizeThree)
-    }
-    return
-  }
-  !tileSize && resize()
-  useEffect(() => {
-    window.addEventListener("resize", resize);
-    return () => {
-      window.removeEventListener("resize", resize);
-    }
-  })
+
 
   let handleOffset = (event) => {
     if (gameover === false) {
