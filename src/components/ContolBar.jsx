@@ -42,9 +42,9 @@ const [hidden, setHidden] = useState(false)
   }
   const styleSwap = {
     padding: ".5rem",
-    marginLeft: `${props.tileSize > 50 ? "1rem" : "auto"}`,
-    marginRight: `${props.tileSize > 50 ? "1rem" : "auto"}`,
-    marginBottom: `${props.tileSize > 50 ? "0" : "1rem"}`,
+    marginLeft: `${props.tileSize < 100 ? "auto" : "1rem"}`,
+    marginRight: `${props.tileSize < 100 ? "auto" : "1rem"}`,
+    marginBottom: `${props.tileSize < 100 ? "0" : "1rem"}`,
     height: "2.5rem"
   }
   const handleHidden = () => {

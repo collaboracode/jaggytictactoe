@@ -64,12 +64,15 @@ export default function GameState() {
     const sizeOne = 100
     const sizeTwo = 75
     const sizeThree = 60
+    const sizeFour = 50
     if (window.innerWidth > 800) {
       setTileSize(sizeOne)
     } else if (window.innerWidth > 600) {
       setTileSize(sizeTwo)
-    } else {
+    } else if (window.innerWidth > 400) {
       setTileSize(sizeThree)
+    } else {
+      setTileSize(sizeFour)
     }
   }
   useEffect(() => {

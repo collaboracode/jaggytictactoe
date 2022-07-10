@@ -12,10 +12,10 @@ export default function WinningLength(props) {
   let styleDiv = {
     display: "flex",
     justifyContent: "center",
-    flexDirection: `${props.tileSize > 50 ? "row" : "column"}`,
+    flexDirection: `${props.tileSize < 100 ? "column" : "row"}`,
   }
   let styleButton = {
-    margin: ".5rem",
+    margin: ".5rem .25rem",
     padding: "0",
     height: "40px",
     width: "40px",
@@ -29,7 +29,7 @@ export default function WinningLength(props) {
     padding: "0",
     fontSize: "2rem",
     marginTop: "0",
-    marginBottom: `${props.tileSize > 50 ? "0" : "1rem"}`
+    marginBottom: `${props.tileSize < 100 ? "1rem" : "0"}`
   }
   return (
     <div style={styleDiv}>
