@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 export default function ResetButtons(props) {
-  const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("red")
-  const [resetButtonBackgroundColorTwo, setResetButtonBackgroundColorTwo] = useState("red")
-  const [resetButtonBackgroundColorThree, setResetButtonBackgroundColorThree] = useState("red")
+  const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("#d00")
+  const [resetButtonBackgroundColorTwo, setResetButtonBackgroundColorTwo] = useState("#d00")
+  const [resetButtonBackgroundColorThree, setResetButtonBackgroundColorThree] = useState("#d00")
   const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
   useEffect(() => {
     let setter = props.gameInProgress ? "0.5" : "1"
@@ -57,13 +57,13 @@ export default function ResetButtons(props) {
   const handleMouseLeaveStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
-        setResetButtonBackgroundColor("red")
+        setResetButtonBackgroundColor("#d00")
         break
       case "resetButtonTwo":
-        setResetButtonBackgroundColorTwo("red")
+        setResetButtonBackgroundColorTwo("#d00")
         break
       case "resetButtonThree":
-        setResetButtonBackgroundColorThree("red")
+        setResetButtonBackgroundColorThree("#d00")
         break
       default:
         break
@@ -72,21 +72,21 @@ export default function ResetButtons(props) {
   const handleMouseClickStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
-        setResetButtonBackgroundColor("red")
+        setResetButtonBackgroundColor("#d00")
         let timer = setTimeout(() => {
           setResetButtonBackgroundColor("darkRed")
           clearTimeout(timer)
         }, 100)
         break
       case "resetButtonTwo":
-        setResetButtonBackgroundColorTwo("red")
+        setResetButtonBackgroundColorTwo("#d00")
         let timer2 = setTimeout(() => {
           setResetButtonBackgroundColorTwo("darkRed")
           clearTimeout(timer2)
         }, 100)
         break
       case "resetButtonThree":
-        setResetButtonBackgroundColorThree("red")
+        setResetButtonBackgroundColorThree("#d00")
         let timer3 = setTimeout(() => {
           setResetButtonBackgroundColorThree("darkRed")
           clearTimeout(timer2)

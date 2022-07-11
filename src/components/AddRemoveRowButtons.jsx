@@ -5,7 +5,7 @@ export default function AddRemoveRowButtons(props) {
     const setter = props.gameInProgress ? "0.5" : "1"
     setter && setGameInProgressStyle(setter)
   }, [props.gameInProgress])
-  
+
   const style = {
     gameInProgress: {
       opacity: gameInProgressStyle,

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react"
 import Gameboard from "./BoardDisplay"
 import CheckForWinOrDraw from "../functions/checkForWinOrDraw"
-import WinningLength from "./winLineLength"
-import ResetButtons from "./BoardAndOffsetReset"
 import CurrentPlayerDisplay from "./CurrentPlayerDisplay"
 import GameOverModal from "./GameOverModal"
 import ChangeOffset from "../functions/changeOffset"
@@ -120,9 +118,6 @@ export default function GameState() {
     }
   }
 
-
-
-
   let handleOffset = (event) => {
     if (gameover === false) {
       switch (event.target.value) {
@@ -209,8 +204,6 @@ export default function GameState() {
       }
     }
   }
-
-
 
   const handleShift = (input) => {
     switch (input) {

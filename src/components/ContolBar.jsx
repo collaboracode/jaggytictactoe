@@ -53,7 +53,7 @@ export default function ControlBar(props) {
   const handleHidden = () => {
     setHidden(!hidden)
   }
-  
+
   return (
     <>
       <button style={style.collapseButton} onClick={handleHidden}>{

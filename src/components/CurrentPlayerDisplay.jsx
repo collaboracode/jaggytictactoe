@@ -9,7 +9,7 @@ export default function CurrentPlayerDisplay(props) {
   return (
     <h2
       style={style.display}
-      >currently {props.curPlayerX ? props.playerOne : props.playerTwo}'s turn
+    >currently {props.curPlayerX ? props.playerOne : props.playerTwo}'s turn
     </h2>
   )
 }

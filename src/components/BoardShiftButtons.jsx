@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 export default function ShiftButtons(props) {
-  const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("red")
+  const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("#d00")
 
   const style = {
     shiftDiv: {
@@ -12,7 +12,7 @@ export default function ShiftButtons(props) {
     },
     shiftButton: {
       padding: "1rem",
-      
+
     },
     shiftReset: {
       color: "white",
@@ -32,7 +32,7 @@ export default function ShiftButtons(props) {
   const handleMouseLeaveStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
-        setResetButtonBackgroundColor("red")
+        setResetButtonBackgroundColor("#d00")
         break
       default:
         break
@@ -41,7 +41,7 @@ export default function ShiftButtons(props) {
   const handleMouseClickStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
-        setResetButtonBackgroundColor("red")
+        setResetButtonBackgroundColor("#d00")
         let timer = setTimeout(() => {
           setResetButtonBackgroundColor("darkRed")
           clearTimeout(timer)
@@ -70,7 +70,7 @@ export default function ShiftButtons(props) {
       window.removeEventListener("keydown", handleKeys);
     }
   })
-  
+
   return (
     <div style={style.shiftDiv}>
       <button
@@ -82,14 +82,14 @@ export default function ShiftButtons(props) {
         }>shift left
       </button>
       <button
-        style={{...style.shiftButton, ...style.shiftReset}}
+        style={{ ...style.shiftButton, ...style.shiftReset }}
         data-element_type={"resetButton"}
         onMouseEnter={handleMouseEnterStyle}
         onMouseLeave={handleMouseLeaveStyle}
         onClick={(e) => {
-            props.handleShift("reset")
-            handleMouseClickStyle(e)
-          }
+          props.handleShift("reset")
+          handleMouseClickStyle(e)
+        }
         }>reset
       </button>
       <button

@@ -15,7 +15,7 @@ export default function Gameboard(props) {
       marginRight: "auto",
       width: "100%",
       overflow: "hidden"
-  
+
     },
     board: {
       marginLeft: "auto",
@@ -35,7 +35,7 @@ export default function Gameboard(props) {
       backgroundColor: "lightGrey",
       textAlign: "center",
       boxShadow: `${props.tileSize * 0.02}px ${props.tileSize * 0.02}px ${props.tileSize * 0.04}px grey`,
-  
+
     }
   }
 

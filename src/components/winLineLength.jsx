@@ -33,20 +33,22 @@ export default function WinningLength(props) {
       marginBottom: `${props.tileSize < 100 ? "1rem" : "0"}`
     }
   }
-  
+
   return (
     <div style={style.div}>
-      <div style={{display: "flex", justifyContent: "center"}}>
-      <button
-        style={{ ...style.button, ...style.gameInProgress }}
-        onClick={props.handleWinLength}
-        value={-1}
-      >-</button>
-      <button
-        style={{ ...style.button, ...style.gameInProgress }}
-        onClick={props.handleWinLength}
-        value={1}
-      >+</button>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <button
+          style={{ ...style.button, ...style.gameInProgress }}
+          onClick={props.handleWinLength}
+          value={-1}
+        >-
+        </button>
+        <button
+          style={{ ...style.button, ...style.gameInProgress }}
+          onClick={props.handleWinLength}
+          value={1}
+        >+
+        </button>
       </div>
       <p style={style.p}>{props.winLength} to win</p>
 

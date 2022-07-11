@@ -9,8 +9,6 @@ export default function RowAdjusterButtons(props) {
     setter && setGameInProgressStyle(setter)
   }, [props.gameInProgress])
 
-
-
   const style = {
     gameInProgress: {
       opacity: gameInProgressStyle,
