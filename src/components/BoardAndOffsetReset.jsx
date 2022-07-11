@@ -38,7 +38,7 @@ export default function ResetButtons(props) {
       backgroundColor: `${resetButtonBackgroundColorThree}`,
     }
   }
-  
+
   const handleMouseEnterStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
@@ -101,7 +101,7 @@ export default function ResetButtons(props) {
     <>
       <div style={style.buttonContainer}>
         <button
-          style={{ ...style.resetButton, ...style.gameInProgress }}
+          style={{ ...style.resetButton, ...style.resetBgOne, ...style.gameInProgress }}
           onClick={(e) => {
             props.handleOffset(e)
             handleMouseClickStyle(e)
