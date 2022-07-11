@@ -1,43 +1,44 @@
 import React, { useState, useEffect } from "react"
-
 export default function ResetButtons(props) {
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("red")
   const [resetButtonBackgroundColorTwo, setResetButtonBackgroundColorTwo] = useState("red")
   const [resetButtonBackgroundColorThree, setResetButtonBackgroundColorThree] = useState("red")
-  const [gameInProgressStyle, setGameInProgressStyle] = useState ("1")
+  const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
   useEffect(() => {
     let setter = props.gameInProgress ? "0.5" : "1"
     setter && setGameInProgressStyle(setter)
   }, [props.gameInProgress])
 
-  let styleGameInProgress = {
-    opacity: gameInProgressStyle
+  const style = {
+    gameInProgress: {
+      opacity: gameInProgressStyle
+    },
+    buttonContainer: {
+      display: "flex",
+      justifyContent: "center",
+      gap: "10px",
+      marginTop: "0",
+      padding: "0",
+      height: "40px",
+    },
+    resetButton: {
+      height: "40px",
+      width: "50px",
+      margin: "0",
+      padding: "0",
+      color: "white",
+    },
+    resetBgOne: {
+      backgroundColor: `${resetButtonBackgroundColor}`,
+    },
+    resetBgtwo: {
+      backgroundColor: `${resetButtonBackgroundColorTwo}`,
+    },
+    resetBgThree: {
+      backgroundColor: `${resetButtonBackgroundColorThree}`,
+    }
   }
-  let styleButtonContainer = {
-    display: "flex",
-    justifyContent: "center",
-    gap: "10px",
-    marginTop: "0",
-    padding: "0",
-    height: "40px",
-  }
-  let styleResetButton = {
-    height: "40px",
-    width: "50px",
-    margin: "0",
-    padding: "0",
-    color: "white",
-    backgroundColor: `${resetButtonBackgroundColor}`,
-  }
-  let styleResetButtonTwo = {
-    ...styleResetButton,
-    backgroundColor: `${resetButtonBackgroundColorTwo}`,
-  }
-  let styleResetButtonThree = {
-    ...styleResetButton,
-    backgroundColor: `${resetButtonBackgroundColorThree}`,
-  }
-
+  
   const handleMouseEnterStyle = (e) => {
     switch (e.target.dataset.element_type) {
       case "resetButton":
@@ -84,7 +85,7 @@ export default function ResetButtons(props) {
           clearTimeout(timer2)
         }, 100)
         break
-        case "resetButtonThree":
+      case "resetButtonThree":
         setResetButtonBackgroundColorThree("red")
         let timer3 = setTimeout(() => {
           setResetButtonBackgroundColorThree("darkRed")
@@ -98,9 +99,9 @@ export default function ResetButtons(props) {
 
   return (
     <>
-      <div style={styleButtonContainer}>
+      <div style={style.buttonContainer}>
         <button
-          style={{...styleResetButton, ...styleGameInProgress}}
+          style={{ ...style.resetButton, ...style.gameInProgress }}
           onClick={(e) => {
             props.handleOffset(e)
             handleMouseClickStyle(e)
@@ -117,7 +118,7 @@ export default function ResetButtons(props) {
           }}
           data-function={"row"}
           value={"reset"}
-          style={{...styleResetButtonTwo, ...styleGameInProgress}}
+          style={{ ...style.resetButton, ...style.resetBgtwo, ...style.gameInProgress }}
           data-element_type={"resetButtonTwo"}
           onMouseEnter={handleMouseEnterStyle}
           onMouseLeave={handleMouseLeaveStyle}
@@ -129,7 +130,7 @@ export default function ResetButtons(props) {
           }}
           data-function={"col"}
           value={"clear"}
-          style={styleResetButtonThree}
+          style={{ ...style.resetButton, ...style.resetBgThree }}
           data-element_type={"resetButtonThree"}
           onMouseEnter={handleMouseEnterStyle}
           onMouseLeave={handleMouseLeaveStyle}

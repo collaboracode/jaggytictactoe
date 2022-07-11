@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react"
 export default function ShiftButtons(props) {
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("red")
-  const styleShiftDiv = {
-    width: "100vw",
-    display: "flex",
-    justifyContent: "center",
-    position: "fixed",
-    bottom: "10px"
-  }
-  const styleShiftButton = {
-    padding: "1rem",
-    
-  }
-  const styleShiftReset = {
-    ...styleShiftButton,
-    color: "white",
-    backgroundColor: resetButtonBackgroundColor
+
+  const style = {
+    shiftDiv: {
+      width: "100vw",
+      display: "flex",
+      justifyContent: "center",
+      position: "fixed",
+      bottom: "10px"
+    },
+    shiftButton: {
+      padding: "1rem",
+      
+    },
+    shiftReset: {
+      color: "white",
+      backgroundColor: resetButtonBackgroundColor
+    }
   }
 
   const handleMouseEnterStyle = (e) => {
@@ -70,9 +72,9 @@ export default function ShiftButtons(props) {
   })
   
   return (
-    <div style={styleShiftDiv}>
+    <div style={style.shiftDiv}>
       <button
-        style={styleShiftButton}
+        style={style.shiftButton}
         onClick={
           () => {
             props.handleShift("-1")
@@ -80,7 +82,7 @@ export default function ShiftButtons(props) {
         }>shift left
       </button>
       <button
-        style={styleShiftReset}
+        style={{...style.shiftButton, ...style.shiftReset}}
         data-element_type={"resetButton"}
         onMouseEnter={handleMouseEnterStyle}
         onMouseLeave={handleMouseLeaveStyle}
@@ -91,7 +93,7 @@ export default function ShiftButtons(props) {
         }>reset
       </button>
       <button
-        style={styleShiftButton}
+        style={style.shiftButton}
         onClick={
           () => {
             props.handleShift("1")

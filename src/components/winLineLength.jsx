@@ -6,46 +6,49 @@ export default function WinningLength(props) {
     setter && setGameInProgressStyle(setter)
   }, [props.gameInProgress])
 
-  let styleGameInProgress = {
-    opacity: gameInProgressStyle
+  const style = {
+    gameInProgress: {
+      opacity: gameInProgressStyle
+    },
+    div: {
+      display: "flex",
+      justifyContent: "center",
+      flexDirection: `${props.tileSize < 100 ? "column" : "row"}`,
+    },
+    button: {
+      margin: ".5rem .25rem",
+      padding: "0",
+      height: "40px",
+      width: "40px",
+      fontSize: "2rem",
+      marginTop: "0",
+    },
+    p: {
+      textAlign: "center",
+      width: "100%",
+      margin: ".5rem",
+      padding: "0",
+      fontSize: "2rem",
+      marginTop: "0",
+      marginBottom: `${props.tileSize < 100 ? "1rem" : "0"}`
+    }
   }
-  let styleDiv = {
-    display: "flex",
-    justifyContent: "center",
-    flexDirection: `${props.tileSize < 100 ? "column" : "row"}`,
-  }
-  let styleButton = {
-    margin: ".5rem .25rem",
-    padding: "0",
-    height: "40px",
-    width: "40px",
-    fontSize: "2rem",
-    marginTop: "0",
-  }
-  let styleP = {
-    textAlign: "center",
-    width: "100%",
-    margin: ".5rem",
-    padding: "0",
-    fontSize: "2rem",
-    marginTop: "0",
-    marginBottom: `${props.tileSize < 100 ? "1rem" : "0"}`
-  }
+  
   return (
-    <div style={styleDiv}>
+    <div style={style.div}>
       <div style={{display: "flex", justifyContent: "center"}}>
       <button
-        style={{ ...styleButton, ...styleGameInProgress }}
+        style={{ ...style.button, ...style.gameInProgress }}
         onClick={props.handleWinLength}
         value={-1}
       >-</button>
       <button
-        style={{ ...styleButton, ...styleGameInProgress }}
+        style={{ ...style.button, ...style.gameInProgress }}
         onClick={props.handleWinLength}
         value={1}
       >+</button>
       </div>
-      <p style={styleP}>{props.winLength} to win</p>
+      <p style={style.p}>{props.winLength} to win</p>
 
     </div>
   )
