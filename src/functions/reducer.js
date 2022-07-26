@@ -197,7 +197,11 @@ const reducer = (state, action) => {
             let boardMutatorVariable2 = [...boardMutatorVariable[action.row], " "]
             boardMutatorVariable[action.row] = [...boardMutatorVariable2]
           }
-          return { ...state, board: boardMutatorVariable, curPlayerX: !state.curPlayerX }
+          if (state.gameInProgress) {
+            return { ...state, board: boardMutatorVariable, curPlayerX: !state.curPlayerX }
+          } else {
+            return { ...state, board: boardMutatorVariable}
+          }
         case "decrement":
           if (!state.gameInProgress) {
             if (boardVariable[action.row].slice(0, -1)?.length > 0) {

@@ -58,6 +58,7 @@ export default function GameState() {
       CheckForWinOrDraw()
     }
     return
+    // eslint-disable-next-line
   }, [state.board, state.offset, state.winLength, state.playerOne, state.playerTwo])
 
   useEffect(() => {
