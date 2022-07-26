@@ -20,14 +20,14 @@ const reducer = (state, action) => {
     } else if (window.innerWidth > 600) {
       return sizeTwo
     } else if (window.innerWidth > 400) {
-      return sizeThree 
+      return sizeThree
     } else {
       return sizeFour
     }
   }
   switch (action.type) {
     case "window":
-      return {...state, tileSize: resize()}
+      return { ...state, tileSize: resize() }
 
     case "game": {
       if (action.value === "reset") {
@@ -76,14 +76,18 @@ const reducer = (state, action) => {
       return { ...state, message: action.value }
 
     case "board":
-      if (action.value === "reset" && !state.gameInProgress) {
-        return { ...state, board: initialState.board }
-      } else if (action.value === "clear") {
-        return clearBoard()
-      } else {
-        return {...state, board: action.value}
+      switch (action.value) {
+        case "reset":
+          if (!state.gameInProgress) {
+            return { ...state, board: initialState.board }
+          } else return state
+        case "clear":
+          if (!state.gameInProgress) {
+            return clearBoard()
+          } else return state
+        default:
+          return { ...state, board: action.value }
       }
-
     case "boardShift":
       switch (action.value) {
         case "increment":
