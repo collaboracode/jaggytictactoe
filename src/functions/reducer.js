@@ -1,5 +1,5 @@
 import initialState from "../statics/initialState"
-const Reducer = (state, action) => {
+const reducer = (state, action) => {
   function clearBoard() {
     let boardMutalator = [...state.board]
     boardMutalator.forEach((row, i) => {
@@ -212,4 +212,4 @@ const Reducer = (state, action) => {
       return { ...state }
   }
 }
-export default Reducer
+export default reducer

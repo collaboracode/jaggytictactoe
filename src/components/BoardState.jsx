@@ -8,11 +8,11 @@ import AddRemoveRows from "./AddRemoveRows"
 import SidebarAdjusters from "./SidebarAdjusters"
 import TopBarAndDropdown from "./TopBarAndDropdown"
 
-import Reducer from "../functions/Reducer"
+import reducer from "../functions/reducer"
 import initialState from "../statics/initialState"
 export default function GameState() {
 
-  const [state, dispatch] = useReducer(Reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
 
 
   function CheckForWinOrDraw(board, player1, player2, goalLength, offset = null) {
