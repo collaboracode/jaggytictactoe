@@ -48,16 +48,14 @@ export default function ControlBar(props) {
       position: `absolute`,
       zIndex: "9",
       pointerEvents: `${hidden && props.tileSize < 100 ? "none" : "auto"}`,
-      
       top: `${props.tileSize < 100 ? "120px" : "70px"}`,
       width: "80%",
       left: "10%",
       marginRight: "auto",
-      // padding: "10px",//`${hidden ? "0" : "10px"}`,
-      // justifyContent: "center",
-      // make rgba
-      backgroundColor: `${!hidden && props.tileSize < 100 ? "lightGrey" : "transparent"}`,
-      // border: "1px solid black",
+      backgroundColor: `${!hidden && props.tileSize < 100 ? "rgba(175, 175, 175, 0.5)" : "transparent"}`,
+      // kind of like this color... seems a bit like glass, maybe make that a theme of some of this
+      // backgroundColor: `${!hidden && props.tileSize < 100 ? "rgba(175, 200, 200, 0.5)" : "transparent"}`,
+      backdropFilter: `${!hidden && props.tileSize < 100 ? "blur(4px)" : "blur(0px)"}`,
       borderRadius: "20px",
       boxShadow: `${!hidden && props.tileSize < 100 ? `${props.tileSize * 0.02}px ${props.tileSize * 0.02}px ${props.tileSize * 0.04}px grey` : "0 0 0 0 transparent"}`,
 
@@ -76,7 +74,7 @@ export default function ControlBar(props) {
       <div style={style.div}>
 
         <button style={style.handSwap} onClick={() => {
-          props.dispatch({type: "rightHanded"})
+          props.dispatch({ type: "rightHanded" })
         }}>swap hands</button>
         <WinningLength
           dispatch={props.dispatch}
