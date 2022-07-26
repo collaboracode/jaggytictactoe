@@ -132,9 +132,17 @@ const reducer = (state, action) => {
       if (!state.gameover) {
         switch (action.value) {
           case "increment":
-            return { ...state, offset: ChangeOffset(1) }
+            if (state.gameInProgress) {
+              return { ...state, offset: ChangeOffset(1), curPlayerX: !state.curPlayerX }
+            } else {
+              return { ...state, offset: ChangeOffset(1) }
+            }
           case "decrement":
-            return { ...state, offset: ChangeOffset(-1) }
+            if (state.gameInProgress) {
+              return { ...state, offset: ChangeOffset(-1), curPlayerX: !state.curPlayerX }
+            } else {
+              return { ...state, offset: ChangeOffset(-1) }
+            }
 
           case "reset":
             if (!state.gameInProgress) {
