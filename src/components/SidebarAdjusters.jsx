@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 // import AdjusterButton from "./adjusterButton"
-export default function RowAdjusterButtons(props) {
+export default function SidebarAdjusters(props) {
   const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
   const [hidden, setHidden] = useState(false)
 

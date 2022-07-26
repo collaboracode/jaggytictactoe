@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-export default function ShiftButtons(props) {
+export default function BoardShift(props) {
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("#d00")
 
   const style = {

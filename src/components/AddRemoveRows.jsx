@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-export default function AddRemoveRowButtons(props) {
+export default function AddRemoveRows(props) {
   const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
   useEffect(() => {
     const setter = props.gameInProgress ? "0.5" : "1"

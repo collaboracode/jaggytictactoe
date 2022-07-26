@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react"
 
 import WinningLength from "./winLineLength"
-import ResetButtons from "./BoardAndOffsetReset"
+import ResetButtons from "./ResetAndClear"
 
-export default function ControlBar(props) {
+export default function TopBarAndDropdown(props) {
 
   const [hidden, setHidden] = useState(false)
 

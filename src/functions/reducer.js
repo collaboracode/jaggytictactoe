@@ -76,12 +76,12 @@ const Reducer = (state, action) => {
       return { ...state, message: action.value }
 
     case "board":
-      if (action.value === "reset") {
+      if (action.value === "reset" && !state.gameInProgress) {
         return { ...state, board: initialState.board }
       } else if (action.value === "clear") {
         return clearBoard()
       } else {
-        return { ...state, board: action.value }
+        return state
       }
 
     case "boardShift":

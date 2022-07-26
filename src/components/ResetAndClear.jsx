@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-export default function ResetButtons(props) {
+export default function ResetAndClear(props) {
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("#d00")
   const [resetButtonBackgroundColorTwo, setResetButtonBackgroundColorTwo] = useState("#d00")
   const [resetButtonBackgroundColorThree, setResetButtonBackgroundColorThree] = useState("#d00")

@@ -3,10 +3,10 @@ import getLongestLine from "../functions/longest_line"
 import Gameboard from "./BoardDisplay"
 import CurrentPlayerDisplay from "./CurrentPlayerDisplay"
 import GameOverModal from "./GameOverModal"
-import ShiftButtons from "./BoardShiftButtons"
-import AddRemoveRowButtons from "./AddRemoveRowButtons"
-import AdjusterBottons from "./RowAdjusterButtons"
-import ControlBar from "./ControlBar"
+import BoardShift from "./BoardShift"
+import AddRemoveRows from "./AddRemoveRows"
+import SidebarAdjusters from "./SidebarAdjusters"
+import TopBarAndDropdown from "./TopBarAndDropdown"
 
 import Reducer from "../functions/Reducer"
 import initialState from "../statics/initialState"
@@ -75,22 +75,6 @@ export default function GameState() {
     }
   }, [])
 
-  // const resize = () => {
-  //   const sizeOne = 100
-  //   const sizeTwo = 75
-  //   const sizeThree = 60
-  //   const sizeFour = 50
-  //   if (window.innerWidth > 800) {
-  //     dispatch({type: "tileSize", value: sizeOne})
-  //   } else if (window.innerWidth > 600) {
-  //     dispatch({type: "tileSize", value: sizeTwo})
-  //   } else if (window.innerWidth > 400) {
-  //     dispatch({type: "tileSize", value: sizeThree})
-  //   } else {
-  //     dispatch({type: "tileSize", value: sizeFour})
-  //   }
-  // }
-
   const handleClick = (e) => {
     let stateMutatorVariable = [...state.board]
     let row = e.target.dataset.row
@@ -105,14 +89,14 @@ export default function GameState() {
   }
   return (
     <>
-      <ControlBar
+      <TopBarAndDropdown
         tileSize={state.tileSize}
         rightHanded={state.rightHanded}
         winLength={state.winLength}
         gameInProgress={state.gameInProgress}
         dispatch={dispatch}
       />
-      <AddRemoveRowButtons
+      <AddRemoveRows
         gameInProgress={state.gameInProgress}
         dispatch={dispatch}
       />
@@ -126,7 +110,7 @@ export default function GameState() {
         message={state.message}
         gameover={state.gameover}
       />
-      <AdjusterBottons
+      <SidebarAdjusters
         dispatch={dispatch}
         board={state.board}
         offset={state.offset}
@@ -141,7 +125,7 @@ export default function GameState() {
         boardShift={state.boardShift}
         handleClick={handleClick}
       />
-      <ShiftButtons
+      <BoardShift
         dispatch={dispatch}
       />
     </>
