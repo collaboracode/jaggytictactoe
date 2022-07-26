@@ -47,7 +47,7 @@ export default function ControlBar(props) {
     container: {
       position: `absolute`,
       zIndex: "9",
-      pointerEvents: `${!hidden && props.tileSize < 100 ? "auto" : "none"}`,
+      pointerEvents: `${hidden && props.tileSize < 100 ? "none" : "auto"}`,
       
       top: `${props.tileSize < 100 ? "120px" : "70px"}`,
       width: "80%",
