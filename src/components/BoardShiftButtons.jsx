@@ -54,10 +54,10 @@ export default function ShiftButtons(props) {
   const handleKeys = (e) => {
     switch (e.key) {
       case "ArrowLeft":
-        props.handleShift("-1")
+        props.dispatch({type: "boardShift", value: "decrement"})
         break
       case "ArrowRight":
-        props.handleShift("1")
+        props.dispatch({type: "boardShift", value: "increment"})
         break
       default:
         break
@@ -77,7 +77,8 @@ export default function ShiftButtons(props) {
         style={style.shiftButton}
         onClick={
           () => {
-            props.handleShift("-1")
+            props.dispatch({type: "boardShift", value: "decrement"})
+            // props.handleShift("-1")
           }
         }>shift left
       </button>
@@ -87,7 +88,7 @@ export default function ShiftButtons(props) {
         onMouseEnter={handleMouseEnterStyle}
         onMouseLeave={handleMouseLeaveStyle}
         onClick={(e) => {
-          props.handleShift("reset")
+          props.dispatch({type: "boardShift", value: "reset"})
           handleMouseClickStyle(e)
         }
         }>reset
@@ -96,7 +97,8 @@ export default function ShiftButtons(props) {
         style={style.shiftButton}
         onClick={
           () => {
-            props.handleShift("1")
+            props.dispatch({type: "boardShift", value: "increment"})
+            // props.handleShift("1")
           }
         }>shift right
       </button>

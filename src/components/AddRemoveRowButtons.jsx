@@ -16,7 +16,10 @@ export default function AddRemoveRowButtons(props) {
       fontSize: "1rem",
     },
     buttonContainer: {
+      zIndex: "8",
       display: "flex",
+      position: "sticky",
+      top: "10px",
       justifyContent: "center",
       gap: "10px",
       margin: "0",
@@ -29,13 +32,17 @@ export default function AddRemoveRowButtons(props) {
     <div style={style.buttonContainer}>
       <button
         style={{ ...style.rowAddRemoveButtons, ...style.gameInProgress }}
-        onClick={props.handleRows}
+        onClick={() => {
+          props.dispatch({type: "row", value: "decrement"})
+        }}
         data-function={"row"}
         value={"-1"}>remove row
       </button>
       <button
         style={style.rowAddRemoveButtons}
-        onClick={props.handleRows}
+        onClick={() => {
+          props.dispatch({type: "row", value: "increment"})
+        }}
         data-function={"row"}
         value={"1"}>add row
       </button>

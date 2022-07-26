@@ -89,7 +89,7 @@ export default function ResetButtons(props) {
         setResetButtonBackgroundColorThree("#d00")
         let timer3 = setTimeout(() => {
           setResetButtonBackgroundColorThree("darkRed")
-          clearTimeout(timer2)
+          clearTimeout(timer3)
         }, 100)
         break
       default:
@@ -103,21 +103,18 @@ export default function ResetButtons(props) {
         <button
           style={{ ...style.resetButton, ...style.resetBgOne, ...style.gameInProgress }}
           onClick={(e) => {
-            props.handleOffset(e)
+            props.dispatch({ type: "offset", value: "reset" })
             handleMouseClickStyle(e)
           }}
           data-element_type={"resetButton"}
           onMouseEnter={handleMouseEnterStyle}
           onMouseLeave={handleMouseLeaveStyle}
-          value={"reset"}
         >reset offset</button>
         <button
           onClick={(e) => {
-            props.handleRows(e)
+            props.dispatch({ type: "board", value: "reset" })
             handleMouseClickStyle(e)
           }}
-          data-function={"row"}
-          value={"reset"}
           style={{ ...style.resetButton, ...style.resetBgtwo, ...style.gameInProgress }}
           data-element_type={"resetButtonTwo"}
           onMouseEnter={handleMouseEnterStyle}
@@ -125,11 +122,9 @@ export default function ResetButtons(props) {
         >reset board</button>
         <button
           onClick={(e) => {
-            props.handleRows(e)
+            props.dispatch({ type: "board", value: "clear" })
             handleMouseClickStyle(e)
           }}
-          data-function={"col"}
-          value={"clear"}
           style={{ ...style.resetButton, ...style.resetBgThree }}
           data-element_type={"resetButtonThree"}
           onMouseEnter={handleMouseEnterStyle}

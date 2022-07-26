@@ -36,7 +36,9 @@ export default function RowAdjusterButtons(props) {
     },
     collapseButton: {
       position: "-webkit-sticky",
+      // eslint-disable-next-line
       position: "sticky",
+      top: "10px",
       float: `${props.rightHanded ? "right" : "left"}`,
       marginTop: `${- props.tileSize * .6}px`,
       left: `${props.rightHanded ? "auto" : "1rem"}`,
@@ -98,20 +100,18 @@ export default function RowAdjusterButtons(props) {
                 <button
                   style={style.button}
                   key={`fifth${i}`}
-                  data-offsetindex={i}
-                  data-function={"offset"}
-                  value={-1}
-                  onClick={props.handleOffset}
+                  onClick={() => {
+                    props.dispatch({type: "offset", value: "decrement", offsetIndex: i})
+                  }}
                 >{"<"}
                 </button>
 
                 <button
                   style={style.button}
                   key={`third${i}`}
-                  data-offsetindex={i}
-                  data-function={"offset"}
-                  value={1}
-                  onClick={props.handleOffset}
+                  onClick={() => {
+                    props.dispatch({type: "offset", value: "increment", offsetIndex: i})
+                  }}
                 >{">"}
                 </button>
               </div>
@@ -122,7 +122,10 @@ export default function RowAdjusterButtons(props) {
                   data-row={i}
                   data-function={"col"}
                   value={-1}
-                  onClick={props.handleRows}
+                  onClick={() => {
+                    props.dispatch({type: "col", value: "decrement", row: i})
+                  }}
+                  // onClick={props.handleRows}
                 >-
                 </button>
 
@@ -132,7 +135,10 @@ export default function RowAdjusterButtons(props) {
                   data-row={i}
                   data-function={"col"}
                   value={1}
-                  onClick={props.handleRows}
+                  onClick={() => {
+                    props.dispatch({type: "col", value: "increment", row: i})
+                  }}
+                  // onClick={props.handleRows}
                 >+
                 </button>
               </div>

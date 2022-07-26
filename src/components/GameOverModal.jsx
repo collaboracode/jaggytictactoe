@@ -101,14 +101,18 @@ export default function GameOverModal(props) {
         <div style={style.modal}>
           <p style={style.p}>{props.message}</p>
           <button
-            onClick={props.resetGame}
+            onClick={() => {
+              props.dispatch({ type: "game", value: "reset" })
+            }}
             style={style.resetButton}
             data-element_type={"resetButton"}
             onMouseEnter={handleMouseEnterStyle}
             onMouseLeave={handleMouseLeaveStyle}
           >reset game</button>
           <button
-            onClick={props.clearBoard}
+            onClick={() => {
+              props.dispatch({ type: "game", value: "clear" })
+            }}
             style={style.clearButton}
             data-element_type={"clearButton"}
             onMouseEnter={handleMouseEnterStyle}

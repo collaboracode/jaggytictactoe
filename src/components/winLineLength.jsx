@@ -39,14 +39,18 @@ export default function WinningLength(props) {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <button
           style={{ ...style.button, ...style.gameInProgress }}
-          onClick={props.handleWinLength}
-          value={-1}
+          onClick={() => {
+            props.dispatch({type: "winLength", value: "decrement"})
+          }
+          }
         >-
         </button>
         <button
           style={{ ...style.button, ...style.gameInProgress }}
-          onClick={props.handleWinLength}
-          value={1}
+          onClick={() => {
+            props.dispatch({type: "winLength", value: "increment"})
+          }
+          }
         >+
         </button>
       </div>
