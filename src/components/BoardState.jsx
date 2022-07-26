@@ -8,11 +8,11 @@ import AddRemoveRowButtons from "./AddRemoveRowButtons"
 import AdjusterBottons from "./RowAdjusterButtons"
 import ControlBar from "./ControlBar"
 
-import reducer from "../functions/reducer"
+import Reducer from "../functions/Reducer"
 import initialState from "../statics/initialState"
 export default function GameState() {
 
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(Reducer, initialState)
 
 
   function CheckForWinOrDraw(board, player1, player2, goalLength, offset = null) {
@@ -67,31 +67,29 @@ export default function GameState() {
       }
     }
   }, [state.board, state.offset, state.winLength, state.playerOne, state.playerTwo])
-
+  
   useEffect(() => {
-    resize()
-    
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", () => dispatch({type: "window", value: window.innerWidth}));
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", () => dispatch({type: "window", value: window.innerWidth}));
     }
-  },[])
+  }, [])
 
-  const resize = () => {
-    const sizeOne = 100
-    const sizeTwo = 75
-    const sizeThree = 60
-    const sizeFour = 50
-    if (window.innerWidth > 800) {
-      dispatch({type: "tileSize", value: sizeOne})
-    } else if (window.innerWidth > 600) {
-      dispatch({type: "tileSize", value: sizeTwo})
-    } else if (window.innerWidth > 400) {
-      dispatch({type: "tileSize", value: sizeThree})
-    } else {
-      dispatch({type: "tileSize", value: sizeFour})
-    }
-  }
+  // const resize = () => {
+  //   const sizeOne = 100
+  //   const sizeTwo = 75
+  //   const sizeThree = 60
+  //   const sizeFour = 50
+  //   if (window.innerWidth > 800) {
+  //     dispatch({type: "tileSize", value: sizeOne})
+  //   } else if (window.innerWidth > 600) {
+  //     dispatch({type: "tileSize", value: sizeTwo})
+  //   } else if (window.innerWidth > 400) {
+  //     dispatch({type: "tileSize", value: sizeThree})
+  //   } else {
+  //     dispatch({type: "tileSize", value: sizeFour})
+  //   }
+  // }
 
   const handleClick = (e) => {
     let stateMutatorVariable = [...state.board]

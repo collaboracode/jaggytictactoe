@@ -1,5 +1,5 @@
 import initialState from "../statics/initialState"
-const reducer = (state, action) => {
+const Reducer = (state, action) => {
   function clearBoard() {
     let boardMutalator = [...state.board]
     boardMutalator.forEach((row, i) => {
@@ -8,8 +8,27 @@ const reducer = (state, action) => {
       })
     })
     return { ...state, board: boardMutalator, curPlayerX: true, gameInProgress: false, gameover: false }
+
+  }
+  const resize = () => {
+    const sizeOne = 100
+    const sizeTwo = 75
+    const sizeThree = 60
+    const sizeFour = 50
+    if (window.innerWidth > 800) {
+      return sizeOne
+    } else if (window.innerWidth > 600) {
+      return sizeTwo
+    } else if (window.innerWidth > 400) {
+      return sizeThree 
+    } else {
+      return sizeFour
+    }
   }
   switch (action.type) {
+    case "window":
+      return {...state, tileSize: resize()}
+
     case "game": {
       if (action.value === "reset") {
         // ! should fix this and make it dry
@@ -27,7 +46,7 @@ const reducer = (state, action) => {
           winLength: 3,
           boardShift: 0,
           rightHanded: false,
-          tileSize: 100,
+          tileSize: resize(),
           offsetRange: 6,
           playerOne: "X",
           playerTwo: "O"
@@ -89,7 +108,7 @@ const reducer = (state, action) => {
               return { ...state, winLength: state.winLength - 1 }
             } else return state
           default:
-            return {...state}
+            return { ...state }
         }
       }
       return state
@@ -123,10 +142,10 @@ const reducer = (state, action) => {
             }
             break
           default:
-            return {...state}
+            return { ...state }
         }
       }
-      return {...state}
+      return { ...state }
     case "row":
       if (!state.gameover) {
         let boardMutatorVariable = [...state.board]
@@ -151,10 +170,10 @@ const reducer = (state, action) => {
               offsetMutatorVariable = offsetMutatorVariable.slice(0, boardMutatorVariable.length)
               return { ...state, board: [...boardMutatorVariable], offset: [...offsetMutatorVariable] }
             } else {
-              return {...state}
+              return { ...state }
             }
           default:
-            return {...state}
+            return { ...state }
         }
       }
       break
@@ -185,12 +204,12 @@ const reducer = (state, action) => {
           break
 
         default:
-          return {...state}
+          return { ...state }
       }
       break
 
     default:
-      return {...state}
+      return { ...state }
   }
 }
-export default reducer
+export default Reducer
