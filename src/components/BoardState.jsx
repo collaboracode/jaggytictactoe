@@ -69,6 +69,7 @@ export default function GameState() {
   }, [state.board, state.offset, state.winLength, state.playerOne, state.playerTwo])
   
   useEffect(() => {
+    dispatch({type: "window"})
     window.addEventListener("resize", () => dispatch({type: "window", value: window.innerWidth}));
     return () => {
       window.removeEventListener("resize", () => dispatch({type: "window", value: window.innerWidth}));
