@@ -66,7 +66,8 @@ export default function GameState() {
           break
       }
     }
-  }, [state.board, state.offset, state.winLength, state.playerOne, state.playerTwo])
+    return
+  }, [state.board, state.offset, state.winLength])
   
   useEffect(() => {
     dispatch({type: "window"})

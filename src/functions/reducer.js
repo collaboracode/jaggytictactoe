@@ -81,7 +81,7 @@ const Reducer = (state, action) => {
       } else if (action.value === "clear") {
         return clearBoard()
       } else {
-        return state
+        return {...state, board: action.value}
       }
 
     case "boardShift":
