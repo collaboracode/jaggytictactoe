@@ -82,9 +82,7 @@ const reducer = (state, action) => {
             return { ...state, board: initialState.board }
           } else return state
         case "clear":
-          if (!state.gameInProgress) {
             return clearBoard()
-          } else return state
         default:
           return { ...state, board: action.value }
       }
