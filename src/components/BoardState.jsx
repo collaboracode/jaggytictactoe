@@ -12,7 +12,7 @@ import reducer from "../functions/reducer"
 import initialState from "../statics/initialState"
 export default function GameState() {
 
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, {...initialState})
 
   function CheckForWinOrDraw() {
     let playerOneRecord = 0

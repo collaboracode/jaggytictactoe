@@ -1,6 +1,5 @@
 import initialState from "../statics/initialState"
 const reducer = (state, action) => {
-  console.log(`state.offset ${state.offset}`)
   function clearBoard() {
     let boardMutalator = [...state.board]
     boardMutalator.forEach((row, i) => {
@@ -82,7 +81,6 @@ const reducer = (state, action) => {
           if (!state.gameInProgress) {
             // I would like to use initialState, but for some reason it changes
             const offsetArr = [...state.offset.slice(0, 3)]
-            console.log(`offsetArr ${offsetArr}`)
             return { ...state, board: [
               [" ", " ", " "],
               [" ", " ", " "],
@@ -180,7 +178,7 @@ const reducer = (state, action) => {
                 return { ...state, board: [...boardMutatorVariable], offset: [...offsetMutatorVariable] }
               }
 
-            }
+            } else return {...state}
             break
           case "decrement":
             if (!state.gameInProgress) {
@@ -193,9 +191,7 @@ const reducer = (state, action) => {
           default:
             return { ...state }
         }
-      }
-      break
-
+      } else return { ...state }
     case "col":
       const boardVariable = [...state.board]
       let boardMutatorVariable = boardVariable.slice()
