@@ -42,7 +42,7 @@ export default function TopBarAndDropdown(props) {
       padding: ".2rem",
       display: "flex",
       alignItems: "center",
-      background: "transparent",
+      // background: "transparent",
       marginLeft: `${props.tileSize < 100 ? "auto" : "1rem"}`,
       marginRight: `${props.tileSize < 100 ? "auto" : "1rem"}`,
       marginBottom: "1rem",

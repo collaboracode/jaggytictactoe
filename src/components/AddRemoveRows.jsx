@@ -17,7 +17,7 @@ export default function AddRemoveRows(props) {
       alignItems: "center",
       width: "75px",
       height: "50px",
-      background: "transparent"
+      // background: "transparent"
       // fontSize: "1rem",
     },
     buttonContainer: {

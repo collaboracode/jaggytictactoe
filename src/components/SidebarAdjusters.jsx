@@ -42,17 +42,20 @@ export default function SidebarAdjusters(props) {
       position: "sticky",
       top: "10px",
       float: `${props.rightHanded ? "right" : "left"}`,
-      marginTop: `${- props.tileSize * .6}px`,
+      marginTop: `${- props.tileSize * .8}px`,
       left: `${props.rightHanded ? "auto" : "1rem"}`,
       right: `${props.rightHanded ? "1rem" : "auto"}`,
       padding: "0",
-      height: `${props.tileSize * .6}px`,
-      width: `${props.tileSize}px`,
+      // height: `${props.tileSize * .6}px`,
+      // width: `${props.tileSize}px`,
       textAlign: "center",
       fontSize: `${props.tileSize * .8}px`,
       zIndex: "8",
-      border: "none",
-      background: "transparent"
+      // border: "none",
+
+      display: "flex",
+      
+      // background: "transparent"
       // boxShadow: "1px 2px 3px grey",
     },
     ul: {
