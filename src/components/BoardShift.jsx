@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { TbArrowBigRight, TbArrowBigLeft, TbRefresh } from "react-icons/tb"
 export default function BoardShift(props) {
   const [resetButtonBackgroundColor, setResetButtonBackgroundColor] = useState("#d00")
 
@@ -11,12 +12,15 @@ export default function BoardShift(props) {
       bottom: "10px"
     },
     shiftButton: {
-      padding: "1rem",
+      // padding: "1rem",
 
     },
     shiftReset: {
       color: "white",
       backgroundColor: resetButtonBackgroundColor
+    },
+    icon: {
+      fontSize: "3rem"
     }
   }
 
@@ -54,10 +58,10 @@ export default function BoardShift(props) {
   const handleKeys = (e) => {
     switch (e.key) {
       case "ArrowLeft":
-        props.dispatch({type: "boardShift", value: "decrement"})
+        props.dispatch({ type: "boardShift", value: "decrement" })
         break
       case "ArrowRight":
-        props.dispatch({type: "boardShift", value: "increment"})
+        props.dispatch({ type: "boardShift", value: "increment" })
         break
       default:
         break
@@ -77,10 +81,10 @@ export default function BoardShift(props) {
         style={style.shiftButton}
         onClick={
           () => {
-            props.dispatch({type: "boardShift", value: "decrement"})
+            props.dispatch({ type: "boardShift", value: "decrement" })
             // props.handleShift("-1")
           }
-        }>shift left
+        }><TbArrowBigLeft style={style.icon} />
       </button>
       <button
         style={{ ...style.shiftButton, ...style.shiftReset }}
@@ -88,19 +92,20 @@ export default function BoardShift(props) {
         onMouseEnter={handleMouseEnterStyle}
         onMouseLeave={handleMouseLeaveStyle}
         onClick={(e) => {
-          props.dispatch({type: "boardShift", value: "reset"})
+          props.dispatch({ type: "boardShift", value: "reset" })
           handleMouseClickStyle(e)
         }
-        }>reset
+        }><TbRefresh style={style.icon} />
       </button>
       <button
         style={style.shiftButton}
         onClick={
           () => {
-            props.dispatch({type: "boardShift", value: "increment"})
+            props.dispatch({ type: "boardShift", value: "increment" })
             // props.handleShift("1")
           }
-        }>shift right
+        }>
+        <TbArrowBigRight style={style.icon} />
       </button>
     </div>
   )

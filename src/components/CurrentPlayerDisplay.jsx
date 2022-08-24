@@ -2,7 +2,7 @@ export default function CurrentPlayerDisplay(props) {
   const style = {
     display: {
       width: "100%",
-      marginTop: "-1rem",
+      marginTop: "1rem",
       textAlign: "center"
     }
   }
