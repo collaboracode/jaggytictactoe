@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-
+import { TbMenu2, TbX, TbArrowsRightLeft } from "react-icons/tb"
 import WinningLength from "./winLineLength"
 import ResetButtons from "./ResetAndClear"
 
@@ -35,21 +35,26 @@ export default function TopBarAndDropdown(props) {
       fontSize: `${props.tileSize * .5}px`,
       // zIndex: "8",
       border: "none",
-      boxShadow: "1px 2px 3px grey",
+      background: "transparent",
+      // boxShadow: "1px 2px 3px grey",
     },
     handSwap: {
-      padding: ".5rem",
+      padding: ".2rem",
+      display: "flex",
+      alignItems: "center",
+      background: "transparent",
       marginLeft: `${props.tileSize < 100 ? "auto" : "1rem"}`,
       marginRight: `${props.tileSize < 100 ? "auto" : "1rem"}`,
-      marginBottom: `${props.tileSize < 100 ? "0" : "1rem"}`,
+      marginBottom: "1rem",
       height: "2.5rem"
     },
     container: {
       position: `absolute`,
-      overflow: `${!hidden && props.tileSize < 100 ? "hidden" : "visible"}`,
+      // overflow: `${!hidden && props.tileSize < 100 ? "hidden" : "visible"}`,
       zIndex: "9",
       pointerEvents: `${hidden && props.tileSize < 100 ? "none" : "auto"}`,
-      top: `${props.tileSize < 100 ? "120px" : "70px"}`,
+      top: `${props.tileSize < 100 ? "30px" : "70px"}`,
+      paddingBottom: "1rem",
       width: "80%",
       left: "10%",
       marginRight: "auto",
@@ -59,7 +64,12 @@ export default function TopBarAndDropdown(props) {
       backdropFilter: `${!hidden && props.tileSize < 100 ? "blur(4px)" : "blur(0px)"}`,
       borderRadius: "20px",
       boxShadow: `${!hidden && props.tileSize < 100 ? `${props.tileSize * 0.02}px ${props.tileSize * 0.02}px ${props.tileSize * 0.04}px grey` : "0 0 0 0 transparent"}`,
-
+    },
+    menuIcon: {
+      fontSize: "3rem"
+    },
+    swapIcon: {
+      fontSize: "2.7rem"
     }
   }
 
@@ -70,13 +80,13 @@ export default function TopBarAndDropdown(props) {
   return (
     <div style={style.container}>
       <button style={style.collapseButton} onClick={handleHidden}>{
-        hidden ? "\\/" : "/\\"
+        hidden ? <TbMenu2 style={style.menuIcon}/> : <TbX style={style.menuIcon}/>
       }</button>
       <div style={style.div}>
 
         <button style={style.handSwap} onClick={() => {
           props.dispatch({ type: "rightHanded" })
-        }}>swap hands</button>
+        }}><TbArrowsRightLeft style={style.swapIcon} /></button>
         <WinningLength
           dispatch={props.dispatch}
           winLength={props.winLength}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react"
-// import AdjusterButton from "./adjusterButton"
+
+import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand, TbLayoutSidebarRightExpand, TbLayoutSidebarRightCollapse } from "react-icons/tb"
+
 export default function SidebarAdjusters(props) {
   const [gameInProgressStyle, setGameInProgressStyle] = useState("1")
   const [hidden, setHidden] = useState(false)
@@ -47,10 +49,11 @@ export default function SidebarAdjusters(props) {
       height: `${props.tileSize * .6}px`,
       width: `${props.tileSize}px`,
       textAlign: "center",
-      fontSize: `${props.tileSize * .5}px`,
+      fontSize: `${props.tileSize * .8}px`,
       zIndex: "8",
       border: "none",
-      boxShadow: "1px 2px 3px grey",
+      background: "transparent"
+      // boxShadow: "1px 2px 3px grey",
     },
     ul: {
       display: `${hidden ? "none" : "flex"}`,
@@ -89,7 +92,13 @@ export default function SidebarAdjusters(props) {
       <button
         style={style.collapseButton}
         onClick={handleHidden}
-      >{props.rightHanded ? hidden ? "<" : ">" : hidden ? ">" : "<"}
+      >{props.rightHanded
+        ? hidden
+          ? <TbLayoutSidebarRightExpand />
+          : <TbLayoutSidebarRightCollapse />
+        : hidden
+          ? <TbLayoutSidebarLeftExpand />
+          : <TbLayoutSidebarLeftCollapse />}
       </button>
 
       <ul style={style.buttonUl}>
@@ -101,7 +110,7 @@ export default function SidebarAdjusters(props) {
                   style={style.button}
                   key={`fifth${i}`}
                   onClick={() => {
-                    props.dispatch({type: "offset", value: "decrement", offsetIndex: i})
+                    props.dispatch({ type: "offset", value: "decrement", offsetIndex: i })
                   }}
                 >{"<"}
                 </button>
@@ -110,7 +119,7 @@ export default function SidebarAdjusters(props) {
                   style={style.button}
                   key={`third${i}`}
                   onClick={() => {
-                    props.dispatch({type: "offset", value: "increment", offsetIndex: i})
+                    props.dispatch({ type: "offset", value: "increment", offsetIndex: i })
                   }}
                 >{">"}
                 </button>
@@ -123,9 +132,9 @@ export default function SidebarAdjusters(props) {
                   data-function={"col"}
                   value={-1}
                   onClick={() => {
-                    props.dispatch({type: "col", value: "decrement", row: i})
+                    props.dispatch({ type: "col", value: "decrement", row: i })
                   }}
-                  // onClick={props.handleRows}
+                // onClick={props.handleRows}
                 >-
                 </button>
 
@@ -136,9 +145,9 @@ export default function SidebarAdjusters(props) {
                   data-function={"col"}
                   value={1}
                   onClick={() => {
-                    props.dispatch({type: "col", value: "increment", row: i})
+                    props.dispatch({ type: "col", value: "increment", row: i })
                   }}
-                  // onClick={props.handleRows}
+                // onClick={props.handleRows}
                 >+
                 </button>
               </div>
