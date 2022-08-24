@@ -42,7 +42,7 @@ export default function SidebarAdjusters(props) {
       position: "sticky",
       top: "10px",
       float: `${props.rightHanded ? "right" : "left"}`,
-      marginTop: `${- props.tileSize * .8}px`,
+      marginTop: `${- props.tileSize * .9}px`,
       left: `${props.rightHanded ? "auto" : "1rem"}`,
       right: `${props.rightHanded ? "1rem" : "auto"}`,
       padding: "0",
