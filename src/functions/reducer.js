@@ -1,3 +1,4 @@
+// I will admit that going down on increased row numbers was probaby a mistake due to how unintuitive it is.
 import initialState from "../statics/initialState"
 const reducer = (state, action) => {
   function clearBoard() {
@@ -81,14 +82,16 @@ const reducer = (state, action) => {
           if (!state.gameInProgress) {
             // I would like to use initialState, but for some reason it changes
             const offsetArr = [...state.offset.slice(0, 3)]
-            return { ...state, board: [
-              [" ", " ", " "],
-              [" ", " ", " "],
-              [" ", " ", " "]
-            ], offset: offsetArr}
+            return {
+              ...state, board: [
+                [" ", " ", " "],
+                [" ", " ", " "],
+                [" ", " ", " "]
+              ], offset: offsetArr
+            }
           } else return state
         case "clear":
-            return clearBoard()
+          return clearBoard()
         default:
           return { ...state, board: action.value }
       }
@@ -162,6 +165,132 @@ const reducer = (state, action) => {
         }
       }
       return { ...state }
+
+    case "add":
+      let temp = [...state.board]
+      let tempOffset = [...state.offset]
+      switch (action.direction) {
+        case "right":
+          if (temp && action.row !== undefined && action.col !== undefined && tempOffset) {
+            const row = Number(action.row)
+            const col = Number(action.col)
+            if (col === state.board[row].length - 1) {
+              temp[row].push(' ')
+              return { ...state, board: [...temp], offset: [...tempOffset] }
+            } else if (temp[row][col + 1] === "blank") {
+              temp[row].splice(col + 1, 1, ' ')
+              return { ...state, board: [...temp], offset: [...tempOffset] }
+            }
+          }
+          else {
+            return { ...state }
+          }
+          return { ...state }
+        case "left":
+          if (temp && action.row !== undefined && action.col !== undefined && tempOffset) {
+            const row = Number(action.row)
+            const col = Number(action.col)
+            if (col === 0) {
+              // ! why doesn't temp[row].unshift(' ') work here ?!?!?!
+              temp[row] = [' ', ...temp[row].slice(0, temp[row].length)]
+              tempOffset[row] -= 1
+              return { ...state, board: [...temp], offset: [...tempOffset] }
+            } else if (temp[row][col - 1] === "blank") {
+              temp[row].splice(col - 1, 1, ' ')
+              return { ...state, board: [...temp], offset: [...tempOffset] }
+            }
+            return { ...state }
+          }
+          return { ...state }
+        case "up":
+          if (temp && action.row !== undefined && action.col !== undefined && tempOffset) {
+            const row = action.row
+            const col = action.col
+            if (temp[row - 1] === undefined) { //* there is not a row above
+              // ! why does temp.unshift([' ']) work here ?!?!?!
+              temp.unshift([' '])
+              tempOffset = [col + tempOffset[row], ...tempOffset.slice(0, tempOffset.length)]
+              return { ...state, board: [...temp], offset: [...tempOffset] }
+            } else if (temp?.[row - 1]?.[col + state.offset[row] - state.offset[row - 1]] === "blank") { //* if col above is a blank
+              temp[row - 1][col + tempOffset[row] - tempOffset[row - 1]] = ' '
+              return { ...state, board: [...temp], offset: [...tempOffset] }
+            } else if (temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) { //* there is a row above but not the column to match
+              if (col + tempOffset[row]
+                > temp[row - 1].length - 1 + tempOffset[row - 1]
+                && state.board?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) { //* col is after the row above
+                while (col + tempOffset[row] > temp[row - 1].length + tempOffset[row - 1]
+                  && temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {
+                  temp[row - 1].push("blank")
+                }
+                if (temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {
+                  temp[row - 1].push(' ')
+                }
+                return { ...state, board: [...temp], offset: [...tempOffset] }
+              } else if (col + tempOffset[row] < tempOffset[row - 1]
+                && temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) { //* col is before the row above
+                while (col + tempOffset[row] < tempOffset[row - 1] - 1
+                  && temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {
+                  // ! why doesn't temp[row - 1].unshift('blank') work here ?!?!?!
+                  temp[row - 1] = ['blank', ...temp[row - 1].slice(0, temp[row - 1].length)]
+                  tempOffset[row - 1] -= 1
+                }
+                if (temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {
+                  // ! why doesn't temp[row - 1].unshift(' ') work here ?!?!?!
+                  temp[row - 1] = [' ', ...temp[row - 1].slice(0, temp[row - 1].length)]
+                  tempOffset[row - 1] -= 1
+                }
+                return { ...state, board: [...temp], offset: [...tempOffset] }
+              }
+            }
+            return { ...state }
+          }
+          return { ...state }
+        case "down":
+          if (temp && action.row !== undefined && action.col !== undefined && tempOffset) {
+            const row = action.row
+            const col = action.col
+            if (temp[row + 1] === undefined) { //* there is not a row above
+              temp.push([' '])
+              tempOffset = [...tempOffset.slice(0, tempOffset.length), col + tempOffset[row]]
+
+              return { ...state, board: [...temp], offset: [...tempOffset] }
+            } else if (temp?.[row + 1]?.[col + state.offset[row] - state.offset[row + 1]] === "blank") { //* if col below is a blank
+              temp[row + 1][col + tempOffset[row] - tempOffset[row + 1]] = ' '
+
+              return { ...state, board: [...temp], offset: [...tempOffset] }
+            } else if (temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) { //* there is a row below but not the column to match
+              if (col + tempOffset[row] > temp[row + 1].length - 1 + tempOffset[row + 1] && state.board?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) { //* col is after the row below
+                while (col + tempOffset[row] > temp[row + 1].length + tempOffset[row + 1] && temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {
+                  temp[row + 1].push("blank")
+                }
+                if (temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {
+                  temp[row + 1].push(' ')
+                }
+                return { ...state, board: [...temp], offset: [...tempOffset] }
+              } else if (col + tempOffset[row] < tempOffset[row + 1] && temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) { //* col is before the row below
+
+                while (col + tempOffset[row] < tempOffset[row + 1] - 1 && temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {
+                  // ! why does't temp[row + 1].unshift(['blank']) work here ?!?!?!
+                  temp[row + 1] = ['blank', ...temp[row + 1].slice(0, temp[row + 1].length)]
+                  tempOffset[row + 1] -= 1
+                }
+                if (temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {
+                  // ! why does't temp[row + 1].unshift([' ']) work here ?!?!?!
+                  temp[row + 1] = [' ', ...temp[row + 1].slice(0, temp[row + 1].length)]
+                  tempOffset[row + 1] -= 1
+                }
+                return { ...state, board: [...temp], offset: [...tempOffset] }
+              }
+            }
+            return { ...state }
+          }
+          break
+
+        default:
+          return { ...state }
+      }
+      break
+
     case "row":
       if (!state.gameover) {
         let boardMutatorVariable = [...state.board]
@@ -178,8 +307,7 @@ const reducer = (state, action) => {
                 return { ...state, board: [...boardMutatorVariable], offset: [...offsetMutatorVariable] }
               }
 
-            } else return {...state}
-            break
+            } else return { ...state }
           case "decrement":
             if (!state.gameInProgress) {
               boardMutatorVariable = boardMutatorVariable.slice(0, -1)
@@ -204,7 +332,7 @@ const reducer = (state, action) => {
           if (state.gameInProgress) {
             return { ...state, board: boardMutatorVariable, curPlayerX: !state.curPlayerX }
           } else {
-            return { ...state, board: boardMutatorVariable}
+            return { ...state, board: boardMutatorVariable }
           }
         case "decrement":
           if (!state.gameInProgress) {
@@ -229,5 +357,6 @@ const reducer = (state, action) => {
     default:
       return { ...state }
   }
+  return { ...state }
 }
 export default reducer

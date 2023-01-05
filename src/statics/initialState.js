@@ -18,4 +18,4 @@ const initialState = {
   playerTwo: "O"
 }
 
-export default initialState
+export default {...initialState}

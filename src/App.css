@@ -3,3 +3,8 @@ body {
   padding: 0;
   overflow-x: hidden;
 }
+.btn-hover:hover {
+  background-color: #888;
+  color: white;
+  cursor: pointer;
+}
