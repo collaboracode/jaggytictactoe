@@ -10,11 +10,13 @@ export default function BoardShift(props) {
       justifyContent: "center",
       position: "fixed",
       bottom: "10px",
+      zIndex: 2,
+
       pointerEvents: 'none'
     },
     shiftButton: {
       // padding: "1rem",
-      pointerEvents: 'all'
+      pointerEvents: 'all',
     },
     shiftReset: {
       color: "white",

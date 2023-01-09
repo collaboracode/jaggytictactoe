@@ -307,8 +307,6 @@ const reducer = (state, action) => {
                   temp[row - 1] = [...temp[row - 1].slice(0), ' ']
                 }
                 if (state.gameInProgress) {
-                  console.log('here')
-
                   return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
                 } else {
                   return { ...state, board: [...temp], offset: [...tempOffset] }

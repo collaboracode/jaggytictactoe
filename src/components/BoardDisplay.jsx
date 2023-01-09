@@ -121,12 +121,22 @@ export default function Gameboard(props) {
         height: '80%',
         width: '80%'
       },
-      addFullBlockDown: {
+      addFullBlockUp: {
+        zIndex: 1,
+
         position: 'absolute',
         right: '10%',
         width: '80%',
         height: '80%',
-        bottom: '-100%',
+        top: '-105%',
+      },
+      addFullBlockDown: {
+        zIndex: 2,
+        position: 'absolute',
+        right: '10%',
+        width: '80%',
+        height: '80%',
+        bottom: '-105%',
       },
     },
 
@@ -148,8 +158,16 @@ export default function Gameboard(props) {
   }
   const showControls = (row, col) => {
     return {
-      moveLeft: col === 0,
-      moveRight: col === props?.state?.board?.[row].length - 1,
+      moveLeft: col === 0
+        || (
+          props.state.board[row].slice(0, col).filter(item => item !== 'blank').length === 0
+          )
+      ,
+      moveRight: col === props?.state?.board?.[row].length - 1
+      || (
+        props.state.board[row].slice(col + 1).filter(item => item !== 'blank').length === 0
+        )
+      ,
       addLeft: (props?.state?.board?.[row]?.[col - 1] === undefined
         && props.state.board?.[row]?.[col] !== "blank")
         || (props?.state?.board?.[row]?.[col - 1] === "blank"
@@ -165,23 +183,51 @@ export default function Gameboard(props) {
           && props.state.board?.[row]?.[col] !== "blank"),
 
       addUp: (
-        props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === undefined
-        && props.state.board?.[row]?.[col] !== "blank"
+        props.state.board?.[row]?.[col] !== "blank"
+        && (
+          props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === undefined
+          || props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
+        )
+        && (
+          props.state.board?.[row - 1]?.[(col - 1) + props.state.offset[row] - props.state.offset[row - 1]] === undefined
+          || props.state.board?.[row - 1]?.[(col - 1) + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
+        )
+        && (
+          props.state.board?.[row - 1]?.[(col + 1) + props.state.offset[row] - props.state.offset[row - 1]] === undefined
+          || props.state.board?.[row - 1]?.[(col + 1) + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
+        )
       )
-        || (
-          props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
-          && props.state.board[row][col + props.state.offset[row] - props.state.offset[- 1]] !== "blank"
-          && props.state.board?.[row]?.[col] !== "blank"
-        ),
+      // || (
+      //   props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
+      //   && props.state.board[row][col + props.state.offset[row] - props.state.offset[- 1]] !== "blank"
+      //   && props.state.board?.[row]?.[col] !== "blank"
+      // )
+      ,
 
       addDown: (
-        props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === undefined
+        (
+          props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === undefined
+          || props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
+        )
         && props.state.board?.[row]?.[col] !== "blank"
+        && (
+          props.state.board?.[row + 1]?.[(col - 1) + props.state.offset[row] - props.state.offset[row + 1]] === undefined
+          || props.state.board?.[row + 1]?.[(col - 1) + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
+        )
+        && (
+          props.state.board?.[row + 1]?.[(col + 1) + props.state.offset[row] - props.state.offset[row + 1]] === undefined
+          || props.state.board?.[row + 1]?.[(col + 1) + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
+        )
+        && (
+          props.state.board?.[row + 2]?.[(col) + props.state.offset[row] - props.state.offset[row + 2]] === undefined
+          || props.state.board?.[row + 2]?.[(col) + props.state.offset[row] - props.state.offset[row + 2]] === "blank"
+        )
       )
-        || (
-          props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
-          && props.state.board?.[row]?.[col] !== "blank"
-        ),
+      // || (
+      //   props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
+      //   && props.state.board?.[row]?.[col] !== "blank"
+      // )
+      ,
 
       // todo make it so the remove is on all non blank spaces and use row and col to remove it with [...board[row].slice(0, col), ...board[row].slice(col)]
       // removeLeft: col === 0 && props.state.board?.[row]?.[col] !== "blank",
@@ -269,8 +315,8 @@ export default function Gameboard(props) {
                             && !showControls(i, j).moveLeft
                             && (row[j - 2] === 'blank' || showControls(i, j - 2).addRight)
                           )
-                            ? style.controls.addLeft//addLeftFullBlock
-                            : style.controls.addLeft//addLeftFullBar
+                            ? style.controls.addLeftFullBlock
+                            : style.controls.addLeftFullBar
                           : style.controls.addLeft,
                         // ...style.controls.addLeft, 
                         // ...{ display: `${showControls(i, j).addLeft ? '' : 'none'}` }
@@ -314,7 +360,7 @@ export default function Gameboard(props) {
                     </button>}
                     {showControls(i, j).addUp && <button
                       className={'btn-hover'}
-                      style={{ ...style.controls.addUp, ...{ display: `${showControls(i, j).addUp === true ? '' : 'none'}` } }}
+                      style={{ ...style.controls.addFullBlockUp, ...{ display: `${showControls(i, j).addUp === true ? '' : 'none'}` } }}
                       data-row={i}
                       // data-function={"col"}
                       // value={1}
@@ -329,33 +375,15 @@ export default function Gameboard(props) {
                       style={{
                         // ...style.controls.addDown,
 
-                        ...((showControls(i, j).addDown
-                          && i + 2 < props.state.board.length - 1
-                          && props.state.board[i + 2][j + props.state.offset[i] - props.state.offset[i + 2]] === "blank"
-                          // || props.state.board[i + 2][j + props.state.offset[i] - props.state.offset[i + 2]] === undefined
-                        )
-                          // && (!showControls(i + 2, j + props.state.offset[i] - props.state.offset[i + 2]).addUp
-                          // || row[j - 2] === 'blank')
-                          || (
-                            showControls(i, j).addDown
-                            && i === props.state.board.length - 1
-                          )
-                          || (
-                            i + 2 < props.state.board.length - 1
-                            && props.state.board[i + 2][j + props.state.offset[i] - props.state.offset[i + 2]] === "blank"
-                            )
 
-                          // )
-
-                        )
-                          // ? ((showControls(i, j).addUp)
-                          //   // && !showControls(i, j).moveLeft
-                          //   && i + 1 < props.state.board.length
-                          //   && (props.state.board[i + 2][j - 2 + props.state.offset[i] - props.state.offset[i + 2]] === 'blank' || showControls(i, j - 2).addUp)
-                          // )
-                          ? style.controls.addFullBlockDown
-                          // : style.controls.addDown
-                          : style.controls.addDown,
+                        // ? ((showControls(i, j).addUp)
+                        //   // && !showControls(i, j).moveLeft
+                        //   && i + 1 < props.state.board.length
+                        //   && (props.state.board[i + 2][j - 2 + props.state.offset[i] - props.state.offset[i + 2]] === 'blank' || showControls(i, j - 2).addUp)
+                        // )
+                        ...style.controls.addFullBlockDown
+                        // : style.controls.addDown
+                        // : style.controls.addDown,
 
 
                         //  ...{display: `${showControls(i, j).addDown === true ? '' : 'none'}` } 
