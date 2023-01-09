@@ -8,3 +8,12 @@ body {
   color: white;
   cursor: pointer;
 }
+.remover {
+  background-color: #F44;
+  color: white;
+  cursor: pointer;
+}
+.remover:hover {
+  background-color: #A44;
+
+}

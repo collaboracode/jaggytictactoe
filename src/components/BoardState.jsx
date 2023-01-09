@@ -4,8 +4,8 @@ import Gameboard from "./BoardDisplay"
 import CurrentPlayerDisplay from "./CurrentPlayerDisplay"
 import GameOverModal from "./GameOverModal"
 import BoardShift from "./BoardShift"
-import AddRemoveRows from "./AddRemoveRows"
-import SidebarAdjusters from "./SidebarAdjusters"
+// import AddRemoveRows from "./AddRemoveRows"
+// import SidebarAdjusters from "./SidebarAdjusters"
 import TopBarAndDropdown from "./TopBarAndDropdown"
 
 import reducer from "../functions/reducer"
@@ -88,10 +88,10 @@ export default function GameState() {
         rightHanded={state.rightHanded}
         gameInProgress={state.gameInProgress}
       />
-      <AddRemoveRows
+      {/* <AddRemoveRows
         dispatch={dispatch}
         gameInProgress={state.gameInProgress}
-      />
+      /> */}
       <CurrentPlayerDisplay
         playerOne={state.playerOne}
         playerTwo={state.playerTwo}
@@ -102,14 +102,14 @@ export default function GameState() {
         message={state.message}
         gameover={state.gameover}
       />
-      <SidebarAdjusters
-        dispatch={dispatch}
-        board={state.board}
-        offset={state.offset}
-        tileSize={state.tileSize}
-        rightHanded={state.rightHanded}
-        gameInProgress={state.gameInProgress}
-      />
+        {/* <SidebarAdjusters
+          dispatch={dispatch}
+          board={state.board}
+          offset={state.offset}
+          tileSize={state.tileSize}
+          rightHanded={state.rightHanded}
+          gameInProgress={state.gameInProgress}
+        /> */}
       <Gameboard
         dispatch={dispatch}
         state={state}

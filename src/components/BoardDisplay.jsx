@@ -15,11 +15,12 @@ export default function Gameboard(props) {
       marginRight: "auto",
       width: "100%",
       overflow: "hidden",
-
+      marginTop: '7rem',
+      marginBottom: '10rem',
     },
     board: {
-      marginTop: 20,
-      marginBottom: 20,
+      marginTop: '10rem',
+      marginBottom: '10rem',
       marginLeft: "auto",
       marginRight: "auto",
     },
@@ -43,21 +44,20 @@ export default function Gameboard(props) {
     controls: {
       moveLeft: {
         position: 'absolute',
-        left: '-45%',
+        left: '-100%',
         top: '8%',
         height: '40%',
-        width: '40%',
+        width: '80%',
       },
       moveRight: {
         position: 'absolute',
-        right: '-45%',
+        right: '-100%',
         top: '8%',
         height: '40%',
-        width: '40%',
+        width: '80%',
       },
       addUp: {
         position: 'absolute',
-        left: 0,
         // right: 'auto',
         left: '10%',
         width: '80%',
@@ -71,35 +71,65 @@ export default function Gameboard(props) {
       },
       addLeft: {
         position: 'absolute',
-        left: '-45%',
+        left: '-50%',
         bottom: '8%',
         height: '40%',
         width: '40%'
       },
       addRight: {
         position: 'absolute',
-        right: '-45%',
+        right: '-50%',
         bottom: '8%',
         height: '40%',
         width: '40%'
       },
-      removeLeft: {
-        position: 'absolute',
-        left: 0,
-        bottom: 0,
-      },
-      removeRight: {
+      // removeLeft: {
+      //   position: 'absolute',
+      //   left: 0,
+      //   bottom: 0,
+      // },
+      removeCol: {
         position: 'absolute',
         right: 0,
-        bottom: 0,
+        top: 0,
       },
+      addLeftFullBar: {
+        position: 'absolute',
+        left: '-100%',
+        bottom: '8%',
+        height: '40%',
+        width: '80%'
+      },
+      addRightFullBar: {
+        position: 'absolute',
+        right: '-100%',
+        bottom: '8%',
+        height: '40%',
+        width: '80%'
+      },
+      addLeftFullBlock: {
+        position: 'absolute',
+        left: '-100%',
+        bottom: '8%',
+        height: '80%',
+        width: '80%'
+      },
+      addRightFullBlock: {
+        position: 'absolute',
+        right: '-100%',
+        bottom: '8%',
+        height: '80%',
+        width: '80%'
+      },
+      addFullBlockDown: {
+        position: 'absolute',
+        right: '10%',
+        width: '80%',
+        height: '80%',
+        bottom: '-100%',
+      },
+    },
 
-    },
-    invisible: {
-      opacity: 0,
-      pointerEvents: "none"
-    },
-    none: {}
   }
 
   const handleClick = (e) => {
@@ -119,35 +149,44 @@ export default function Gameboard(props) {
   const showControls = (row, col) => {
     return {
       moveLeft: col === 0,
-      moveRight: col === props.state.board[row].length - 1,
-      addLeft: props.state.board?.[row]?.[col - 1] === undefined
-        && props.state.board?.[row]?.[col] !== "blank"
-        || props.state.board?.[row]?.[col - 1] === "blank"
-        && props.state.board?.[row]?.[col] !== "blank"
-        || col === 0
-        && props.state.board?.[row]?.[col] !== "blank",
+      moveRight: col === props?.state?.board?.[row].length - 1,
+      addLeft: (props?.state?.board?.[row]?.[col - 1] === undefined
+        && props.state.board?.[row]?.[col] !== "blank")
+        || (props?.state?.board?.[row]?.[col - 1] === "blank"
+          && props?.state?.board?.[row]?.[col] !== "blank")
+        || (col === 0
+          && props.state.board?.[row]?.[col] !== "blank"),
 
-      addRight: props.state.board?.[row]?.[col + 1] === "blank"
-        && props.state.board?.[row]?.[col] !== "blank"
-        || props.state.board?.[row]?.[col + 1] === undefined
-        && props.state.board?.[row]?.[col] !== "blank"
-        || col === props.state.board?.[row].length - 1
-        && props.state.board?.[row]?.[col] !== "blank",
+      addRight: (props.state.board?.[row]?.[col + 1] === "blank"
+        && props.state.board?.[row]?.[col] !== "blank")
+        || (props.state.board?.[row]?.[col + 1] === undefined
+          && props.state.board?.[row]?.[col] !== "blank")
+        || (col === props.state.board?.[row].length - 1
+          && props.state.board?.[row]?.[col] !== "blank"),
 
-      addUp: props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === undefined
-        // && board[row][col + offset[row]] !== "blank"
+      addUp: (
+        props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === undefined
         && props.state.board?.[row]?.[col] !== "blank"
-        || props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
-        && props.state.board[row][col + props.state.offset[row] - props.state.offset[- 1]] !== "blank"
-        && props.state.board?.[row]?.[col] !== "blank",
+      )
+        || (
+          props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
+          && props.state.board[row][col + props.state.offset[row] - props.state.offset[- 1]] !== "blank"
+          && props.state.board?.[row]?.[col] !== "blank"
+        ),
 
-      addDown: props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === undefined
+      addDown: (
+        props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === undefined
         && props.state.board?.[row]?.[col] !== "blank"
-        || props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
-        && props.state.board?.[row]?.[col] !== "blank",
+      )
+        || (
+          props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
+          && props.state.board?.[row]?.[col] !== "blank"
+        ),
 
-      removeLeft: col === 0 && props.state.board?.[row]?.[col] !== "blank",
-      removeRight: col === props.state.board[row].length - 1 && props.state.board?.[row]?.[col] !== "blank",
+      // todo make it so the remove is on all non blank spaces and use row and col to remove it with [...board[row].slice(0, col), ...board[row].slice(col)]
+      // removeLeft: col === 0 && props.state.board?.[row]?.[col] !== "blank",
+      // removeRight: col === props.state.board[row].length - 1 && props.state.board?.[row]?.[col] !== "blank",
+      removeCol: props.state.board?.[row]?.[col] !== "blank"
     }
   }
 
@@ -178,23 +217,23 @@ export default function Gameboard(props) {
                     <p key={`third${j}`}
                       style={style.p}
                     >{`${props.state.board[i][j]}`}</p>
-                    <button
-                      style={{ ...style.controls.moveLeft, ...{ display: `${showControls(i, j).moveLeft === true ? '' : 'none'}` } }}
+                    {showControls(i, j).moveLeft && <button
+                      style={{ ...style.controls.moveLeft }}
                       className={'btn-hover'}
                       onClick={() => {
                         props.dispatch({ type: "offset", value: "decrement", offsetIndex: i, row: i, col: j })
                       }}
                     >{"<"}
-                    </button>
-                    <button
+                    </button>}
+                    {showControls(i, j).moveRight && <button
                       className={'btn-hover'}
-                      style={{ ...style.controls.moveRight, ...{ display: `${showControls(i, j).moveRight === true ? '' : 'none'}` } }}
+                      style={{ ...style.controls.moveRight }}
                       onClick={() => {
                         props.dispatch({ type: "offset", value: "increment", offsetIndex: i, row: i, col: j })
                       }}
                     >{">"}
-                    </button>
-                    <button
+                    </button>}
+                    {/* <button
                       className={'btn-hover'}
                       style={{ ...style.controls.removeLeft, ...{ display: `${showControls(i, j).removeLeft === true ? '' : 'none'}` } }}
                       data-row={i}
@@ -205,22 +244,37 @@ export default function Gameboard(props) {
                       }}
                     // onClick={props.handleRows}
                     >-
-                    </button>
-                    <button
-                      className={'btn-hover'}
-                      style={{ ...style.controls.removeRight, ...{ display: `${showControls(i, j).removeRight === true ? '' : 'none'}` } }}
+                    </button> */}
+                    {showControls(i, j).removeCol && <button
+                      className={'remover'}
+                      style={{ ...style.controls.removeCol }}
                       data-row={i}
                       // data-function={"col"}
                       // value={-1}
                       onClick={() => {
-                        props.dispatch({ type: "col", value: "decrement", row: i, col: j })
+                        props.dispatch({ type: "remove", row: i, col: j })
                       }}
                     // onClick={props.handleRows}
-                    >-
-                    </button>
-                    <button
+                    >X
+                    </button>}
+                    {showControls(i, j).addLeft && <button
                       className={'btn-hover'}
-                      style={{ ...style.controls.addLeft, ...{ display: `${showControls(i, j).addLeft === true ? '' : 'none'}` } }}
+                      style={{
+                        // todo work on this type of logic to get bottons working nicely
+                        ...(showControls(i, j).addLeft
+                          && (showControls(i, j - 2).addRight
+                            || row[j - 2] === 'blank')
+                        )
+                          ? ((showControls(i, j).addLeft)
+                            && !showControls(i, j).moveLeft
+                            && (row[j - 2] === 'blank' || showControls(i, j - 2).addRight)
+                          )
+                            ? style.controls.addLeft//addLeftFullBlock
+                            : style.controls.addLeft//addLeftFullBar
+                          : style.controls.addLeft,
+                        // ...style.controls.addLeft, 
+                        // ...{ display: `${showControls(i, j).addLeft ? '' : 'none'}` }
+                      }}
                       data-row={i}
                       // data-function={"col"}
                       // value={1}
@@ -229,10 +283,26 @@ export default function Gameboard(props) {
                       }}
                     // onClick={props.handleRows}
                     >+
-                    </button>
-                    <button
+                    </button>}
+                    {((showControls(i, j).addRight && !showControls(i, j + 2).addLeft) || (showControls(i, j).addRight && j === row.length - 1)) && <button
                       className={'btn-hover'}
-                      style={{ ...style.controls.addRight, ...{ display: `${showControls(i, j).addRight === true ? '' : 'none'}` } }}
+                      style={{
+                        // ...showControls(i, j).addRight
+                        //   && showControls(i, j + 2).addLeft
+                        //   ? style.controls.addRightFullBar
+                        //   : style.controls.addRight,
+                        ...(showControls(i, j).addRight
+                          && (showControls(i, j + 2).addLeft
+                            || row[j + 2] === 'blank')
+                        )
+                          ? ((showControls(i, j).addRight)
+                            && !showControls(i, j).moveRight
+                            && (row[j + 2] === 'blank' || showControls(i, j + 2).addLeft)
+                          )
+                            ? style.controls.addRightFullBlock
+                            : style.controls.addRightFullBar
+                          : style.controls.addLeft,
+                      }}
                       data-row={i}
                       // data-function={"col"}
                       // value={1}
@@ -241,8 +311,8 @@ export default function Gameboard(props) {
                       }}
                     // onClick={props.handleRows}
                     >+
-                    </button>
-                    <button
+                    </button>}
+                    {showControls(i, j).addUp && <button
                       className={'btn-hover'}
                       style={{ ...style.controls.addUp, ...{ display: `${showControls(i, j).addUp === true ? '' : 'none'}` } }}
                       data-row={i}
@@ -253,10 +323,43 @@ export default function Gameboard(props) {
                       }}
                     // onClick={props.handleRows}
                     >+
-                    </button>
-                    <button
+                    </button>}
+                    {showControls(i, j).addDown && <button
                       className={'btn-hover'}
-                      style={{ ...style.controls.addDown, ...{ display: `${showControls(i, j).addDown === true ? '' : 'none'}` } }}
+                      style={{
+                        // ...style.controls.addDown,
+
+                        ...((showControls(i, j).addDown
+                          && i + 2 < props.state.board.length - 1
+                          && props.state.board[i + 2][j + props.state.offset[i] - props.state.offset[i + 2]] === "blank"
+                          // || props.state.board[i + 2][j + props.state.offset[i] - props.state.offset[i + 2]] === undefined
+                        )
+                          // && (!showControls(i + 2, j + props.state.offset[i] - props.state.offset[i + 2]).addUp
+                          // || row[j - 2] === 'blank')
+                          || (
+                            showControls(i, j).addDown
+                            && i === props.state.board.length - 1
+                          )
+                          || (
+                            i + 2 < props.state.board.length - 1
+                            && props.state.board[i + 2][j + props.state.offset[i] - props.state.offset[i + 2]] === "blank"
+                            )
+
+                          // )
+
+                        )
+                          // ? ((showControls(i, j).addUp)
+                          //   // && !showControls(i, j).moveLeft
+                          //   && i + 1 < props.state.board.length
+                          //   && (props.state.board[i + 2][j - 2 + props.state.offset[i] - props.state.offset[i + 2]] === 'blank' || showControls(i, j - 2).addUp)
+                          // )
+                          ? style.controls.addFullBlockDown
+                          // : style.controls.addDown
+                          : style.controls.addDown,
+
+
+                        //  ...{display: `${showControls(i, j).addDown === true ? '' : 'none'}` } 
+                      }}
                       // data-row={i}
                       // data-function={"col"}
                       // value={1}
@@ -265,7 +368,7 @@ export default function Gameboard(props) {
                       }}
                     // onClick={props.handleRows}
                     >+
-                    </button>
+                    </button>}
                   </li>
                 )
               })}
@@ -273,6 +376,6 @@ export default function Gameboard(props) {
           )
         })}
       </div>
-    </div>
+    </div >
   )
 }
