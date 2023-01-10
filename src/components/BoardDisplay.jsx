@@ -185,12 +185,28 @@ export default function Gameboard(props) {
             && props.state.board?.[row]?.[col] !== "blank"
           ))
       ,
-      addLeft: (props?.state?.board?.[row]?.[col - 1] === undefined
-        && props.state.board?.[row]?.[col] !== "blank")
-        || (props?.state?.board?.[row]?.[col - 1] === "blank"
-          && props?.state?.board?.[row]?.[col] !== "blank")
-        || (col === 0
-          && props.state.board?.[row]?.[col] !== "blank"),
+      addLeft: (
+        // props?.state?.board?.[row]?.[col - 1] === undefined
+        // && props.state.board?.[row]?.[col] !== "blank")
+        // || (props?.state?.board?.[row]?.[col - 1] === "blank"
+        //   && props?.state?.board?.[row]?.[col] !== "blank")
+        // || (col === 0
+        //   && props.state.board?.[row]?.[col] !== "blank")
+
+
+        props.state.board?.[row]?.[col] !== "blank"
+
+        && (
+          (
+            props.state.board?.[row]?.[col - 1] === undefined
+            || props.state.board?.[row]?.[col - 1] === 'blank'
+          )
+          || (
+            props.state.board[row].slice(0, col).filter(item => item !== 'blank').length === 0
+          )
+        )
+      )
+      ,
 
       addRight: (
         props.state.board?.[row]?.[col] !== "blank"
@@ -297,7 +313,7 @@ export default function Gameboard(props) {
                       }}
                     ><TbWreckingBall style={style.smallIcon} />
                     </button>}
-                    {showControls(i, j).addLeft && <button
+                    {showControls(i, j).addLeft && !(props.state.board[i][j -2] && showControls(i, j - 2)) && <button
                       className={'btn-hover'}
                       style={{
                         // todo work on this type of logic to get bottons working nicely
