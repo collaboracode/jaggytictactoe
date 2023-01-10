@@ -186,16 +186,7 @@ export default function Gameboard(props) {
           ))
       ,
       addLeft: (
-        // props?.state?.board?.[row]?.[col - 1] === undefined
-        // && props.state.board?.[row]?.[col] !== "blank")
-        // || (props?.state?.board?.[row]?.[col - 1] === "blank"
-        //   && props?.state?.board?.[row]?.[col] !== "blank")
-        // || (col === 0
-        //   && props.state.board?.[row]?.[col] !== "blank")
-
-
         props.state.board?.[row]?.[col] !== "blank"
-
         && (
           (
             props.state.board?.[row]?.[col - 1] === undefined
@@ -205,9 +196,7 @@ export default function Gameboard(props) {
             props.state.board[row].slice(0, col).filter(item => item !== 'blank').length === 0
           )
         )
-      )
-      ,
-
+      ),
       addRight: (
         props.state.board?.[row]?.[col] !== "blank"
       )
@@ -224,33 +213,33 @@ export default function Gameboard(props) {
       addUp: (
         props.state.board?.[row]?.[col] !== "blank"
       )
-        && (
+        && ( //* target above is undefined or blank
           props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === undefined
           || props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
         )
-        && (
+        && ( //* the left side of the target above is undefined or blank
           props.state.board?.[row - 1]?.[(col - 1) + props.state.offset[row] - props.state.offset[row - 1]] === undefined
           || props.state.board?.[row - 1]?.[(col - 1) + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
         )
-        && (
+        && ( //* the right side of the target above is undefined or blank
           props.state.board?.[row - 1]?.[(col + 1) + props.state.offset[row] - props.state.offset[row - 1]] === undefined
           || props.state.board?.[row - 1]?.[(col + 1) + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
         ),
 
-      addDown: (
+      addDown: ( //* target below is undefined or blank
         props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === undefined
         || props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
       )
         && props.state.board?.[row]?.[col] !== "blank"
-        && (
+        && ( //* the left side of the target below is undefined or blank
           props.state.board?.[row + 1]?.[(col - 1) + props.state.offset[row] - props.state.offset[row + 1]] === undefined
           || props.state.board?.[row + 1]?.[(col - 1) + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
         )
-        && (
+        && ( //* the right side of the target below is undefined or blank
           props.state.board?.[row + 1]?.[(col + 1) + props.state.offset[row] - props.state.offset[row + 1]] === undefined
           || props.state.board?.[row + 1]?.[(col + 1) + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
         )
-        && (
+        && ( //* the space below the target below is undefined or blank
           props.state.board?.[row + 2]?.[(col) + props.state.offset[row] - props.state.offset[row + 2]] === undefined
           || props.state.board?.[row + 2]?.[(col) + props.state.offset[row] - props.state.offset[row + 2]] === "blank"
         ),
