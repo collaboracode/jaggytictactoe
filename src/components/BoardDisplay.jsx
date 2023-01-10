@@ -313,7 +313,14 @@ export default function Gameboard(props) {
                       }}
                     ><TbWreckingBall style={style.smallIcon} />
                     </button>}
-                    {showControls(i, j).addLeft && !(props.state.board[i][j -2] && showControls(i, j - 2)) && <button
+                    {showControls(i, j).addLeft && (
+                      !(props.state.board[i][j - 2] && showControls(i, j - 2).addRight)
+                      ||
+                      (
+                        props.state.board[i][j - 2] === undefined
+                        || props.state.board[i][j - 2] === 'blank'
+                      )
+                    ) && <button
                       className={'btn-hover'}
                       style={{
                         // todo work on this type of logic to get bottons working nicely
@@ -330,7 +337,7 @@ export default function Gameboard(props) {
                         props.dispatch({ type: "add", value: "increment", direction: 'left', row: i, col: j })
                       }}
                     ><TbPlus style={style.icon} />
-                    </button>}
+                      </button>}
                     {showControls(i, j).addRight && <button
                       className={'btn-hover'}
                       style={{
