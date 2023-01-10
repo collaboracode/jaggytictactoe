@@ -1,3 +1,4 @@
+import { TbArrowBigRight, TbArrowBigLeft, TbPlus, TbWreckingBall } from "react-icons/tb"
 export default function Gameboard(props) {
 
   const style = {
@@ -42,6 +43,11 @@ export default function Gameboard(props) {
 
     },
     controls: {
+      button: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
       moveLeft: {
         position: 'absolute',
         left: '-100%',
@@ -92,6 +98,7 @@ export default function Gameboard(props) {
         position: 'absolute',
         right: 0,
         top: 0,
+        padding: '0px 2px'
       },
       addLeftFullBar: {
         position: 'absolute',
@@ -140,6 +147,12 @@ export default function Gameboard(props) {
       },
     },
 
+    icon: {
+      fontSize: `${props.state.tileSize / 3}px`
+    },
+    smallIcon: {
+      fontSize: `${props.state.tileSize / 6}px`
+    }
   }
 
   const handleClick = (e) => {
@@ -158,15 +171,19 @@ export default function Gameboard(props) {
   }
   const showControls = (row, col) => {
     return {
-      moveLeft: col === 0
-        || (
-          props.state.board[row].slice(0, col).filter(item => item !== 'blank').length === 0
-          )
+      moveLeft: props.state.board?.[row]?.[col] !== "blank"
+        && (col === 0
+          || (
+            props.state.board[row].slice(0, col).filter(item => item !== 'blank').length === 0
+            && props.state.board?.[row]?.[col] !== "blank"
+          ))
       ,
-      moveRight: col === props?.state?.board?.[row].length - 1
-      || (
-        props.state.board[row].slice(col + 1).filter(item => item !== 'blank').length === 0
-        )
+      moveRight: props.state.board?.[row]?.[col] !== "blank"
+        && (col === props?.state?.board?.[row].length - 1
+          || (
+            props.state.board[row].slice(col + 1).filter(item => item !== 'blank').length === 0
+            && props.state.board?.[row]?.[col] !== "blank"
+          ))
       ,
       addLeft: (props?.state?.board?.[row]?.[col - 1] === undefined
         && props.state.board?.[row]?.[col] !== "blank")
@@ -175,15 +192,22 @@ export default function Gameboard(props) {
         || (col === 0
           && props.state.board?.[row]?.[col] !== "blank"),
 
-      addRight: (props.state.board?.[row]?.[col + 1] === "blank"
-        && props.state.board?.[row]?.[col] !== "blank")
-        || (props.state.board?.[row]?.[col + 1] === undefined
-          && props.state.board?.[row]?.[col] !== "blank")
-        || (col === props.state.board?.[row].length - 1
-          && props.state.board?.[row]?.[col] !== "blank"),
+      addRight: (
+        props.state.board?.[row]?.[col] !== "blank"
+      )
+        && (
+          (
+            props.state.board?.[row]?.[col + 1] === undefined
+            || props.state.board?.[row]?.[col + 1] === 'blank'
+          )
+          || (
+            props.state.board[row].slice(col + 1).filter(item => item !== 'blank').length === 0
+          )
+        ),
 
       addUp: (
         props.state.board?.[row]?.[col] !== "blank"
+      )
         && (
           props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === undefined
           || props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
@@ -195,20 +219,12 @@ export default function Gameboard(props) {
         && (
           props.state.board?.[row - 1]?.[(col + 1) + props.state.offset[row] - props.state.offset[row - 1]] === undefined
           || props.state.board?.[row - 1]?.[(col + 1) + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
-        )
-      )
-      // || (
-      //   props.state.board?.[row - 1]?.[col + props.state.offset[row] - props.state.offset[row - 1]] === "blank"
-      //   && props.state.board[row][col + props.state.offset[row] - props.state.offset[- 1]] !== "blank"
-      //   && props.state.board?.[row]?.[col] !== "blank"
-      // )
-      ,
+        ),
 
       addDown: (
-        (
-          props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === undefined
-          || props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
-        )
+        props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === undefined
+        || props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
+      )
         && props.state.board?.[row]?.[col] !== "blank"
         && (
           props.state.board?.[row + 1]?.[(col - 1) + props.state.offset[row] - props.state.offset[row + 1]] === undefined
@@ -221,17 +237,8 @@ export default function Gameboard(props) {
         && (
           props.state.board?.[row + 2]?.[(col) + props.state.offset[row] - props.state.offset[row + 2]] === undefined
           || props.state.board?.[row + 2]?.[(col) + props.state.offset[row] - props.state.offset[row + 2]] === "blank"
-        )
-      )
-      // || (
-      //   props.state.board?.[row + 1]?.[col + props.state.offset[row] - props.state.offset[row + 1]] === "blank"
-      //   && props.state.board?.[row]?.[col] !== "blank"
-      // )
-      ,
+        ),
 
-      // todo make it so the remove is on all non blank spaces and use row and col to remove it with [...board[row].slice(0, col), ...board[row].slice(col)]
-      // removeLeft: col === 0 && props.state.board?.[row]?.[col] !== "blank",
-      // removeRight: col === props.state.board[row].length - 1 && props.state.board?.[row]?.[col] !== "blank",
       removeCol: props.state.board?.[row]?.[col] !== "blank"
     }
   }
@@ -269,7 +276,8 @@ export default function Gameboard(props) {
                       onClick={() => {
                         props.dispatch({ type: "offset", value: "decrement", offsetIndex: i, row: i, col: j })
                       }}
-                    >{"<"}
+                    ><TbArrowBigLeft style={style.icon} />
+                      {/* {"<"} */}
                     </button>}
                     {showControls(i, j).moveRight && <button
                       className={'btn-hover'}
@@ -277,125 +285,70 @@ export default function Gameboard(props) {
                       onClick={() => {
                         props.dispatch({ type: "offset", value: "increment", offsetIndex: i, row: i, col: j })
                       }}
-                    >{">"}
+                    ><TbArrowBigRight style={style.icon} />
+                      {/* {">"} */}
                     </button>}
-                    {/* <button
-                      className={'btn-hover'}
-                      style={{ ...style.controls.removeLeft, ...{ display: `${showControls(i, j).removeLeft === true ? '' : 'none'}` } }}
-                      data-row={i}
-                      // data-function={"col"}
-                      value={-1}
-                      onClick={() => {
-                        props.dispatch({ type: "col", value: "decrement", row: i, col: j })
-                      }}
-                    // onClick={props.handleRows}
-                    >-
-                    </button> */}
                     {showControls(i, j).removeCol && <button
                       className={'remover'}
                       style={{ ...style.controls.removeCol }}
                       data-row={i}
-                      // data-function={"col"}
-                      // value={-1}
                       onClick={() => {
                         props.dispatch({ type: "remove", row: i, col: j })
                       }}
-                    // onClick={props.handleRows}
-                    >X
+                    ><TbWreckingBall style={style.smallIcon} />
                     </button>}
                     {showControls(i, j).addLeft && <button
                       className={'btn-hover'}
                       style={{
                         // todo work on this type of logic to get bottons working nicely
-                        ...(showControls(i, j).addLeft
-                          && (showControls(i, j - 2).addRight
-                            || row[j - 2] === 'blank')
+                        ...(
+                          showControls(i, j).addLeft
+                          && !showControls(i, j).moveLeft
+                          && (row[j - 2] === 'blank' || showControls(i, j - 2).addRight)
                         )
-                          ? ((showControls(i, j).addLeft)
-                            && !showControls(i, j).moveLeft
-                            && (row[j - 2] === 'blank' || showControls(i, j - 2).addRight)
-                          )
-                            ? style.controls.addLeftFullBlock
-                            : style.controls.addLeftFullBar
-                          : style.controls.addLeft,
-                        // ...style.controls.addLeft, 
-                        // ...{ display: `${showControls(i, j).addLeft ? '' : 'none'}` }
+                          ? style.controls.addLeftFullBlock
+                          : style.controls.addLeftFullBar
                       }}
                       data-row={i}
-                      // data-function={"col"}
-                      // value={1}
                       onClick={() => {
                         props.dispatch({ type: "add", value: "increment", direction: 'left', row: i, col: j })
                       }}
-                    // onClick={props.handleRows}
-                    >+
+                    ><TbPlus style={style.icon} />
                     </button>}
-                    {((showControls(i, j).addRight && !showControls(i, j + 2).addLeft) || (showControls(i, j).addRight && j === row.length - 1)) && <button
+                    {showControls(i, j).addRight && <button
                       className={'btn-hover'}
                       style={{
-                        // ...showControls(i, j).addRight
-                        //   && showControls(i, j + 2).addLeft
-                        //   ? style.controls.addRightFullBar
-                        //   : style.controls.addRight,
-                        ...(showControls(i, j).addRight
-                          && (showControls(i, j + 2).addLeft
-                            || row[j + 2] === 'blank')
+                        ...(
+                          showControls(i, j).addRight
+                          && !showControls(i, j).moveRight
+                          && (row[j + 2] === 'blank' || showControls(i, j + 2).addLeft)
                         )
-                          ? ((showControls(i, j).addRight)
-                            && !showControls(i, j).moveRight
-                            && (row[j + 2] === 'blank' || showControls(i, j + 2).addLeft)
-                          )
-                            ? style.controls.addRightFullBlock
-                            : style.controls.addRightFullBar
-                          : style.controls.addLeft,
+                          ? style.controls.addRightFullBlock
+                          : style.controls.addRightFullBar,
                       }}
-                      data-row={i}
-                      // data-function={"col"}
-                      // value={1}
                       onClick={() => {
                         props.dispatch({ type: "add", value: "increment", direction: 'right', row: i, col: j })
                       }}
-                    // onClick={props.handleRows}
-                    >+
+                    ><TbPlus style={style.icon} />
                     </button>}
                     {showControls(i, j).addUp && <button
                       className={'btn-hover'}
                       style={{ ...style.controls.addFullBlockUp, ...{ display: `${showControls(i, j).addUp === true ? '' : 'none'}` } }}
                       data-row={i}
-                      // data-function={"col"}
-                      // value={1}
                       onClick={() => {
                         props.dispatch({ type: "add", value: "increment", direction: 'up', row: i, col: j })
                       }}
-                    // onClick={props.handleRows}
-                    >+
+                    ><TbPlus style={style.icon} />
                     </button>}
                     {showControls(i, j).addDown && <button
                       className={'btn-hover'}
                       style={{
-                        // ...style.controls.addDown,
-
-
-                        // ? ((showControls(i, j).addUp)
-                        //   // && !showControls(i, j).moveLeft
-                        //   && i + 1 < props.state.board.length
-                        //   && (props.state.board[i + 2][j - 2 + props.state.offset[i] - props.state.offset[i + 2]] === 'blank' || showControls(i, j - 2).addUp)
-                        // )
                         ...style.controls.addFullBlockDown
-                        // : style.controls.addDown
-                        // : style.controls.addDown,
-
-
-                        //  ...{display: `${showControls(i, j).addDown === true ? '' : 'none'}` } 
                       }}
-                      // data-row={i}
-                      // data-function={"col"}
-                      // value={1}
                       onClick={() => {
                         props.dispatch({ type: "add", value: "increment", direction: 'down', row: i, col: j })
                       }}
-                    // onClick={props.handleRows}
-                    >+
+                    ><TbPlus style={style.icon} />
                     </button>}
                   </li>
                 )

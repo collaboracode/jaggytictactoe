@@ -139,12 +139,6 @@ const reducer = (state, action) => {
         let offsetMutatorVariable = [...state.offset]
         let index = Number(action.offsetIndex)
         offsetMutatorVariable[Number(index)] += Number(val)
-        if (offsetMutatorVariable[Number(index)] > Number(state.offsetRange)) {
-          offsetMutatorVariable[Number(index)] = Number(state.offsetRange)
-        }
-        else if (offsetMutatorVariable[Number(index)] < 0 - Number(state.offsetRange)) {
-          offsetMutatorVariable[Number(index)] = 0 - Number(state.offsetRange)
-        }
         return [...offsetMutatorVariable]
       }
 
