@@ -332,7 +332,7 @@ const reducer = (state, action) => {
               } else {
                 return { ...state, board: [...temp], offset: [...tempOffset] }
               }
-            } else if (temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === "blank") {                //* if col below is a blank
+            } else if (temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === "blank") {                    //* if col below is a blank
               temp[row + 1] = [                                                                                         //* replaces blank with space
                 ...temp[row + 1].slice(0, col + tempOffset[row] - tempOffset[row + 1]),
                 ' ',
