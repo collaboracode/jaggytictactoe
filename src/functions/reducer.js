@@ -1,40 +1,78 @@
 // I will admit that going down on increased row numbers was probaby a mistake due to how unintuitive it is.
 import initialState from "../statics/initialState"
+import getLongestLine from "./longest_line";
 const reducer = (state, action) => {
   // todo refactor to have the vars for all these here
   const row = Number(action.row)
   const col = Number(action.col)
-  let temp = [...state.board]
-  let tempOffset = [...state.offset]
-  function clearBoard() {
-    let boardMutalator = [...state.board]
-    boardMutalator.forEach((row, i) => {
-      row.forEach((col, j) => {
-        if (boardMutalator[i][j] !== 'blank')
-          boardMutalator[i][j] = " "
+  let temp = state?.board ? [...state.board] : [[]]
+  let tempOffset = state?.offset ? [...state.offset] : []
+
+  let message = state.message
+  let gameover = state.gameover
+  let tileSize
+
+  if (window.innerWidth > 800) {
+    tileSize = 100
+  }
+  else if (window.innerWidth > 600) {
+    tileSize = 75
+  }
+  else if (window.innerWidth > 400) {
+    tileSize = 60
+  }
+  else {
+    tileSize = 50
+  }
+
+  function CheckForWinOrDraw(board, offset, playerOne, playerTwo) {
+    let playerOneRecord = 0
+    let playerTwoRecord = 0
+    let isFull = true
+    board.forEach((boardRow, i) => {
+      boardRow.forEach((col, j) => {
+        if (col === " ") {
+          isFull = false
+        }
+        playerOneRecord = Math.max(
+          getLongestLine(board, playerOne, Number(i), Number(j), offset),
+          playerOneRecord
+        )
+        playerTwoRecord = Math.max(
+          getLongestLine(board, playerTwo, Number(i), Number(j), offset),
+          playerTwoRecord
+        )
       })
     })
-    return { ...state, board: boardMutalator, curPlayerX: true, gameInProgress: false, gameover: false }
-
-  }
-  const resize = () => {
-    const sizeOne = 100
-    const sizeTwo = 75
-    const sizeThree = 60
-    const sizeFour = 50
-    if (window.innerWidth > 800) {
-      return sizeOne
-    } else if (window.innerWidth > 600) {
-      return sizeTwo
-    } else if (window.innerWidth > 400) {
-      return sizeThree
-    } else {
-      return sizeFour
+    if (playerOneRecord >= state.winLength && playerTwoRecord >= state.winLength) {
+      message = "Draw"
+      gameover = true
+    } else if (playerOneRecord >= state.winLength) {
+      message = `${state.playerOne} wins`
+      gameover = true
+    } else if (playerTwoRecord >= state.winLength) {
+      message = `${state.playerTwo} wins`
+      gameover = true
+    } else if (isFull) {
+      message = "Draw"
+      gameover = true
     }
   }
+
+  function clearBoard() {
+    temp.forEach((row, i) => {
+      row.forEach((col, j) => {
+        if (temp[i][j] !== 'blank')
+          temp[i] = [...temp[i].slice(0, j), " ", ...temp[i].slice(j + 1)]
+      })
+    })
+    return { ...state, board: [...temp], curPlayerX: true, gameInProgress: false, gameover: false }
+
+  }
+ 
   switch (action.type) {
     case "window":
-      return { ...state, tileSize: resize() }
+      return { ...state, tileSize: tileSize }
 
     case "game": {
       if (action.value === "reset") {
@@ -53,7 +91,7 @@ const reducer = (state, action) => {
           winLength: 3,
           boardShift: 0,
           rightHanded: false,
-          tileSize: resize(),
+          tileSize: tileSize,
           offsetRange: 6,
           playerOne: "X",
           playerTwo: "O"
@@ -85,7 +123,7 @@ const reducer = (state, action) => {
     case "board":
       switch (action.value) {
         case "reset":
-          if (!state.gameInProgress) {
+          if (state?.gameInProgress === false) {
             // I would like to use initialState, but for some reason it changes
             const offsetArr = [...state.offset.slice(0, 3)]
             while (offsetArr.length < 3) {
@@ -101,8 +139,20 @@ const reducer = (state, action) => {
           } else return state
         case "clear":
           return clearBoard()
+        case "play":
+          const row = Number(action.row)
+          const col = Number(action.col)
+          let playerX = state.curPlayerX
+          if (state?.gameover === false
+            && temp?.[row]?.[col] === " ") {
+            playerX = !state.curPlayerX
+            const player = state.curPlayerX ? `${state.playerOne}` : `${state.playerTwo}`
+            temp[row] = [...temp[row].slice(0, col), `${player}`, ...temp[row].slice(col + 1)]
+          }
+          CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+          return { ...state, board: [...temp], curPlayerX: playerX, gameInProgress: true, message: message, gameover: gameover }
         default:
-          return { ...state, board: action.value }
+          return { ...state }
       }
     case "boardShift":
       switch (action.value) {
@@ -117,7 +167,7 @@ const reducer = (state, action) => {
       }
 
     case "winLength":
-      if (!state.gameInProgress) {
+      if (state?.gameInProgress === false) {
         switch (action.value) {
           case "increment":
             if (state.winLength + 1 <= 15) {
@@ -134,30 +184,35 @@ const reducer = (state, action) => {
       return state
 
     case "offset":
-      function ChangeOffset(val) {
-        let offsetMutatorVariable = [...state.offset]
-        let index = Number(action.offsetIndex)
-        offsetMutatorVariable[Number(index)] += Number(val)
-        return [...offsetMutatorVariable]
-      }
 
-      if (!state.gameover) {
+      if (state?.gameover === false) {
         switch (action.value) {
           case "increment":
-            if (state.gameInProgress) {
-              return { ...state, offset: ChangeOffset(1), curPlayerX: !state.curPlayerX }
-            } else {
-              return { ...state, offset: ChangeOffset(1) }
+            tempOffset[Number(action.row)] = (Number(tempOffset[Number(action.row)]) + 1)
+            if (state?.gameInProgress === true) {
+              CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+              return { ...state, offset: tempOffset, curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
             }
+            else if (state?.gameInProgress === false) {
+              return { ...state, offset: tempOffset }
+            }
+            else return { ...state }
           case "decrement":
-            if (state.gameInProgress) {
-              return { ...state, offset: ChangeOffset(-1), curPlayerX: !state.curPlayerX }
-            } else {
-              return { ...state, offset: ChangeOffset(-1) }
+            tempOffset[Number(action.row)] = (Number(tempOffset[Number(action.row)]) - 1)
+            if (state?.gameInProgress === true) {
+              CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+
+              return { ...state, offset: tempOffset, curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
+            }
+            else if (state?.gameInProgress === false) {
+              return { ...state, offset: tempOffset }
+            }
+            else {
+              return { ...state }
             }
 
           case "reset":
-            if (!state.gameInProgress) {
+            if (state?.gameInProgress === false) {
               let offsetArr = []
               state.board.forEach(arr => offsetArr.push(Number(0)))
               return { ...state, offset: offsetArr }
@@ -187,7 +242,7 @@ const reducer = (state, action) => {
           if (row === 0 || row === temp.length - 1) {                                                                   //* target is on the first or the last row
             temp = [...temp.slice(0, row), ...temp.slice(row + 1)]                                                      //* removes the row
             tempOffset = [...tempOffset.slice(0, row), ...tempOffset.slice(row + 1)]                                    //* removes the offset for that row
-            
+
             for (let i = 0; i < temp.length; i++) {                                                                     //* trims blank rows from the top
               if (temp[0].filter((el) => el !== "blank").length > 0) break                                              //* stops at first non all blank row
               temp = [...temp.slice(1)]
@@ -203,8 +258,9 @@ const reducer = (state, action) => {
             temp[row] = [...temp[row].slice(0, col), 'blank', ...temp[row].slice(col + 1)]                              //* replaces space with blank
           }
         }
-        if (state.gameInProgress) {
-          return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+        if (state?.gameInProgress === true) {
+          CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+          return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
         } else {
           return { ...state, board: [...temp], offset: [...tempOffset] }
         }
@@ -217,15 +273,17 @@ const reducer = (state, action) => {
           if (temp && tempOffset && action.row !== undefined && action.col !== undefined) {                             //* has required vars
             if (col === state.board[row].length - 1) {                                                                  //* col is the last element in the row
               temp[row] = [...temp[row].slice(0), ' ']                                                                  //*inserts space at the end of the row
-              if (state.gameInProgress) {
-                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+              if (state?.gameInProgress === true) {
+                CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
               } else {
                 return { ...state, board: [...temp], offset: [...tempOffset] }
               }
             } else if (temp[row][col + 1] === "blank") {                                                                //* target location is a blank
               temp[row] = [...temp[row].slice(0, col + 1), ' ', ...temp[row].slice(col + 2)]                            //* replaces blank with space
-              if (state.gameInProgress) {
-                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+              if (state?.gameInProgress === true) {
+                CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
               } else {
                 return { ...state, board: [...temp], offset: [...tempOffset] }
               }
@@ -240,15 +298,17 @@ const reducer = (state, action) => {
             if (col === 0) {                                                                                            //* col is the first element in the row
               temp[row] = [' ', ...temp[row].slice(0)]                                                                  //* inserts space at the start of the row
               tempOffset[row] -= 1                                                                                      //* increases offset for the row below to maintain positions
-              if (state.gameInProgress) {
-                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+              if (state?.gameInProgress === true) {
+                CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
               } else {
                 return { ...state, board: [...temp], offset: [...tempOffset] }
               }
             } else if (temp[row][col - 1] === "blank") {                                                                //* target location is a blank
               temp[row] = [...temp[row].slice(0, col - 1), ' ', ...temp[row].slice(col)]                                //* replaces blank with space
-              if (state.gameInProgress) {
-                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+              if (state?.gameInProgress === true) {
+                CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
               } else {
                 return { ...state, board: [...temp], offset: [...tempOffset] }
               }
@@ -262,8 +322,9 @@ const reducer = (state, action) => {
             if (temp[row - 1] === undefined) {                                                                          //* there is not a row above
               temp = [[' '], ...temp.slice(0)]                                                                          //* adds row with a space
               tempOffset = [col + tempOffset[row], ...tempOffset.slice(0, tempOffset.length)]                           //* offsets the row to line up with the col that added it
-              if (state.gameInProgress) {
-                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+              if (state?.gameInProgress === true) {
+                CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
               } else {
                 return { ...state, board: [...temp], offset: [...tempOffset] }
               }
@@ -274,8 +335,9 @@ const reducer = (state, action) => {
                 ' ',
                 ...temp[row - 1].slice(col + tempOffset[row] - tempOffset[row - 1] + 1)
               ]
-              if (state.gameInProgress) {
-                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+              if (state?.gameInProgress === true) {
+                CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
               } else {
                 return { ...state, board: [...temp], offset: [...tempOffset] }
               }
@@ -293,8 +355,9 @@ const reducer = (state, action) => {
                 if (temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {                     //* target location is undefined
                   temp[row - 1] = [...temp[row - 1].slice(0), ' ']                                                      //* //* inserts space to end of the row above
                 }
-                if (state.gameInProgress) {
-                  return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+                if (state?.gameInProgress === true) {
+                  CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                  return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
                 } else {
                   return { ...state, board: [...temp], offset: [...tempOffset] }
                 }
@@ -312,8 +375,9 @@ const reducer = (state, action) => {
                   temp[row - 1] = [' ', ...temp[row - 1].slice(0)]
                   tempOffset[row - 1] -= 1
                 }
-                if (state.gameInProgress) {
-                  return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+                if (state?.gameInProgress === true) {
+                  CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                  return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
                 } else {
                   return { ...state, board: [...temp], offset: [...tempOffset] }
                 }
@@ -327,8 +391,9 @@ const reducer = (state, action) => {
             if (temp[row + 1] === undefined) {                                                                          //* there is not a row above
               temp = [...temp.slice(0), [' ']]                                                                          //* adds row with a space
               tempOffset = [...tempOffset.slice(0, tempOffset.length), col + tempOffset[row]]                           //* offsets the row to line up with the col that added it
-              if (state.gameInProgress) {
-                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+              if (state?.gameInProgress === true) {
+                CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
               } else {
                 return { ...state, board: [...temp], offset: [...tempOffset] }
               }
@@ -338,8 +403,9 @@ const reducer = (state, action) => {
                 ' ',
                 ...temp[row + 1].slice(col + tempOffset[row] - tempOffset[row + 1] + 1)
               ]
-              if (state.gameInProgress) {
-                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+              if (state?.gameInProgress === true) {
+                CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
               } else {
                 return { ...state, board: [...temp], offset: [...tempOffset] }
               }
@@ -356,8 +422,9 @@ const reducer = (state, action) => {
                 if (temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {                     //* target location is undefined
                   temp[row + 1] = [...temp[row + 1].slice(0), ' ']                                                      //* inserts space to target location
                 }
-                if (state.gameInProgress) {
-                  return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+                if (state?.gameInProgress === true) {
+                  CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                  return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
                 } else {
                   return { ...state, board: [...temp], offset: [...tempOffset] }
                 }
@@ -375,8 +442,9 @@ const reducer = (state, action) => {
                   tempOffset[row + 1] -= 1                                                                              //* increases offset for the row below to maintain positions
                 }
               }
-              if (state.gameInProgress) {
-                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX }
+              if (state?.gameInProgress === true) {
+                CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                return { ...state, board: [...temp], offset: [...tempOffset], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
               } else {
                 return { ...state, board: [...temp], offset: [...tempOffset] }
               }
@@ -399,16 +467,16 @@ const reducer = (state, action) => {
             if (boardMutatorVariable.length < 15) {
               boardMutatorVariable.push([" "])
               offsetMutatorVariable.push(Number(0))
-              if (state.gameInProgress) {
-
-                return { ...state, board: [...boardMutatorVariable], offset: [...offsetMutatorVariable], curPlayerX: !state.curPlayerX }
+              if (state?.gameInProgress === true) {
+                CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+                return { ...state, board: [...boardMutatorVariable], offset: [...offsetMutatorVariable], curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
               } else {
                 return { ...state, board: [...boardMutatorVariable], offset: [...offsetMutatorVariable] }
               }
 
             } else return { ...state }
           case "decrement":
-            if (!state.gameInProgress) {
+            if (state?.gameInProgress === false) {
               boardMutatorVariable = boardMutatorVariable.slice(0, -1)
               offsetMutatorVariable = offsetMutatorVariable.slice(0, boardMutatorVariable.length)
               return { ...state, board: [...boardMutatorVariable], offset: [...offsetMutatorVariable] }
@@ -428,13 +496,14 @@ const reducer = (state, action) => {
             let boardMutatorVariable2 = [...boardMutatorVariable[action.row], " "]
             boardMutatorVariable[action.row] = [...boardMutatorVariable2]
           }
-          if (state.gameInProgress) {
-            return { ...state, board: boardMutatorVariable, curPlayerX: !state.curPlayerX }
+          if (state?.gameInProgress === true) {
+            CheckForWinOrDraw(temp, tempOffset, state.playerOne, state.playerTwo)
+            return { ...state, board: boardMutatorVariable, curPlayerX: !state.curPlayerX, message: message, gameover: gameover }
           } else {
             return { ...state, board: boardMutatorVariable }
           }
         case "decrement":
-          if (!state.gameInProgress) {
+          if (state?.gameInProgress === false) {
             if (boardVariable[action.row].slice(0, -1)?.length > 0) {
               boardMutatorVariable[action.row] = boardVariable[action.row].slice(0, -1)
             }

@@ -2,13 +2,17 @@ import { TbArrowBigRight, TbArrowBigLeft, TbPlus, TbWreckingBall } from "react-i
 export default function Gameboard(props) {
 
   const style = {
-    p: {
-      pointerEvents: "none",
+    playSpace: {
+      // pointerEvents: "none",
       position: "relative",
-      top: "20%",
+      // top: "20%",
+      height: `100%`,
+      width: `100%`,
       fontSize: `${props.state.tileSize}px`,
       margin: "0",
       lineHeight: ".5",
+      backgroundColor: "transparent",
+      border: "none",
     },
     boardContainer: {
       display: "flex",
@@ -155,20 +159,21 @@ export default function Gameboard(props) {
     }
   }
 
-  const handleClick = (e) => {
-    let stateMutatorVariable = [...props.state.board]
-    let row = e.target.dataset.row
-    let col = e.target.dataset.col
-    if (props?.state?.gameover === false
-      && props?.state?.board?.[row]?.[col] === " ") {
-      stateMutatorVariable[row][col] = props.state.curPlayerX
-        ? props.state.playerOne
-        : props.state.playerTwo
-      props.dispatch({ type: "board", value: [...stateMutatorVariable] })
-      props.dispatch({ type: "curPlayerX", value: !props.state.curPlayerX })
-      props.dispatch({ type: "gameInProgress", value: true })
-    }
-  }
+  // const handleClick = (e) => {
+  // let row = e.target.dataset.row
+  // let col = e.target.dataset.col
+  // let stateMutatorVariable = [...props.state.board]
+  // if (props?.state?.gameover === false
+  // && props?.state?.board?.[row]?.[col] === " ") {
+  //   stateMutatorVariable[row][col] = props.state.curPlayerX
+  //     ? props.state.playerOne
+  //     : props.state.playerTwo
+  // value: [...stateMutatorVariable]
+  // props.dispatch({ type: "board", value: "play",  row: e.target.dataset.row, col: e.target.dataset.col})
+  // props.dispatch({ type: "curPlayerX", value: !props.state.curPlayerX })
+  // props.dispatch({ type: "gameInProgress", value: true })
+  // }
+  // }
   const showControls = (row, col) => {
     return {
       moveLeft: props.state.board?.[row]?.[col] !== "blank"
@@ -251,7 +256,7 @@ export default function Gameboard(props) {
   return (
     <div style={style.boardContainer} id="gameboard">
       <div style={style.board}>
-        {props.state.board.map((row, i) => {
+        {props?.state?.board !== undefined && props.state.board.map((row, i) => {
           return (
             <ul
               id={`row${i}`}
@@ -267,14 +272,16 @@ export default function Gameboard(props) {
                 return (
                   col && <li
                     style={{ ...style.col, ...{ opacity: props.state.board[i][j] === 'blank' ? 0 : 1, pointerEvents: props.state.board[i][j] === 'blank' ? 'none' : 'all' } }}
-                    onClick={handleClick}
                     className="col"
                     key={`second${j}`}
                     data-row={i}
                     data-col={j}>
-                    <p key={`third${j}`}
-                      style={style.p}
-                    >{`${props.state.board[i][j]}`}</p>
+                    <button key={`third${j}`}
+                      style={style.playSpace}
+                      onClick={() => {
+                        props.dispatch({ type: "board", value: "play", row: i, col: j })
+                      }}
+                    >{`${props.state.board[i][j] === " " ? "\u200b" : props.state.board[i][j]}`}</button>
                     {showControls(i, j).moveLeft && <button
                       style={{ ...style.controls.moveLeft }}
                       className={'btn-hover'}
