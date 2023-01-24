@@ -150,32 +150,20 @@ const reducer = (state, action) => {
           ]
         }
         else if (temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {                        //* there is a row above but not the column to match
-          if (
-            col + tempOffset[row] > temp[row - 1].length - 1 + tempOffset[row - 1]                                      //* col is after the row above
-            && state.board?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined                      //* the target location is undefined
-          ) {
-            while (
-              col + tempOffset[row] > temp[row - 1].length + tempOffset[row - 1]                                        //* more than one space from target location
-              && temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {                        //* target location is undefined
+          if (col + tempOffset[row] > temp[row - 1].length - 1 + tempOffset[row - 1]) {                                 //* target is past the end of the row above
+            while (col + tempOffset[row] > temp[row - 1].length + tempOffset[row - 1]) {                                //* more than one space from target location
               temp[row - 1] = [...temp[row - 1].slice(0), 'blank']                                                      //* inserts blank to the end of the row
             }
-            if (temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {                         //* target location is undefined
-              temp[row - 1] = [...temp[row - 1].slice(0), ' ']                                                          //* //* inserts space to end of the row above
-            }
+            temp[row - 1] = [...temp[row - 1].slice(0), ' ']                                                            //* inserts space to end of the row above
           }
           else if (
-            col + tempOffset[row] < tempOffset[row - 1]
-            && temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {                          //* col is before the row above
-
-            while (col + tempOffset[row] < tempOffset[row - 1] - 1                                                      //* inserts blanks until it reaches target col
-              && temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {
+            col + tempOffset[row] < tempOffset[row - 1]) {                                                              //* col is before the row above
+            while (col + tempOffset[row] < tempOffset[row - 1] - 1) {                                                   //* inserts blanks until it reaches target col
               temp[row - 1] = ['blank', ...temp[row - 1].slice(0, temp[row - 1].length)]
               tempOffset[row - 1] -= 1
             }
-            if (temp?.[row - 1]?.[col + tempOffset[row] - tempOffset[row - 1]] === undefined) {                         //* col above is undefined
-              temp[row - 1] = [' ', ...temp[row - 1].slice(0)]
-              tempOffset[row - 1] -= 1
-            }
+            temp[row - 1] = [' ', ...temp[row - 1].slice(0)]
+            tempOffset[row - 1] -= 1
           }
         }
         break
@@ -198,32 +186,21 @@ const reducer = (state, action) => {
           ]
         }
         else if (temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {                        //* there is a row below but not the column to match
-          if (
-            col + tempOffset[row] > temp[row + 1].length - 1 + tempOffset[row + 1]                                      //* more than one space from the target location
-            && state.board?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {                   //* target location is undefined
-
+          if (col + tempOffset[row] > temp[row + 1].length - 1 + tempOffset[row + 1]) {                                 //* at least one space from the target location
             while (
-              col + tempOffset[row] > temp[row + 1].length + tempOffset[row + 1]                                        //* more than one space from the target location
-              && temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {                        //* target location is still undefined
+              col + tempOffset[row] > temp[row + 1].length + tempOffset[row + 1]) {                                     //* more than one space from the target location
               temp[row + 1] = [...temp[row + 1].slice(0), 'blank']                                                      //* inserts blank at the end of the row
             }
-            if (temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {                         //* target location is undefined
-              temp[row + 1] = [...temp[row + 1].slice(0), ' ']                                                          //* inserts space to target location
-            }
+            temp[row + 1] = [...temp[row + 1].slice(0), ' ']                                                            //* inserts space to target location
           }
-          else if (col + tempOffset[row] < tempOffset[row + 1]                                                          //* more than one space from the target location
-            && temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {                          //* target location is undefined
-
+          else if (col + tempOffset[row] < tempOffset[row + 1]) {                                                       //* more than one space from the target location
             while (
-              col + tempOffset[row] < tempOffset[row + 1] - 1                                                           //* more than one space from the target location
-              && temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {                        //* target location is undefined
+              col + tempOffset[row] < tempOffset[row + 1] - 1) {                                                        //* more than one space from the target location
               temp[row + 1] = ['blank', ...temp[row + 1].slice(0)]                                                      //* inserts blank to start of the row below
               tempOffset[row + 1] -= 1                                                                                  //* increases offset for the row below to maintain positions
             }
-            if (temp?.[row + 1]?.[col + tempOffset[row] - tempOffset[row + 1]] === undefined) {                         //* target location is undefined
-              temp[row + 1] = [' ', ...temp[row + 1].slice(0, temp[row + 1].length)]                                    //* inserts space to start of the row below
-              tempOffset[row + 1] -= 1                                                                                  //* increases offset for the row below to maintain positions
-            }
+            temp[row + 1] = [' ', ...temp[row + 1].slice(0, temp[row + 1].length)]                                      //* inserts space to start of the row below
+            tempOffset[row + 1] -= 1                                                                                    //* increases offset for the row below to maintain positions
           }
         }
         break
@@ -237,6 +214,7 @@ const reducer = (state, action) => {
       return { ...state, board: [...temp], offset: [...tempOffset] }
     }
   }
+
   const changeOffset = () => {
     if (state?.gameover === true) { return { ...state } }
     switch (action.value) {

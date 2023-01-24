@@ -17,7 +17,16 @@ export default function Gameboard(props) {
       <div className={styles.board}>
         {board?.map((row, i) => {
           return (
-            <Row key={i} board={board} offset={offset} tileSize={tileSize} boardShift={boardShift} dispatch={dispatch} row={row} rowNumber={i} />
+            <Row
+              key={i}
+              board={board}
+              offset={offset}
+              tileSize={tileSize}
+              boardShift={boardShift}
+              dispatch={dispatch}
+              row={row}
+              rowNumber={i}
+            />
           )
         })}
       </div>
@@ -48,7 +57,15 @@ function Row(props) {
           marginBottom: `${rowNumber + 1 === board.length ? "8rem" : "0"}`
         }}>
         {row?.map((col, j) => {
-          return <Col key={j} board={board} offset={offset} tileSize={tileSize} dispatch={dispatch} rowNumber={rowNumber} colNumber={j} />
+          return <Col
+            key={j}
+            board={board}
+            offset={offset}
+            tileSize={tileSize}
+            dispatch={dispatch}
+            rowNumber={rowNumber}
+            colNumber={j}
+          />
         })}
       </ul>
     </>
@@ -84,7 +101,14 @@ function Col(props) {
             dispatch({ type: "board", value: "play", row: rowNumber, col: colNumber })
           }}
         >{`${board[rowNumber][colNumber]}`}</button>}
-        <Controls board={board} offset={offset} tileSize={tileSize} dispatch={dispatch} rowNumber={rowNumber} colNumber={colNumber} />
+        <Controls
+          board={board}
+          offset={offset}
+          tileSize={tileSize}
+          dispatch={dispatch}
+          rowNumber={rowNumber}
+          colNumber={colNumber}
+        />
       </li>
     </>
   )
@@ -196,53 +220,62 @@ function Controls(props) {
       fontSize: `${tileSize / 6}px`
     }
   }
-  return (
-    <>
-      {showControls(board, offset, rowNumber, colNumber).moveLeft && <button
+  return (<>
+    {
+      showControls(board, offset, rowNumber, colNumber).moveLeft
+      && <button
         className={`btn-hover ${styles.moveLeft}`}
         onClick={() => {
           dispatch({ type: "offset", value: "decrement", row: rowNumber, col: colNumber })
         }}
       ><TbArrowBigLeft style={style.icon} />
-      </button>}
-
-      {showControls(board, offset, rowNumber, colNumber).moveRight && <button
+      </button>
+    }
+    {
+      showControls(board, offset, rowNumber, colNumber).moveRight
+      && <button
         className={`btn-hover ${styles.moveRight}`}
         onClick={() => {
           dispatch({ type: "offset", value: "increment", row: rowNumber, col: colNumber })
         }}
       ><TbArrowBigRight style={style.icon} />
-      </button>}
-
-      {showControls(board, offset, rowNumber, colNumber).removeCol && <button
+      </button>
+    }
+    {
+      showControls(board, offset, rowNumber, colNumber).removeCol
+      && <button
         className={`remover ${styles.removeCol}`}
         onClick={() => {
           dispatch({ type: "remove", row: rowNumber, col: colNumber })
         }}
       ><TbWreckingBall style={style.smallIcon} />
-      </button>}
-
-      {showControls(board, offset, rowNumber, colNumber).addLeft && (
+      </button>
+    }
+    {
+      showControls(board, offset, rowNumber, colNumber).addLeft
+      && (
         !(board[rowNumber][colNumber - 2] && !showControls(rowNumber, colNumber - 2).addRight)
         ||
         (
           board[rowNumber][colNumber - 2] === undefined
           || board[rowNumber][colNumber - 2] === 'blank'
         ))
-        && <button
-          className={`btn-hover ${(
-            !showControls(board, offset, rowNumber, colNumber).moveLeft
-          )
-            ? styles.addLeftFullBlock
-            : styles.addLeftFullBar
-            }`}
-          onClick={() => {
-            dispatch({ type: "add", value: "increment", direction: 'left', row: rowNumber, col: colNumber })
-          }}
-        ><TbPlus style={style.icon} />
-        </button>}
-
-      {showControls(board, offset, rowNumber, colNumber).addRight && <button
+      && <button
+        className={`btn-hover ${(
+          !showControls(board, offset, rowNumber, colNumber).moveLeft
+        )
+          ? styles.addLeftFullBlock
+          : styles.addLeftFullBar
+          }`}
+        onClick={() => {
+          dispatch({ type: "add", value: "increment", direction: 'left', row: rowNumber, col: colNumber })
+        }}
+      ><TbPlus style={style.icon} />
+      </button>
+    }
+    {
+      showControls(board, offset, rowNumber, colNumber).addRight
+      && <button
         className={`btn-hover ${(
           !showControls(board, offset, rowNumber, colNumber).moveRight
         )
@@ -253,23 +286,27 @@ function Controls(props) {
           dispatch({ type: "add", value: "increment", direction: 'right', row: rowNumber, col: colNumber })
         }}
       ><TbPlus style={style.icon} />
-      </button>}
-
-      {showControls(board, offset, rowNumber, colNumber).addUp && <button
+      </button>
+    }
+    {
+      showControls(board, offset, rowNumber, colNumber).addUp
+      && <button
         className={`btn-hover ${styles.addUpFullBlock}`}
         onClick={() => {
           dispatch({ type: "add", value: "increment", direction: 'up', row: rowNumber, col: colNumber })
         }}
       ><TbPlus style={style.icon} />
-      </button>}
-
-      {showControls(board, offset, rowNumber, colNumber).addDown && <button
+      </button>
+    }
+    {
+      showControls(board, offset, rowNumber, colNumber).addDown
+      && <button
         className={`btn-hover ${styles.addDownFullBlock}`}
         onClick={() => {
           dispatch({ type: "add", value: "increment", direction: 'down', row: rowNumber, col: colNumber })
         }}
       ><TbPlus style={style.icon} />
-      </button>}
-    </>
-  )
+      </button>
+    }
+  </>)
 }
