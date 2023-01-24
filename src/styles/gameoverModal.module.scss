@@ -1,0 +1,51 @@
+.p {
+  width: 100%;
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  line-height: 0px;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 250px;
+  height: 170px;
+  background: dimgray;
+  color: white;
+  z-index: 10;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.4);
+  opacity: 1;
+}
+
+.modalContainer {
+  position: fixed;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+}
+
+.modalBackground {
+  position: fixed;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  background: gray;
+  color: white;
+  z-index: 10;
+  opacity: .6;
+}
+
+.resetAndClearButtons {
+  height: 60px;
+  width: 100px;
+  margin: 0;
+  padding: 0;
+}

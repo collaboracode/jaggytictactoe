@@ -1,15 +1,18 @@
+import styles from '../styles/currentPlayerDisplay.module.scss'
+
+/**
+ * @param {{
+ * curPlayerX: boolean, 
+ * playerOne: string|number, 
+ * playerTwo: string|number
+ * }} props 
+ */
 export default function CurrentPlayerDisplay(props) {
-  const style = {
-    display: {
-      width: "100%",
-      marginTop: "1rem",
-      textAlign: "center"
-    }
-  }
+  const { curPlayerX, playerOne, playerTwo } = props
   return (
     <h2
-      style={style.display}
-    >currently {props.curPlayerX ? props.playerOne : props.playerTwo}'s turn
+      className={styles.h2}
+    >currently {curPlayerX ? `${playerOne}` : `${playerTwo}`}'s turn
     </h2>
   )
 }

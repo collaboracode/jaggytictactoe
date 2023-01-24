@@ -1,0 +1,17 @@
+.shiftDiv {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 10px;
+  z-index: 2;
+  pointer-events: none;
+}
+.shiftButton {
+ pointer-events: all; 
+}
+
+// todo add media query for this
+.icon {
+  font-size: 3rem;
+}

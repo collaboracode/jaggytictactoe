@@ -1,19 +1,32 @@
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
+.red-button {
+  background-color: #b00;
+  color: white;
+
+  &:hover {
+    background-color: darkred;
+  }
 }
+
 .btn-hover:hover {
   background-color: #888;
   color: white;
   cursor: pointer;
 }
+
 .remover {
   background-color: #F44;
   color: white;
   cursor: pointer;
 }
+
 .remover:hover {
   background-color: #A44;
 
+}
+
+.disabled {
+  opacity: 0.5;
+}
+.hidden {
+  display: none;
 }

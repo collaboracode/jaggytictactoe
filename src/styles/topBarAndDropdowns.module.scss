@@ -1,0 +1,93 @@
+// reset buttons
+.buttonContainer {
+  display: flex;
+  // width: 100%;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 0;
+  padding: 0;
+  height: 40px;
+}
+
+.resetButton {
+  height: 40px;
+  width: 50px;
+  margin: 0;
+  padding: 0;
+}
+//  winLength
+.winLengthDiv {
+  display: flex;
+  justify-content: center;
+  // flex-direction: row;
+}
+.winLengthDivInner {
+  display: flex;
+  justify-content: center;
+}
+.button {
+  margin: .5rem .25rem;
+  padding: 0;
+  height: 40px;
+  width: 40px;
+  font-size: 2rem;
+  margin-top: 0;
+}
+.p { // todo rename these
+  text-align: center;
+  width: 100%;
+  margin: 100%;
+  margin: .5rem;
+  padding: 0;
+  font-size: 2rem;
+  margin-top: 0;
+}
+.pSmallScreen {
+  margin-bottom: 1rem;
+}
+
+// dropdown
+.dropdownDiv {
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  margin-top: 0;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+//todo finish this
+.dropdownAndWinLengthDivSmallScreen {
+  flex-direction: column;
+}
+
+.collapseButton {
+  pointer-events: auto;
+  // display: inline-block;
+  float: right;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+.container {
+  position: absolute;
+  z-index: 9;
+  padding-bottom: 1rem;
+  width: 80%;
+  left: 10%;
+  margin-right: auto;
+  border-radius: 20px;
+  top: 70px;
+}
+
+.containerSmallScreen {
+  top: 30px;
+}
+.containerSmallScreenDropdown {
+  background-color: rgba(175, 175, 175, 0.5);
+  backdrop-filter: blur(4px);
+}
+.menuIcon {
+  font-size: 3rem;
+}
