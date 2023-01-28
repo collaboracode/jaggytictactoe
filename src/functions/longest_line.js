@@ -1,9 +1,9 @@
 /**
  * this returns the length of the longest line, which could be from 0 to the max
- * of the height or the width of the arrray
+ * of the height or the width of the array
  * @param {number[][] | string[][]} twoDimensionalArray - 2d array of game "board"
  * @param {number | string} player - the target element to find like elements in the arrays
- * @param {integer} inputRow - index of a sub array of twoDimensionalArray
+ * @param {integer} inputRow - index of a subarray of twoDimensionalArray
  * @param {integer} inputCol - the element of the row array
  * @param {integer[]} offset - **optional** an integer array where each number offsets
  *  the corresponding row,
@@ -28,15 +28,15 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
   let diagonal2Record = 0
 
   // Checked nodes for each function to prevent infinite loops
-  let checkedVerticleNodes = []
+  let checkedVerticalNodes = []
   let checkedHorizontalNodes = []
   let checkedDiagonal1Nodes = []
   let checkedDiagonal2Nodes = []
   /**
-   * This gets the length of the verticle line
+   * This gets the length of the vertical line
    * - this gets the player parameter player from the parent function
    * @param {number[][] | string[][]} twoDimensionalArray - 2d array of game "board"
-   * @param {integer} row - index of a sub array of twoDimensionalArray
+   * @param {integer} row - index of a subarray of twoDimensionalArray
    * @param {integer} col - the element of the row array
    * @param {integer[]} offset - **optional** an integer array where each number offsets
    *  the corresponding row, and the numbers can be negative, and can completely separate them
@@ -47,7 +47,7 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
    * *      ["x", "o", "o"]
    * * ]
    */
-  function checkVerticle(twoDimensionalArray, row, col, offset = null) {
+  function checkVertical(twoDimensionalArray, row, col, offset = null) {
     // readability variables
     const rowUp = row - 1
     const rowDown = row + 1
@@ -56,17 +56,17 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
     const nextRowString = `[${rowDown}][${offset ? col + offset[row] - offset[rowDown] : col}]`
     
     if (twoDimensionalArray?.[row]?.[col] === player
-      && !checkedVerticleNodes
+      && !checkedVerticalNodes
         .includes(currentPosString)) {
       verticalRecord++
-      checkedVerticleNodes.push(currentPosString)
+      checkedVerticalNodes.push(currentPosString)
 
       if (twoDimensionalArray?.[rowUp]?.[
         offset
           ? col + offset?.[row] - offset?.[rowUp]
           : col] === player
-        && !checkedVerticleNodes.includes(prevRowString)) {
-        checkVerticle(twoDimensionalArray, rowUp,
+        && !checkedVerticalNodes.includes(prevRowString)) {
+        checkVertical(twoDimensionalArray, rowUp,
           offset
             ? col + offset[row] - offset[rowUp]
             : col,
@@ -77,8 +77,8 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
         offset
           ? col + offset[row] - offset[rowDown]
           : col] === player
-        && !checkedVerticleNodes.includes(nextRowString)) {
-        checkVerticle(twoDimensionalArray, rowDown,
+        && !checkedVerticalNodes.includes(nextRowString)) {
+        checkVertical(twoDimensionalArray, rowDown,
           offset
             ? col + offset[row] - offset[rowDown]
             : col,
@@ -94,7 +94,7 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
    * so it does not take one as a parameter
    * - this gets the player parameter player from the parent function
    * @param {number[][] | string[][]} twoDimensionalArray - 2d array of game "board"
-   * @param {integer} row - index of a sub array of twoDimensionalArray
+   * @param {integer} row - index of a subarray of twoDimensionalArray
    * @param {integer} col - the element of the corresponding row
    */
   function checkHorizontal(twoDimensionalArray, row, col) {
@@ -128,7 +128,7 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
    * and down to the right
    * - this gets the player parameter player from the parent function
    * @param {number[][] | string[][]} twoDimensionalArray - 2d array of game "board"
-   * @param {integer} row - index of a sub array of twoDimensionalArray
+   * @param {integer} row - index of a subarray of twoDimensionalArray
    * @param {integer} col - the element of the row array
    * @param {integer[]} offset - **optional** an integer array where each number offsets
    *  the corresponding row,
@@ -187,7 +187,7 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
    * and down to the left
    * - this gets the player parameter player from the parent function
    * @param {number[][] | string[][]} twoDimensionalArray - 2d array of game "board"
-   * @param {integer} row - index of a sub array of twoDimensionalArray
+   * @param {integer} row - index of a subarray of twoDimensionalArray
    * @param {integer} col - the element of the row array
    * @param {integer[]} offset - **optional** an integer array where each number offsets
    *  the corresponding row,
@@ -241,7 +241,7 @@ export default function getLongestLine(twoDimensionalArray, player, inputRow, in
     } else return null
   }
   let longestLine = Math.max(
-    checkVerticle(twoDimensionalArray, row, col, offset),
+    checkVertical(twoDimensionalArray, row, col, offset),
     checkHorizontal(twoDimensionalArray, row, col), // does not need offset, because it only look left and right
     checkDiagonal1(twoDimensionalArray, row, col, offset),
     checkDiagonal2(twoDimensionalArray, row, col, offset)
